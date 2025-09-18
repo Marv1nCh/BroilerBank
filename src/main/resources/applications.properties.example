@@ -1,7 +1,7 @@
 spring.application.name=BroilerBackend
 spring.datasource.url=jdbc:postgresql://localhost:5432/BroilerDB
 spring.datasource.username=postgres
-spring.datasource.password=ib:sxDfwrHqX
+spring.datasource.password=your_password
 spring.jpa.hibernate.ddl-auto=none
 spring.jpa.show-sql=true
 spring.jpa.properties.hibernate.format_sql=true
