@@ -1,11 +1,11 @@
 package com.nemo.broilerbackend.product;
 
+import com.nemo.broilerbackend.dto.DateRequest;
+import com.nemo.broilerbackend.model.ProductType;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import java.util.Dictionary;
 import java.util.List;
 
 @CrossOrigin(origins = "http://localhost:4200") //TODO delete
@@ -23,5 +23,10 @@ public class ProductController {
     @GetMapping
     public List<Product> getAllProducts() {
         return productService.getAllProducts();
+    }
+
+    @PostMapping("/prices")
+    public Dictionary<ProductType, Double> getPrice(@RequestBody DateRequest dateRequest) {
+        return productService.getPriceOfProductAtTime(dateRequest);
     }
 }
