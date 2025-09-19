@@ -19,4 +19,10 @@ public class PurchaseService {
     public List<Purchase> getAllPurchases() {
         return purchaseRepository.findAll();
     }
+
+    public Purchase addNewPurchase(Purchase purchase) {
+        purchase.setId(null);
+        System.out.println(purchase);
+        return purchaseRepository.save(purchase);
+    }
 }
