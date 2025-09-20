@@ -1,0 +1,34 @@
+<div class="sidebar" [ngClass]="{ 'sidebar-collapsed': isSidebarCollapsed }">
+  <div class="sidebar-menu">
+      <button
+        class="sidebar-toggle-btn"
+        [ngClass]="{ 'sidebar-collapsed': isSidebarCollapsed }"
+        (click)="toggleSidebar()"
+      >
+        <i
+          [class]="isSidebarCollapsed ? 'fas fa-arrow-right' : 'fas fa-arrow-left'"
+        ></i>
+      </button>
+    <ul>
+      @for (item of menuItems; track $index) {
+        <ng-container>
+          <li class="sidebar-menu-item">
+            <a
+              href="#"
+              class="sidebar-item"
+              [ngClass]="{
+                'has-children': item.children,
+                'menu-item-active': item.isOpen
+              }"
+              routerLink="{{item.urlSuffix}}"
+              (click)="toggleMenuItem(item)"
+            >
+              <i [class]="item.icon"></i>
+              <span class="sidebar-item-text"> {{ item.label }} </span>
+            </a>
+          </li>
+        </ng-container>
+      }
+    </ul>
+  </div>
+</div>
