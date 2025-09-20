@@ -20,11 +20,11 @@ target/
 *.ipr
 
 ### NetBeans ###
-/nbproject/private/
-/nbbuild/
-/dist/
-/nbdist/
-/.nb-gradle/
+/BroilerBackend/nbproject/private/
+/BroilerBackend/nbbuild/
+/BroilerBackend/dist/
+/BroilerBackend/nbdist/
+/BroilerBackend/.nb-gradle/
 build/
 !**/src/main/**/build/
 !**/src/test/**/build/
@@ -34,16 +34,16 @@ build/
 
 
 # Ignore config due to Password
-src/main/resources/application.properties
+/BroilerBackend/src/main/resources/application.properties
 
 # Compiled output
-/dist
-/tmp
-/out-tsc
-/bazel-out
+/BroilerFrontend/dist
+/BroilerFrontend/tmp
+/BroilerFrontend/out-tsc
+/BroilerFrontend/bazel-out
 
 # Node
-/node_modules
+/BroilerFrontend/node_modules
 npm-debug.log
 yarn-error.log
 
@@ -65,13 +65,13 @@ yarn-error.log
 .history/*
 
 # Miscellaneous
-/.angular/cache
+/BroilerFrontend/.angular/cache
 .sass-cache/
-/connect.lock
-/coverage
-/libpeerconnection.log
+/BroilerFrontend/connect.lock
+/BroilerFrontend/coverage
+/BroilerFrontend/libpeerconnection.log
 testem.log
-/typings
+/BroilerFrontend/typings
 
 # System files
 .DS_Store

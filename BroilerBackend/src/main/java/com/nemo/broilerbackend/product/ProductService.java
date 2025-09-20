@@ -24,6 +24,7 @@ public class ProductService {
         return productRepository.findAll();
     }
 
+    //TODO Change so that some kind of dictionary is returned, where producttype and date can be matched to a specific price
     public Dictionary<ProductType, Double> getPriceOfProductAtTime(DateRequest dateRequest) {
         Dictionary<ProductType, Double> prices = new Hashtable<>();
         Dictionary<ProductType, Date> latestDates = new Hashtable<>();
