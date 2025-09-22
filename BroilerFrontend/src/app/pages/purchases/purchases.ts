@@ -3,7 +3,6 @@ import { PurchaseService } from '../../services/purchase-service';
 import { Purchase } from '../../model/purchase.type';
 import { catchError } from 'rxjs';
 import { MatTableModule } from '@angular/material/table';
-import { UserService } from '../../services/user-service';
 import { User } from '../../model/user.type';
 
 @Component({
@@ -13,12 +12,11 @@ import { User } from '../../model/user.type';
   styleUrl: './purchases.scss'
 })
 export class Purchases implements OnInit {
-  displayedColumns: string[] = ['first_name', 'last_name', 'date', 'broiler', 'fries', 'coleslaw', 'paid']
+  displayedColumns: string[] = ['first_name', 'last_name', 'date', 'broiler', 'fries', 'coleslaw', 'paid', 'total_cost', 'due_cost']
   purchases = Array<Purchase>()
   users = Array<User>()
   
   purchaseService = inject(PurchaseService)
-  userService = inject(UserService)
 
   ngOnInit(): void {
     this.purchaseService.getAllPurchasesFromBackend()
@@ -29,19 +27,6 @@ export class Purchases implements OnInit {
     .subscribe((purchasesFromBackend) => {
       this.purchases = purchasesFromBackend
     });
-
-    this.userService.getAllUsersFromBackend()
-    .pipe(catchError((err) => {
-      console.log(err)
-      throw err;
-    }))
-    .subscribe((usersFromBackend) => {
-      this.users = usersFromBackend
-    });
-  }
-
-  mapIdToUser(userId: number) {
-    return this.users.find((user) => user.id == userId);
   }
 
   formatDateToString(date: Date) {
