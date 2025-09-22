@@ -12,4 +12,8 @@ export class UserService {
   getAllUsersFromBackend(){
     return this.http.get<Array<User>>(AppConstants.BASE_URL + "/users");
   }
+
+  addNewUser(user: User) {
+    return this.http.post<User>(AppConstants.BASE_URL + "/users", user)
+  }
 }

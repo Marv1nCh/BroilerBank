@@ -1,4 +1,7 @@
 <div>
+    <button (click)="openDialog()">
+        <i class="fa-solid fa-plus"></i>Add new User
+    </button>
     <table #userTable mat-table [dataSource]="users" class="user-table">
         <ng-container matColumnDef="first_name">
             <th mat-header-cell *matHeaderCellDef>First Name</th>
