@@ -12,4 +12,8 @@ export class ProductService {
   getAllProductsFromBackend() {
     return this.http.get<Array<Product>>(AppConstants.BASE_URL + "/products")
   }
+
+  addNewProductPrice(product: Product) {
+    return this.http.post<Product>(AppConstants.BASE_URL + "/products", product)
+  }
 }

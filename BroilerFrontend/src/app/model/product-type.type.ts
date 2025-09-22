@@ -1,5 +1,5 @@
-enum ProductType {
-    broiler,
-    fries,
-    coleslaw
+export enum ProductType {
+    broiler = "broiler",
+    fries = "fries",
+    coleslaw = "coleslaw"
 }

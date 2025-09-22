@@ -37,4 +37,9 @@ public class ProductService {
         }
         return prices;
     }
+
+    public Product addProduct(Product product) {
+        product.setId(null);
+        return productRepository.save(product);
+    }
 }

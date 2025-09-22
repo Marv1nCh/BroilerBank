@@ -25,6 +25,11 @@ public class ProductController {
         return productService.getAllProducts();
     }
 
+    @PostMapping
+    public Product createProduct(@RequestBody Product product) {
+        return productService.addProduct(product);
+    }
+
     @PostMapping("/prices")
     public Dictionary<ProductType, Double> getPrice(@RequestBody DateRequest dateRequest) {
         return productService.getPriceOfProductAtTime(dateRequest);

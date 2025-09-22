@@ -1,5 +1,8 @@
 <div>
-    <table #userTable mat-table [dataSource]="products" class="user-table">
+    <button (click)="openDialog()">
+        <i class="fa-solid fa-plus"></i>Add new Product
+    </button>
+    <table #productTable mat-table [dataSource]="products" class="user-table">
         <ng-container matColumnDef="start_date">
             <th mat-header-cell *matHeaderCellDef>Start Date</th>
             <td mat-cell *matCellDef="let product"> {{product.start_date}}</td>

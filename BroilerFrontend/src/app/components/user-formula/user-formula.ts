@@ -1,6 +1,5 @@
 import { Component, inject, signal } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialogActions, MatDialogContent, MatDialogRef } from '@angular/material/dialog';
-import { User } from '../../model/user.type';
+import { MatDialogActions, MatDialogContent, MatDialogRef } from '@angular/material/dialog';
 import { UserService } from '../../services/user-service';
 import { MatFormField, MatLabel } from '@angular/material/form-field';
 import { FormsModule } from '@angular/forms';
@@ -14,14 +13,13 @@ import { MatInputModule } from '@angular/material/input';
 })
 export class UserFormula {
   diaogRef = inject(MatDialogRef<UserFormula>);
-  data = inject<User>(MAT_DIALOG_DATA);
   userService = inject(UserService)
 
   firstName = signal("")
   lastName = signal("")
 
   onAdd() {
-    this.userService.addNewUser({first_name: this.firstName(), name: this.firstName()})
+    this.userService.addNewUser({first_name: this.firstName(), name: this.lastName()})
     .subscribe((newUser) => {
       this.diaogRef.close(newUser)
     })
