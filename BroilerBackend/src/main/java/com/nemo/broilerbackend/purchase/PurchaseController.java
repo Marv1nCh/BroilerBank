@@ -1,5 +1,9 @@
 package com.nemo.broilerbackend.purchase;
 
+import com.nemo.broilerbackend.dto.BroilerPurchaseView;
+import com.nemo.broilerbackend.product.ProductService;
+import com.nemo.broilerbackend.readmodel.purchaseView.PurchaseViewRepository;
+import com.nemo.broilerbackend.readmodel.purchaseView.PurchaseViewService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -11,20 +15,21 @@ import java.util.List;
 public class PurchaseController {
 
     private final PurchaseService purchaseService;
+    private final PurchaseViewService  purchaseViewService;
 
     @Autowired
-    public PurchaseController(PurchaseService purchaseService) {
+    public PurchaseController(PurchaseService purchaseService, PurchaseViewService purchaseViewService) {
         this.purchaseService = purchaseService;
+        this.purchaseViewService = purchaseViewService;
     }
 
     @GetMapping
-    public List<Purchase> getAllPurchases() {
-        return purchaseService.getAllPurchases();
+    public List<BroilerPurchaseView> getAllPurchases() {
+        return purchaseViewService.findAll();
     }
 
     @PostMapping
     public Purchase createPurchase(@RequestBody Purchase purchase) {
-        System.out.println(purchase.getBroiler());
         return purchaseService.addNewPurchase(purchase);
     }
 }
