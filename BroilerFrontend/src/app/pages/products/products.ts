@@ -42,4 +42,8 @@ export class Products implements OnInit{
       }
     })
   }
+
+  formatDateToString(date: Date) {
+    return new Date(date).toDateString();
+  }
 }

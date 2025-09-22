@@ -1,13 +1,18 @@
 <div>
     <table #userTable mat-table [dataSource]="purchases" class="user-table">
-        <ng-container matColumnDef="user_id">
-            <th mat-header-cell *matHeaderCellDef>User ID</th>
-            <td mat-cell *matCellDef="let purchase"> {{purchase.user_id}}</td>
+        <ng-container matColumnDef="first_name">
+            <th mat-header-cell *matHeaderCellDef>First Name</th>
+            <td mat-cell *matCellDef="let purchase"> {{mapIdToUser(purchase.user_id)?.first_name}}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="last_name">
+            <th mat-header-cell *matHeaderCellDef>Last Name</th>
+            <td mat-cell *matCellDef="let purchase"> {{mapIdToUser(purchase.user_id)?.name}}</td>
         </ng-container>
 
         <ng-container matColumnDef="date">
             <th mat-header-cell *matHeaderCellDef>Created At</th>
-            <td mat-cell *matCellDef="let purchase"> {{purchase.date}}</td>
+            <td mat-cell *matCellDef="let purchase"> {{formatDateToString(purchase.date)}}</td>
         </ng-container>
 
         <ng-container matColumnDef="broiler">
