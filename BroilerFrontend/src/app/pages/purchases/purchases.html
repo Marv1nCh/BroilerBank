@@ -1,1 +1,36 @@
-<p>purchases works!</p>
+<div>
+    <table #userTable mat-table [dataSource]="purchases" class="user-table">
+        <ng-container matColumnDef="user_id">
+            <th mat-header-cell *matHeaderCellDef>User ID</th>
+            <td mat-cell *matCellDef="let purchase"> {{purchase.user_id}}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="date">
+            <th mat-header-cell *matHeaderCellDef>Created At</th>
+            <td mat-cell *matCellDef="let purchase"> {{purchase.date}}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="broiler">
+            <th mat-header-cell *matHeaderCellDef>Broilers</th>
+            <td mat-cell *matCellDef="let purchase"> {{purchase.broiler}}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="fries">
+            <th mat-header-cell *matHeaderCellDef>Friest</th>
+            <td mat-cell *matCellDef="let purchase"> {{purchase.fries}}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="coleslaw">
+            <th mat-header-cell *matHeaderCellDef>Coleslaw</th>
+            <td mat-cell *matCellDef="let purchase"> {{purchase.coleslaw}}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="paid">
+            <th mat-header-cell *matHeaderCellDef>Paid</th>
+            <td mat-cell *matCellDef="let purchase"> {{purchase.paid}}</td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+</div>

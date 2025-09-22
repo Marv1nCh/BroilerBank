@@ -1,0 +1,22 @@
+.app-container {
+  height: 100vh;
+  overflow: visible;
+}
+
+.content {
+  flex-grow: 1;
+  margin-left: 15rem;
+  transition: all 0.3s ease-in-out;
+  background-color: #f4f6f7;
+  overflow-y: auto;
+
+  &-inner {
+    padding: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  &-expanded {
+    margin-left: 3rem;
+  }
+}
