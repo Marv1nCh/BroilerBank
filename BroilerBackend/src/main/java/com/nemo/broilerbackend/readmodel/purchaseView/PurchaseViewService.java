@@ -1,6 +1,5 @@
 package com.nemo.broilerbackend.readmodel.purchaseView;
 
-import com.nemo.broilerbackend.dto.BroilerPurchaseView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

@@ -1,11 +1,12 @@
 <div>
     <button (click)="openDialog()">
-        <i class="fa-solid fa-plus"></i>Add new Product
+        <mat-icon>add</mat-icon>Add new Product
     </button>
+    
     <table #productTable mat-table [dataSource]="products" class="user-table">
-        <ng-container matColumnDef="start_date">
+        <ng-container matColumnDef="startDate">
             <th mat-header-cell *matHeaderCellDef>Start Date</th>
-            <td mat-cell *matCellDef="let product"> {{formatDateToString(product.start_date)}}</td>
+            <td mat-cell *matCellDef="let product"> {{formatDateToString(product.startDate)}}</td>
         </ng-container>
 
         <ng-container matColumnDef="type">

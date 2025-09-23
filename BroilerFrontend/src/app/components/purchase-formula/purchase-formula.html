@@ -1,36 +1,48 @@
 <div class="user-formula-container">
   <h2 mat-dialog-title>New Product</h2>
+
   <mat-dialog-content>
     <mat-form-field>
-      <mat-label>New Price set at:</mat-label>
-      <input matInput [matDatepicker]="picker" [formControl]="createdAtControl">
+      <mat-label>Purchase at:</mat-label>
+      <input matInput [matDatepicker]="picker" [formControl]="purchasedAtControl">
       <mat-hint>MM/DD/YYYY</mat-hint>
       <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
       <mat-datepicker #picker></mat-datepicker>
     </mat-form-field>
   </mat-dialog-content>
+
   <mat-dialog-content>
     <mat-form-field>
-      <mat-label>Food Options:</mat-label>
-      <mat-select [formControl]="typeControl">
-        @for (foodOption of foodOptions; track $index) {
-          <mat-option [value]="foodOption"> {{foodOption.toString()}}</mat-option>
+      <mat-label>User:</mat-label>
+      <mat-select [formControl]="userControl">
+        @for (user of users; track $index) {
+          <mat-option [value]="user"> {{user.firstName}} {{user.name}}</mat-option>
         }
       </mat-select>
     </mat-form-field>
   </mat-dialog-content>
+
   <mat-dialog-content>
     <mat-form-field>
-      <mat-label>New Price:</mat-label>
-      <input matInput [(ngModel)]="price"/>
+      <mat-label>Food Options:</mat-label>
+      <mat-select [formControl]="foodOptionControl" multiple>
+        @for (foodOption of foodOptions; track $index) {
+          <mat-option [value]="foodOption"> {{foodOption.label}}</mat-option>
+        }
+      </mat-select>
     </mat-form-field>
   </mat-dialog-content>
+
+  <mat-dialog-content>
+    <mat-checkbox [(ngModel)]="paidControl">is Paid?</mat-checkbox>
+   </mat-dialog-content>
 
   @if (showError) {
     <div class="dialog-error">
       {{errorMessage}}
     </div>
   }
+
 
   <div class="dialog-button-container">
     <mat-dialog-actions>

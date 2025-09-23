@@ -21,8 +21,8 @@ export class ProductFormula {
   dialogRef = inject(MatDialogRef<ProductFormula>);
   productService = inject(ProductService)
 
-  createdAtControl = new FormControl(new Date());
-  typeControl = new FormControl(ProductType.broiler)
+  createdAtControl = new FormControl(null);
+  typeControl = new FormControl(null)
   price = signal(0)
 
   foodOptions: Array<ProductType> = [
@@ -31,14 +31,17 @@ export class ProductFormula {
     ProductType.coleslaw
   ]
 
+  showError = false
+  errorMessage = "All fields need to be filled in!"
+
   onAdd() {
-    if (this.createdAtControl != null && this.typeControl != null){
-      this.productService.addNewProductPrice({start_date: this.createdAtControl.value ?? new Date(), type: this.typeControl.value ?? ProductType.broiler, price: this.price()})
+    if (this.createdAtControl.value != null && this.typeControl.value != null){
+      this.productService.addNewProductPrice({startDate: this.createdAtControl.value!, type: this.typeControl.value!, price: this.price()})
         .subscribe((newProduct) => {
           this.dialogRef.close(newProduct)
         })
     }else {
-      //TODO: Add warning to input all values
+      this.showError = true;
     }
   }
 

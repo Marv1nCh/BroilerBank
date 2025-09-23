@@ -5,9 +5,12 @@
         [ngClass]="{ 'sidebar-collapsed': isSidebarCollapsed }"
         (click)="toggleSidebar()"
       >
-        <i
-          [class]="isSidebarCollapsed ? 'fas fa-arrow-right' : 'fas fa-arrow-left'"
-        ></i>
+      @if (isSidebarCollapsed) {
+        <mat-icon>arrow_forward</mat-icon>
+      }
+      @else {
+        <mat-icon>arrow_back</mat-icon>
+      }
       </button>
     <ul>
       @for (item of menuItems; track $index) {
@@ -23,7 +26,7 @@
               routerLink="{{item.urlSuffix}}"
               (click)="toggleMenuItem(item)"
             >
-              <i [class]="item.icon"></i>
+              <mat-icon class="sibebar-icon" [ngClass]="{'icon-collapsed': isSidebarCollapsed}"> {{item.icon}}</mat-icon>
               <span class="sidebar-item-text"> {{ item.label }} </span>
             </a>
           </li>

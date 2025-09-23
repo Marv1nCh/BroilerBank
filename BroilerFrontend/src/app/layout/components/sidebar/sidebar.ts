@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { MatIconModule } from '@angular/material/icon';
 import { RouterLink } from '@angular/router';
 
 interface MenuItem {
@@ -12,7 +13,7 @@ interface MenuItem {
 
 @Component({
   selector: 'app-sidebar',
-  imports: [CommonModule, RouterLink],
+  imports: [CommonModule, RouterLink, MatIconModule],
   templateUrl: './sidebar.html',
   styleUrl: './sidebar.scss',
 })
@@ -22,17 +23,17 @@ export class Sidebar {
 
   menuItems: MenuItem[] = [
     {
-      icon: 'fas fa-users',
+      icon: 'group',
       label: 'Users',
       urlSuffix: '/'
     },
     {
-      icon: 'fas fa-ticket',
+      icon: 'receipt',
       label: 'Purchases',
       urlSuffix: '/purchases'
     },
     {
-      icon: 'fas fa-cubes',
+      icon: 'business_center',
       label: 'Products',
       urlSuffix: '/products'
     }

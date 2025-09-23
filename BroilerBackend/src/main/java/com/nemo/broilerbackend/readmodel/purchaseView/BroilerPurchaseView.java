@@ -1,4 +1,4 @@
-package com.nemo.broilerbackend.dto;
+package com.nemo.broilerbackend.readmodel.purchaseView;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
@@ -20,13 +20,13 @@ import java.util.Date;
 public class BroilerPurchaseView {
     @Id
     private Long id;
-    private String first_name;
+    private String firstName;
     private String name;
     private Date date;
     private Integer broiler;
     private Integer fries;
     private Integer coleslaw;
     private boolean paid;
-    private BigDecimal total_cost;
-    private BigDecimal due_cost;
+    private BigDecimal totalCost;
+    private BigDecimal dueCost;
 }

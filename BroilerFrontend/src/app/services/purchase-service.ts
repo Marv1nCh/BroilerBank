@@ -12,4 +12,8 @@ export class PurchaseService {
   getAllPurchasesFromBackend() {
     return this.http.get<Array<Purchase>>(AppConstants.BASE_URL + "/purchases")
   }
+
+  addNewPurchase(purchase: Purchase) {
+    return this.http.post<Array<Purchase>>(AppConstants.BASE_URL + "/purchases", purchase)
+  }
 }

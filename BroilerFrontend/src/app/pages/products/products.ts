@@ -5,15 +5,16 @@ import { catchError } from 'rxjs';
 import { MatTable, MatTableModule } from '@angular/material/table';
 import { MatDialog } from '@angular/material/dialog';
 import { ProductFormula } from '../../components/product-formula/product-formula';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'app-products',
-  imports: [MatTableModule],
+  imports: [MatTableModule, MatIconModule],
   templateUrl: './products.html',
   styleUrl: './products.scss'
 })
 export class Products implements OnInit{
-  displayedColumns: string[] = ['start_date', 'type', 'price']
+  displayedColumns: string[] = ['startDate', 'type', 'price']
   productService = inject(ProductService)
   products = Array<Product>()
 
@@ -37,7 +38,7 @@ export class Products implements OnInit{
     dialogRef.afterClosed()
     .subscribe( result => {
       if (result != undefined) {
-        this.products.push({start_date: result.start_date, type: result.type, price: result.price});
+        this.products.push({startDate: result.startDate, type: result.type, price: result.price});
         this.table.renderRows()
       }
     })

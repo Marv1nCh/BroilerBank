@@ -1,13 +1,12 @@
 package com.nemo.broilerbackend.purchase;
 
-import com.nemo.broilerbackend.dto.BroilerPurchaseView;
-import com.nemo.broilerbackend.product.ProductService;
-import com.nemo.broilerbackend.readmodel.purchaseView.PurchaseViewRepository;
+import com.nemo.broilerbackend.readmodel.purchaseView.BroilerPurchaseView;
 import com.nemo.broilerbackend.readmodel.purchaseView.PurchaseViewService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @CrossOrigin(origins = "*") //TODO delete
 @RestController
@@ -29,7 +28,7 @@ public class PurchaseController {
     }
 
     @PostMapping
-    public Purchase createPurchase(@RequestBody Purchase purchase) {
-        return purchaseService.addNewPurchase(purchase);
+    public Optional<BroilerPurchaseView> createPurchase(@RequestBody BroilerPurchaseView broilerPurchaseView) {
+        return purchaseService.addNewPurchase(broilerPurchaseView);
     }
 }
