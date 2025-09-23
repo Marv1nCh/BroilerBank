@@ -10,7 +10,9 @@ import java.util.UUID;
 
 @Getter
 @Entity
+@Builder
 @NoArgsConstructor
+@AllArgsConstructor
 @EntityListeners(org.springframework.data.jpa.domain.support.AuditingEntityListener.class)
 @Table(name="users")
 public class User {
@@ -25,6 +27,7 @@ public class User {
     private String givenName;
     private String surname;
     private boolean accountEnabled;
+    private String userType;
     private List<String> roles;
     @CreatedDate
     private Instant createdAt;

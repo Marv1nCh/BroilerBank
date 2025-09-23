@@ -1,8 +1,11 @@
 package com.nemo.broilerbackend.user;
 
+import com.nemo.broilerbackend.dto.UserDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.time.Instant;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -25,7 +28,20 @@ public class UserService {
         return userRepository.findById(id);
     }
 
-    public Optional<User> addUser(User user) {
-        return Optional.empty();
+    public User addUser(UserDTO userDTO) {
+        //TODO remove hardcoded values when ready
+        User user = User.builder()
+                .userPrincipleName(userDTO.getUserPrincipleName())
+                .displayName(userDTO.getDisplayName())
+                .email(userDTO.getEmail())
+                .givenName(userDTO.getGivenName())
+                .surname(userDTO.getSurname())
+                .accountEnabled(false)
+                .userType("Admin")
+                .roles(Collections.emptyList())
+                .updatedAt(Instant.now())
+                .build();
+
+        return userRepository.save(user);
     }
 }
