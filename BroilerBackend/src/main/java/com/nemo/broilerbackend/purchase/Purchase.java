@@ -4,27 +4,21 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.Instant;
+import java.util.List;
+import java.util.UUID;
 
 @Getter
 @Entity
 @Builder
-@Table(name="broiler_purchase")
+@Table(name="purchase")
 @NoArgsConstructor
 @AllArgsConstructor
 public class Purchase {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
-    private Long userId;
-
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private UUID id;
+    private UUID userId;
     private Instant date;
-
-    private int broiler;
-
-    private int fries;
-
-    private int coleslaw;
-
+    private List<String> products;
     private boolean paid;
 }

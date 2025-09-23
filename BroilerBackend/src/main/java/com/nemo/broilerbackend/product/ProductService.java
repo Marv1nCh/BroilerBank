@@ -21,9 +21,6 @@ public class ProductService {
     }
 
     public Optional<Product> addProduct(Product product) {
-        if (product.getId() == null) {
-            return Optional.of(productRepository.save(product));
-        }
         return Optional.empty();
     }
 }

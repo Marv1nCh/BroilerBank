@@ -5,25 +5,29 @@ import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
 
 import java.time.Instant;
+import java.util.List;
+import java.util.UUID;
 
 @Getter
 @Entity
-@EntityListeners(org.springframework.data.jpa.domain.support.AuditingEntityListener.class)
-@Table(name="broiler_user")
 @NoArgsConstructor
+@EntityListeners(org.springframework.data.jpa.domain.support.AuditingEntityListener.class)
+@Table(name="users")
 public class User {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Setter
-    private Long id;
-
-    private String firstName;
-
-    private String name;
-
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private UUID id;
+    private String userPrincipleName;
+    private String displayName;
+    private String email;
+    private String givenName;
+    private String surname;
+    private boolean accountEnabled;
+    private List<String> roles;
     @CreatedDate
-    @Column(nullable = false, updatable = false)
-    private Instant created_at;
+    private Instant createdAt;
+    private Instant updatedAt;
 
 }

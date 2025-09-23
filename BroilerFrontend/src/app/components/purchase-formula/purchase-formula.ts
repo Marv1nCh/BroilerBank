@@ -15,7 +15,7 @@ import { Purchase } from '../../model/purchase.type';
 
 interface FoodOption {
   label: string;
-  value: Partial<Pick<Purchase, 'broiler' | 'fries' | 'coleslaw'>>;
+  value: Partial<Pick<Purchase, 'products'>>;
 }
 
 @Component({
@@ -39,12 +39,12 @@ export class PurchaseFormula implements OnInit{
 
   users = Array<User>()
   foodOptions: Array<FoodOption> = [
-    {label: "one broiler", value: {broiler: 1}},
-    {label: "two broiler", value: {broiler: 2}},
-    {label: "one fries", value: {fries: 1}},
-    {label: "two fries", value: {fries: 2}},
-    {label: "coleslaw", value: {coleslaw: 1}},
-    {label: "Krautsalat", value: {coleslaw: 1}}
+    {label: "one broiler", value: {}},
+    {label: "two broiler", value: {}},
+    {label: "one fries", value: {}},
+    {label: "two fries", value: {}},
+    {label: "coleslaw", value: {}},
+    {label: "Krautsalat", value: {}}
   ]
 
   showError = false
@@ -64,13 +64,13 @@ export class PurchaseFormula implements OnInit{
   onAdd() {
     if (this.userControl.value != null && this.foodOptionControl.value != null && this.purchasedAtControl.value != null){
       const foodsPurchased = this.foodOptionControl.value
-      const first_name = this.userControl.value?.firstName!
-      const last_name = this.userControl.value?.name!
+      const first_name = this.userControl.value?.givenName!
+      const last_name = this.userControl.value?.surname!
       const date = this.purchasedAtControl.value!
       const paid = this.paidControl()
 
-      const purchaseToCreate = {firstName: first_name, name: last_name, date: date, 
-        broiler: 0, fries: 0, coleslaw: 0, paid: paid}
+      const purchaseToCreate = {givenName: first_name, surname: last_name, date: date, 
+        products: [], paid: paid}
       
       for (let index = 0; index < foodsPurchased!.length; index++) {
         const foodOption = foodsPurchased![index]
@@ -91,15 +91,15 @@ export class PurchaseFormula implements OnInit{
   }
 
   mapFoodInputToPurchase(foodOption: FoodOption, purchase: Purchase){
-    if(foodOption.value.broiler != undefined){
-      purchase.broiler += foodOption.value.broiler
-    }
-    else if(foodOption.value.fries != undefined){
-      purchase.fries += foodOption.value.fries
-    }
-    else if(foodOption.value.coleslaw != undefined) {
-      purchase.coleslaw += foodOption.value.coleslaw
-    }
+    // if(foodOption.value.broiler != undefined){
+    //   purchase.broiler += foodOption.value.broiler
+    // }
+    // else if(foodOption.value.fries != undefined){
+    //   purchase.fries += foodOption.value.fries
+    // }
+    // else if(foodOption.value.coleslaw != undefined) {
+    //   purchase.coleslaw += foodOption.value.coleslaw
+    // }
   }
 
 }

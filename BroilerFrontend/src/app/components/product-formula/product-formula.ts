@@ -6,7 +6,6 @@ import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatOption } from '@angular/material/autocomplete';
-import { ProductType } from '../../model/product-type.type';
 import { MatSelectModule } from '@angular/material/select';
 
 @Component({
@@ -25,10 +24,7 @@ export class ProductFormula {
   typeControl = new FormControl(null)
   price = signal(0)
 
-  foodOptions: Array<ProductType> = [
-    ProductType.broiler,
-    ProductType.fries,
-    ProductType.coleslaw
+  foodOptions: Array<String> = [
   ]
 
   showError = false

@@ -1,5 +1,6 @@
 package com.nemo.broilerbackend.user;
 
+import com.nemo.broilerbackend.dto.UserDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,8 +20,8 @@ public class UserController {
     }
 
     @GetMapping
-    public List<User> getAllUsers() {
-        return userService.getAllUsers();
+    public List<UserDTO> getAllUsers() {
+        return userService.getAllUsers().stream().map(UserDTO::new).toList();
     }
 
     @PostMapping

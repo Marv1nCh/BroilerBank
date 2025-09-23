@@ -1,33 +1,21 @@
 package com.nemo.broilerbackend.product;
 
-import com.nemo.broilerbackend.model.ProductType;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
-import org.hibernate.annotations.JdbcTypeCode;
-import org.hibernate.type.SqlTypes;
 
 import java.time.Instant;
+import java.util.UUID;
 
 @Getter
 @Entity
-@Table(name = "broiler_price")
+@Table(name = "products")
 public class Product {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.UUID)
     @Setter
-    private Long id;
-
+    private UUID id;
     private Instant startDate;
-
-    @Enumerated(EnumType.STRING)
-    @JdbcTypeCode(SqlTypes.NAMED_ENUM)
-    @Column(columnDefinition = "broiler_menu")
-    private ProductType type;
-
+    private String type;
     private double price;
-
-    public Product() {
-    }
-
 }

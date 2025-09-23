@@ -1,5 +1,6 @@
 package com.nemo.broilerbackend.product;
 
+import com.nemo.broilerbackend.dto.ProductDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,8 +20,8 @@ public class ProductController {
     }
 
     @GetMapping
-    public List<Product> getAllProducts() {
-        return productService.getAllProducts();
+    public List<ProductDTO> getAllProducts() {
+        return productService.getAllProducts().stream().map(ProductDTO::new).toList();
     }
 
     @PostMapping

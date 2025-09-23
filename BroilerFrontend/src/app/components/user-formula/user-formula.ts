@@ -15,8 +15,8 @@ export class UserFormula {
   userFormulaDialogRef = inject(MatDialogRef<UserFormula>);
   userService = inject(UserService)
 
-  firstName = signal("")
-  lastName = signal("")
+  givenName = signal("")
+  surname = signal("")
 
   showError = false
   errorMessage = "All fields need to be filled in!"
@@ -24,8 +24,9 @@ export class UserFormula {
   readonly dialog = inject(MatDialog)
 
   onAdd() {
-    if (this.firstName().trim() && this.lastName().trim()) {
-      this.userService.addNewUser({firstName: this.firstName(), name: this.lastName()})
+    if (this.givenName().trim() && this.surname().trim()) {
+      this.userService.addNewUser({userPrincipleName: this.givenName(), displayName: this.givenName(), 
+        email: this.givenName() + "@yatta.de", givenName: this.givenName(), surname: this.surname()})
       .subscribe((newUser) => {
         this.userFormulaDialogRef.close(newUser)
       })

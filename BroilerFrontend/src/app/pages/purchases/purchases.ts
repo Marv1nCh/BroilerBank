@@ -16,7 +16,7 @@ import { compare } from '../../shared/utils';
   styleUrl: './purchases.scss'
 })
 export class Purchases implements OnInit {
-  displayedColumns: string[] = ['firstName', 'lastName', 'date', 'broiler', 'fries', 'coleslaw', 'paid', 'totalCost', 'dueCost']
+  displayedColumns: string[] = ['givenName', 'surname', 'date', 'products', 'paid']
   purchases = Array<Purchase>()
   
   purchaseService = inject(PurchaseService)
@@ -46,10 +46,8 @@ export class Purchases implements OnInit {
     dialogref.afterClosed()
     .subscribe(result => {
       if (result != undefined) {
-        this.purchases.push({firstName: result.firstName, name: result.name, 
-          date: result.date, broiler: result.broiler, fries: result.fries, 
-          coleslaw: result.coleslaw, paid: result.paid, totalCost: result.totalCost, 
-          dueCost: result.dueCost})
+        this.purchases.push({givenName: result.givenName, surname: result.surname, 
+          date: result.date, products:result.products, paid: result.paid})
         this.table.renderRows()
       }
     })
@@ -64,21 +62,11 @@ export class Purchases implements OnInit {
       const isAsc = sort.direction == 'asc';
       switch(sort.active) {
         case 'firstName':
-          return compare(a.firstName, b.firstName, isAsc)
+          return compare(a.givenName, b.givenName, isAsc)
         case 'lastName':
-          return compare(a.name, b.name, isAsc)
+          return compare(a.surname, b.surname, isAsc)
         case 'date':
           return compare(a.date, b.date, isAsc)
-        case 'broiler':
-          return compare(a.broiler, b.broiler, isAsc)
-        case 'fries':
-          return compare(a.fries, b.fries, isAsc)
-        case 'coleslaw':
-          return compare(a.coleslaw, b.coleslaw, isAsc)
-        case 'totalCost':
-          return compare(a.totalCost!, b.totalCost!, isAsc)
-        case 'dueCost':
-          return compare(a.dueCost!, b.dueCost!, isAsc)
         default:
           return 0;
       }

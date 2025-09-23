@@ -5,79 +5,21 @@
 
     <table class="user-table" matSort (matSortChange)="sortData($event)">
         <tr>
-            <th mat-sort-header="firstName">First Name:</th>
-            <th mat-sort-header="lastName">Last Name:</th>
+            <th mat-sort-header="givenName">First Name:</th>
+            <th mat-sort-header="surname">Last Name:</th>
             <th mat-sort-header="date">Created At:</th>
-            <th mat-sort-header="broiler">Broilers:</th>
-            <th mat-sort-header="fries">Fries:</th>
-            <th mat-sort-header="coleslaw">Coleslaw:</th>
+            <th mat-sort-header="products">Products:</th>
             <th mat-sort-header="paid">Paid:</th>
-            <th mat-sort-header="totalCost">Total Cost:</th>
-            <th mat-sort-header="dueCost"> Due Cost:</th>
         </tr>
 
         @for (purchase of purchases; track $index) {
             <tr>
-                <td> {{purchase.firstName}} </td>
-                <td> {{purchase.name}} </td>
+                <td> {{purchase.givenName}} </td>
+                <td> {{purchase.surname}} </td>
                 <td> {{formatDateToString(purchase.date)}} </td>
-                <td> {{purchase.broiler}} </td>
-                <td> {{purchase.fries}} </td>
-                <td> {{purchase.coleslaw}} </td>
+                <td> {{purchase.products}} </td>
                 <td> {{purchase.paid}} </td>
-                <td> {{purchase.totalCost}} </td>
-                <td> {{purchase.dueCost}} </td>
             </tr>
         }
-    </table>
-
-    <table #userTable mat-table [dataSource]="purchases" class="user-table">
-        <ng-container matColumnDef="firstName">
-            <th mat-header-cell *matHeaderCellDef>First Name</th>
-            <td mat-cell *matCellDef="let purchase"> {{purchase.firstName}}</td>
-        </ng-container>
-
-        <ng-container matColumnDef="lastName">
-            <th mat-header-cell *matHeaderCellDef>Last Name</th>
-            <td mat-cell *matCellDef="let purchase"> {{purchase.name}}</td>
-        </ng-container>
-
-        <ng-container matColumnDef="date">
-            <th mat-header-cell *matHeaderCellDef>Created At</th>
-            <td mat-cell *matCellDef="let purchase"> {{formatDateToString(purchase.date)}}</td>
-        </ng-container>
-
-        <ng-container matColumnDef="broiler">
-            <th mat-header-cell *matHeaderCellDef>Broilers</th>
-            <td mat-cell *matCellDef="let purchase"> {{purchase.broiler}}</td>
-        </ng-container>
-
-        <ng-container matColumnDef="fries">
-            <th mat-header-cell *matHeaderCellDef>Fries</th>
-            <td mat-cell *matCellDef="let purchase"> {{purchase.fries}}</td>
-        </ng-container>
-
-        <ng-container matColumnDef="coleslaw">
-            <th mat-header-cell *matHeaderCellDef>Coleslaw</th>
-            <td mat-cell *matCellDef="let purchase"> {{purchase.coleslaw}}</td>
-        </ng-container>
-
-        <ng-container matColumnDef="paid">
-            <th mat-header-cell *matHeaderCellDef>Paid</th>
-            <td mat-cell *matCellDef="let purchase"> {{purchase.paid}}</td>
-        </ng-container>
-
-        <ng-container matColumnDef="totalCost">
-            <th mat-header-cell *matHeaderCellDef>Total Cost</th>
-            <td mat-cell *matCellDef="let purchase"> {{purchase.totalCost}}</td>
-        </ng-container>
-
-        <ng-container matColumnDef="dueCost">
-            <th mat-header-cell *matHeaderCellDef>Due Cost</th>
-            <td mat-cell *matCellDef="let purchase"> {{purchase.dueCost}}</td>
-        </ng-container>
-
-        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
     </table>
 </div>

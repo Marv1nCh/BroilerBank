@@ -16,7 +16,6 @@ import { compare } from '../../shared/utils';
   styleUrl: './users.scss'
 })
 export class Users implements OnInit{
-  displayedColumns: string[] = ['firstName', 'name', 'createdAt']
   users = Array<User>()
 
   userService = inject(UserService)
@@ -41,7 +40,7 @@ export class Users implements OnInit{
     dialogRef.afterClosed()
     .subscribe(result => {
       if (result != undefined) {
-        this.users.push( {firstName: result.firstName, name: result.name})
+        this.users.push( {userPrincipleName: result.userPrincipleName, displayName: result.displayName, email:result.email, givenName: result.givenName, surname: result.surname})
         this.table.renderRows()
       }
     })
@@ -60,11 +59,9 @@ export class Users implements OnInit{
       const isAsc = sort.direction == 'asc'
       switch (sort.active) {
         case 'firstName':
-          return compare(a.firstName, b.firstName, isAsc)
+          return compare(a.givenName, b.givenName, isAsc)
         case 'name':
-          return compare(a.name, b.name, isAsc)
-        case 'createdAt':
-          return compare(a.created_at!, b.created_at!, isAsc)
+          return compare(a.surname, b.surname, isAsc)
         default:
           return 0;
       }

@@ -1,12 +1,7 @@
 export type Purchase = {
-    id?: number,
-    firstName: string,
-    name: string,
+    givenName: string,
+    surname: string,
     date: Date,
-    broiler: number,
-    fries: number,
-    coleslaw: number,
-    paid: boolean,
-    totalCost?: number,
-    dueCost?: number
+    products: Array<String>,
+    paid: boolean
 }

@@ -6,14 +6,12 @@
         <tr>
             <th mat-sort-header="firstName">First Name:</th>
             <th mat-sort-header="name">Last Name:</th>
-            <th mat-sort-header="createdAt">Created At:</th>
         </tr>
 
         @for (user of users; track $index) {
             <tr>
-                <td> {{user.firstName}} </td>
-                <td> {{user.name}} </td>
-                <td> {{formatDateToString(user.created_at!)}}</td>
+                <td> {{user.givenName}} </td>
+                <td> {{user.surname}} </td>
             </tr>
         }
     </table>

@@ -16,7 +16,7 @@
       <mat-label>User:</mat-label>
       <mat-select [formControl]="userControl">
         @for (user of users; track $index) {
-          <mat-option [value]="user"> {{user.firstName}} {{user.name}}</mat-option>
+          <mat-option [value]="user"> {{user.givenName}} {{user.surname}}</mat-option>
         }
       </mat-select>
     </mat-form-field>
