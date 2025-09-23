@@ -5,7 +5,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @CrossOrigin(origins = "*") //TODO delete
 @RestController
@@ -25,7 +24,7 @@ public class UserController {
     }
 
     @PostMapping
-    public User createUser(@RequestBody UserDTO userDTO) {
-        return userService.addUser(userDTO);
+    public UserDTO createUser(@RequestBody UserDTO userDTO) {
+        return new UserDTO(userService.addUser(userDTO));
     }
 }

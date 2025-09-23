@@ -1,13 +1,17 @@
 package com.nemo.broilerbackend.dto;
 
 import com.nemo.broilerbackend.product.Product;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.Instant;
 
 @Getter
 @Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class ProductDTO {
     private Instant startDate;
     private String type;

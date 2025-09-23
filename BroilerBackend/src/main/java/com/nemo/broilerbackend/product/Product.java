@@ -1,8 +1,7 @@
 package com.nemo.broilerbackend.product;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.time.Instant;
 import java.util.UUID;
@@ -10,6 +9,9 @@ import java.util.UUID;
 @Getter
 @Entity
 @Table(name = "products")
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)

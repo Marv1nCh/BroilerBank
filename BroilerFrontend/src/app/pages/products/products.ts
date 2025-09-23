@@ -2,7 +2,7 @@ import { Component, inject, OnInit, ViewChild } from '@angular/core';
 import { ProductService } from '../../services/product-service';
 import { Product } from '../../model/products.type';
 import { catchError } from 'rxjs';
-import { MatTable, MatTableModule } from '@angular/material/table';
+import { MatTableModule } from '@angular/material/table';
 import { MatDialog } from '@angular/material/dialog';
 import { ProductFormula } from '../../components/product-formula/product-formula';
 import { MatIconModule } from '@angular/material/icon';
@@ -21,7 +21,6 @@ export class Products implements OnInit{
   products = Array<Product>()
 
   readonly dialog = inject(MatDialog)
-  @ViewChild('productTable', {static: true, read: MatTable}) table: any
 
   ngOnInit(): void {
     this.productService.getAllProductsFromBackend()
@@ -36,12 +35,11 @@ export class Products implements OnInit{
 
   openDialog() {
     const dialogRef = this.dialog.open(ProductFormula, {})
-
+ 
     dialogRef.afterClosed()
     .subscribe( result => {
       if (result != undefined) {
         this.products.push({startDate: result.startDate, type: result.type, price: result.price});
-        this.table.renderRows()
       }
     })
   }

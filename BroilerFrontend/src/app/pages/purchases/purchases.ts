@@ -2,7 +2,7 @@ import { Component, inject, OnInit, ViewChild } from '@angular/core';
 import { PurchaseService } from '../../services/purchase-service';
 import { Purchase } from '../../model/purchase.type';
 import { catchError } from 'rxjs';
-import { MatTable, MatTableModule } from '@angular/material/table';
+import { MatTableModule } from '@angular/material/table';
 import { MatDialog } from '@angular/material/dialog';
 import { PurchaseFormula } from '../../components/purchase-formula/purchase-formula';
 import { MatIconModule } from '@angular/material/icon';
@@ -22,7 +22,6 @@ export class Purchases implements OnInit {
   purchaseService = inject(PurchaseService)
 
   readonly dialog = inject(MatDialog)
-  @ViewChild('userTable', {static: true, read: MatTable}) table: any
 
   ngOnInit(): void {
     this.purchaseService.getAllPurchasesFromBackend()
@@ -48,7 +47,6 @@ export class Purchases implements OnInit {
       if (result != undefined) {
         this.purchases.push({givenName: result.givenName, surname: result.surname, 
           date: result.date, products:result.products, paid: result.paid})
-        this.table.renderRows()
       }
     })
   }
