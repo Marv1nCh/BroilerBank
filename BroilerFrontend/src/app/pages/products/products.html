@@ -3,23 +3,19 @@
         <mat-icon>add</mat-icon>Add new Product
     </button>
     
-    <table #productTable mat-table [dataSource]="products" class="user-table">
-        <ng-container matColumnDef="startDate">
-            <th mat-header-cell *matHeaderCellDef>Start Date</th>
-            <td mat-cell *matCellDef="let product"> {{formatDateToString(product.startDate)}}</td>
-        </ng-container>
+    <table class="user-table" matSort (matSortChange)="sortData($event)">
+        <tr>
+            <th mat-sort-header="startDate">Start Date:</th>
+            <th mat-sort-header="type">Type:</th>
+            <th mat-sort-header="price">Price:</th>
+        </tr>
 
-        <ng-container matColumnDef="type">
-            <th mat-header-cell *matHeaderCellDef>Type</th>
-            <td mat-cell *matCellDef="let product"> {{product.type}}</td>
-        </ng-container>
-
-        <ng-container matColumnDef="price">
-            <th mat-header-cell *matHeaderCellDef>Price</th>
-            <td mat-cell *matCellDef="let product"> {{product.price}}</td>
-        </ng-container>
-
-        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        @for (product of products; track $index) {
+            <tr>
+                <td>{{formatDateToString(product.startDate)}}</td>
+                <td>{{product.type}}</td>
+                <td>{{product.price}}</td>
+            </tr>
+        }
     </table>
 </div>

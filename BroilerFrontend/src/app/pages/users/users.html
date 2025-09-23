@@ -2,18 +2,19 @@
     <button (click)="openDialog()">
         <mat-icon>add</mat-icon>Add new User
     </button>
-    <table #userTable mat-table [dataSource]="users" class="user-table">
-        <ng-container matColumnDef="firstName">
-            <th mat-header-cell *matHeaderCellDef>First Name</th>
-            <td mat-cell *matCellDef="let user"> {{user.firstName}}</td>
-        </ng-container>
+    <table class="user-table" matSort (matSortChange)="sortData($event)">
+        <tr>
+            <th mat-sort-header="firstName">First Name:</th>
+            <th mat-sort-header="name">Last Name:</th>
+            <th mat-sort-header="createdAt">Created At:</th>
+        </tr>
 
-        <ng-container matColumnDef="name">
-            <th mat-header-cell *matHeaderCellDef>Last Name</th>
-            <td mat-cell *matCellDef="let user"> {{user.name}}</td>
-        </ng-container>
-
-        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        @for (user of users; track $index) {
+            <tr>
+                <td> {{user.firstName}} </td>
+                <td> {{user.name}} </td>
+                <td> {{formatDateToString(user.created_at!)}}</td>
+            </tr>
+        }
     </table>
 </div>

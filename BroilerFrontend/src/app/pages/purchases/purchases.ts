@@ -6,10 +6,12 @@ import { MatTable, MatTableModule } from '@angular/material/table';
 import { MatDialog } from '@angular/material/dialog';
 import { PurchaseFormula } from '../../components/purchase-formula/purchase-formula';
 import { MatIconModule } from '@angular/material/icon';
+import { MatSortHeader, MatSortModule, Sort } from "@angular/material/sort";
+import { compare } from '../../shared/utils';
 
 @Component({
   selector: 'app-purchases',
-  imports: [MatTableModule, MatIconModule],
+  imports: [MatTableModule, MatIconModule, MatSortModule, MatSortHeader],
   templateUrl: './purchases.html',
   styleUrl: './purchases.scss'
 })
@@ -49,6 +51,36 @@ export class Purchases implements OnInit {
           coleslaw: result.coleslaw, paid: result.paid, totalCost: result.totalCost, 
           dueCost: result.dueCost})
         this.table.renderRows()
+      }
+    })
+  }
+
+  sortData(sort: Sort) {
+    if (!sort.active || sort.direction == ''){
+      return
+    }
+
+    this.purchases.sort((a,b) => {
+      const isAsc = sort.direction == 'asc';
+      switch(sort.active) {
+        case 'firstName':
+          return compare(a.firstName, b.firstName, isAsc)
+        case 'lastName':
+          return compare(a.name, b.name, isAsc)
+        case 'date':
+          return compare(a.date, b.date, isAsc)
+        case 'broiler':
+          return compare(a.broiler, b.broiler, isAsc)
+        case 'fries':
+          return compare(a.fries, b.fries, isAsc)
+        case 'coleslaw':
+          return compare(a.coleslaw, b.coleslaw, isAsc)
+        case 'totalCost':
+          return compare(a.totalCost!, b.totalCost!, isAsc)
+        case 'dueCost':
+          return compare(a.dueCost!, b.dueCost!, isAsc)
+        default:
+          return 0;
       }
     })
   }

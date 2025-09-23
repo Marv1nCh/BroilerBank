@@ -3,6 +3,34 @@
         <mat-icon>add</mat-icon>Add new Purchase
     </button>
 
+    <table class="user-table" matSort (matSortChange)="sortData($event)">
+        <tr>
+            <th mat-sort-header="firstName">First Name:</th>
+            <th mat-sort-header="lastName">Last Name:</th>
+            <th mat-sort-header="date">Created At:</th>
+            <th mat-sort-header="broiler">Broilers:</th>
+            <th mat-sort-header="fries">Fries:</th>
+            <th mat-sort-header="coleslaw">Coleslaw:</th>
+            <th mat-sort-header="paid">Paid:</th>
+            <th mat-sort-header="totalCost">Total Cost:</th>
+            <th mat-sort-header="dueCost"> Due Cost:</th>
+        </tr>
+
+        @for (purchase of purchases; track $index) {
+            <tr>
+                <td> {{purchase.firstName}} </td>
+                <td> {{purchase.name}} </td>
+                <td> {{formatDateToString(purchase.date)}} </td>
+                <td> {{purchase.broiler}} </td>
+                <td> {{purchase.fries}} </td>
+                <td> {{purchase.coleslaw}} </td>
+                <td> {{purchase.paid}} </td>
+                <td> {{purchase.totalCost}} </td>
+                <td> {{purchase.dueCost}} </td>
+            </tr>
+        }
+    </table>
+
     <table #userTable mat-table [dataSource]="purchases" class="user-table">
         <ng-container matColumnDef="firstName">
             <th mat-header-cell *matHeaderCellDef>First Name</th>

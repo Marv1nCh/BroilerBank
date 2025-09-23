@@ -1,7 +1,7 @@
 export type Purchase = {
     id?: number,
-    firstName: String,
-    name: String,
+    firstName: string,
+    name: string,
     date: Date,
     broiler: number,
     fries: number,

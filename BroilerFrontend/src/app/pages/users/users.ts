@@ -6,15 +6,17 @@ import { catchError } from 'rxjs';
 import { MatDialog } from '@angular/material/dialog';
 import { UserFormula } from '../../components/user-formula/user-formula';
 import { MatIconModule } from '@angular/material/icon';
+import { MatSortHeader, MatSortModule, Sort } from "@angular/material/sort";
+import { compare } from '../../shared/utils';
 
 @Component({
   selector: 'app-users',
-  imports: [MatTableModule, MatIconModule],
+  imports: [MatTableModule, MatIconModule, MatSortModule, MatSortHeader],
   templateUrl: './users.html',
   styleUrl: './users.scss'
 })
 export class Users implements OnInit{
-  displayedColumns: string[] = ['firstName', 'name']
+  displayedColumns: string[] = ['firstName', 'name', 'createdAt']
   users = Array<User>()
 
   userService = inject(UserService)
@@ -41,6 +43,30 @@ export class Users implements OnInit{
       if (result != undefined) {
         this.users.push( {firstName: result.firstName, name: result.name})
         this.table.renderRows()
+      }
+    })
+  }
+
+  formatDateToString(date: Date) {
+    return new Date(date).toDateString();
+  }
+
+  sortData(sort: Sort) {
+    if (!sort.active || sort.direction == ''){
+      return
+    }
+
+    this.users.sort((a, b) => {
+      const isAsc = sort.direction == 'asc'
+      switch (sort.active) {
+        case 'firstName':
+          return compare(a.firstName, b.firstName, isAsc)
+        case 'name':
+          return compare(a.name, b.name, isAsc)
+        case 'createdAt':
+          return compare(a.created_at!, b.created_at!, isAsc)
+        default:
+          return 0;
       }
     })
   }
