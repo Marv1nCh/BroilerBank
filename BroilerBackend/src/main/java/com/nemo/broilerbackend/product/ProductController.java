@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @CrossOrigin(origins = "*") //TODO delete
 @RestController
@@ -23,7 +24,7 @@ public class ProductController {
     }
 
     @PostMapping
-    public Product createProduct(@RequestBody Product product) {
+    public Optional<Product> createProduct(@RequestBody Product product) {
         return productService.addProduct(product);
     }
 }

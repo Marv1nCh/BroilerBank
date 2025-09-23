@@ -4,20 +4,18 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
 
-import java.util.Date;
+import java.time.Instant;
 
-@Setter
 @Getter
-@Builder
 @Entity
 @EntityListeners(org.springframework.data.jpa.domain.support.AuditingEntityListener.class)
 @Table(name="broiler_user")
-@AllArgsConstructor
 @NoArgsConstructor
 public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Setter
     private Long id;
 
     private String firstName;
@@ -26,6 +24,6 @@ public class User {
 
     @CreatedDate
     @Column(nullable = false, updatable = false)
-    private Date created_at;
+    private Instant created_at;
 
 }

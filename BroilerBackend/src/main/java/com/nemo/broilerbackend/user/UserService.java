@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.Optional;
 
 @Component
 public class UserService {
@@ -19,8 +20,10 @@ public class UserService {
         return userRepository.findAll();
     }
 
-    public User addUser(User user) {
-        user.setId(null);
-        return userRepository.save(user);
+    public Optional<User> addUser(User user) {
+        if (user.getId() == null) {
+            return Optional.of(userRepository.save(user));
+        }
+        return Optional.empty();
     }
 }

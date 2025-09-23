@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.Optional;
 
 @Component
 public class ProductService {
@@ -19,8 +20,10 @@ public class ProductService {
         return productRepository.findAll();
     }
 
-    public Product addProduct(Product product) {
-        product.setId(null);
-        return productRepository.save(product);
+    public Optional<Product> addProduct(Product product) {
+        if (product.getId() == null) {
+            return Optional.of(productRepository.save(product));
+        }
+        return Optional.empty();
     }
 }

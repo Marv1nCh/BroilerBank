@@ -7,13 +7,9 @@ import lombok.*;
 import org.hibernate.annotations.Immutable;
 
 import java.math.BigDecimal;
-import java.util.Date;
+import java.time.Instant;
 
 @Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
-@Builder
 @Entity
 @Table(name = "broiler_purchase_by_date")
 @Immutable
@@ -22,7 +18,7 @@ public class BroilerPurchaseView {
     private Long id;
     private String firstName;
     private String name;
-    private Date date;
+    private Instant date;
     private Integer broiler;
     private Integer fries;
     private Integer coleslaw;
