@@ -39,7 +39,10 @@ export class Products implements OnInit{
     dialogRef.afterClosed()
     .subscribe( result => {
       if (result != undefined) {
-        this.products.push({startDate: result.startDate, type: result.type, price: result.price});
+        this.products.push({
+          startDate: result.startDate, 
+          type: result.type, 
+          price: result.price});
       }
     })
   }

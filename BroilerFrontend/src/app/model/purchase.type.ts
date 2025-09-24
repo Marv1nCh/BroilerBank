@@ -3,5 +3,6 @@ export type Purchase = {
     surname: string,
     date: Date,
     products: Array<String>,
-    paid: boolean
+    paid: boolean,
+    price: number
 }

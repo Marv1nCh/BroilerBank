@@ -40,7 +40,12 @@ export class Users implements OnInit{
     dialogRef.afterClosed()
     .subscribe(result => {
       if (result != undefined) {
-        this.users.push( {userPrincipleName: result.userPrincipleName, displayName: result.displayName, email:result.email, givenName: result.givenName, surname: result.surname})
+        this.users.push( {
+          userPrincipleName: result.userPrincipleName, 
+          displayName: result.displayName, 
+          email:result.email, 
+          givenName: result.givenName, 
+          surname: result.surname})
         this.table.renderRows()
       }
     })

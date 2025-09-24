@@ -24,14 +24,20 @@ export class UserFormula {
   readonly dialog = inject(MatDialog)
 
   onAdd() {
-    if (this.givenName().trim() && this.surname().trim()) {
-      this.userService.addNewUser({userPrincipleName: this.givenName(), displayName: this.givenName(), 
-        email: this.givenName() + "@yatta.de", givenName: this.givenName(), surname: this.surname()})
-      .subscribe((newUser) => {
-        this.userFormulaDialogRef.close(newUser)
-      })
-    }else{
+    const isNotGivenName = this.givenName().trim() == null
+    const isNotSurname = this.surname().trim == null
+
+    if(isNotGivenName || isNotSurname){
       this.showError = true;
+    }else{
+      this.userService.addNewUser({
+        userPrincipleName: this.givenName(),
+        displayName: this.givenName(),
+        email: this.givenName() + "@yatta.de",
+        givenName: this.givenName(),
+        surname: this.surname(),
+      })
+        .subscribe((newUser) => this.userFormulaDialogRef.close(newUser));
     }
   }
 

@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.Instant;
-import java.util.List;
 import java.util.UUID;
 
 @Getter
@@ -19,6 +18,5 @@ public class Purchase {
     private UUID id;
     private UUID userId;
     private Instant date;
-    private List<String> products;
     private boolean paid;
 }

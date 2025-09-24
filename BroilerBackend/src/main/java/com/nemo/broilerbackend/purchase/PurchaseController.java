@@ -1,9 +1,7 @@
 package com.nemo.broilerbackend.purchase;
 
 import com.nemo.broilerbackend.dto.PurchaseDTO;
-import com.nemo.broilerbackend.readmodel.purchaseView.BroilerPurchaseView;
-import com.nemo.broilerbackend.user.User;
-import com.nemo.broilerbackend.user.UserService;
+import com.nemo.broilerbackend.readmodel.purchaseView.PurchaseViewService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,25 +14,23 @@ import java.util.Optional;
 public class PurchaseController {
 
     private final PurchaseService purchaseService;
-    private final UserService userService;
+    private final PurchaseViewService purchaseViewService;
 
     @Autowired
-    public PurchaseController(PurchaseService purchaseService, UserService userService) {
+    public PurchaseController(PurchaseService purchaseService, PurchaseViewService purchaseViewService) {
         this.purchaseService = purchaseService;
-        this.userService = userService;
+        this.purchaseViewService = purchaseViewService;
     }
 
     @GetMapping
     public List<PurchaseDTO> getAllPurchases() {
-        return purchaseService.getAllPurchases().stream().map(purchase -> {
-            Optional<User> user = userService.getUserById(purchase.getUserId());
-
-            return user.map(value -> new PurchaseDTO(purchase, value)).orElse(null);
-        }).toList();
+        return purchaseViewService.findAll().stream().map(PurchaseDTO::new).toList();
     }
 
     @PostMapping
-    public Optional<BroilerPurchaseView> createPurchase(@RequestBody BroilerPurchaseView broilerPurchaseView) {
-        return purchaseService.addNewPurchase(broilerPurchaseView);
+    public Optional<PurchaseDTO> createPurchase(@RequestBody PurchaseDTO purchaseDTO) {
+        return purchaseService.addNewPurchase(purchaseDTO)
+                .flatMap(purchaseViewService::findById)
+                .map(PurchaseDTO::new);
     }
 }

@@ -27,7 +27,7 @@
       <mat-label>Food Options:</mat-label>
       <mat-select [formControl]="foodOptionControl" multiple>
         @for (foodOption of foodOptions; track $index) {
-          <mat-option [value]="foodOption"> {{foodOption.label}}</mat-option>
+          <mat-option [value]="foodOption"> {{foodOption}}</mat-option>
         }
       </mat-select>
     </mat-form-field>

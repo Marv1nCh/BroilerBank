@@ -23,6 +23,11 @@ public class ProductController {
         return productService.getAllProducts().stream().map(ProductDTO::new).toList();
     }
 
+    @GetMapping(path = "/unique")
+    public List<ProductDTO> getAllUniqueProducts() {
+        return productService.getUniqueProducts();
+    }
+
     @PostMapping
     public ProductDTO createProduct(@RequestBody ProductDTO productDTO) {
         return new ProductDTO(productService.addProduct(productDTO));

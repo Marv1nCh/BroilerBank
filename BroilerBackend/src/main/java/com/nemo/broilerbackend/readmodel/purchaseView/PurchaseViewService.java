@@ -4,6 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
 @Component
 public class PurchaseViewService {
@@ -15,7 +17,9 @@ public class PurchaseViewService {
         this.purchaseViewRepository = purchaseViewRepository;
     }
 
-    public List<BroilerPurchaseView> findAll() {
+    public List<PurchaseView> findAll() {
         return purchaseViewRepository.findAll();
     }
+
+    public Optional<PurchaseView> findById(UUID id) {return purchaseViewRepository.findById(id);}
 }

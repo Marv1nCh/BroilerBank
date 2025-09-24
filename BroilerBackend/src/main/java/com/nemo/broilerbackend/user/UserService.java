@@ -7,8 +7,6 @@ import org.springframework.stereotype.Component;
 import java.time.Instant;
 import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
 
 @Component
 public class UserService {
@@ -24,11 +22,7 @@ public class UserService {
         return userRepository.findAll();
     }
 
-    public Optional<User> getUserById(UUID id) {
-        return userRepository.findById(id);
-    }
-
-    public User addUser(UserDTO userDTO) {
+    public UserDTO addUser(UserDTO userDTO) {
         //TODO remove hardcoded values when ready
         User user = User.builder()
                 .userPrincipleName(userDTO.getUserPrincipleName())
@@ -42,6 +36,6 @@ public class UserService {
                 .updatedAt(Instant.now())
                 .build();
 
-        return userRepository.save(user);
+        return new UserDTO(userRepository.save(user));
     }
 }

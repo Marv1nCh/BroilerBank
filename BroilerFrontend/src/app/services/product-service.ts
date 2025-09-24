@@ -13,6 +13,10 @@ export class ProductService {
     return this.http.get<Array<Product>>(AppConstants.BASE_URL + "/products")
   }
 
+  getUniqueProductsFromBackend() {
+    return this.http.get<Array<Product>>(AppConstants.BASE_URL + "/products/unique")
+  }
+
   addNewProductPrice(product: Product) {
     return this.http.post<Product>(AppConstants.BASE_URL + "/products", product)
   }

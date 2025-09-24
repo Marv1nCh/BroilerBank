@@ -23,20 +23,21 @@ export class ProductFormula {
   type = signal(null)
   price = signal(null)
 
-  foodOptions: Array<String> = [
-  ]
-
   showError = false
   errorMessage = "All fields need to be filled in!"
 
   onAdd() {
-    if (this.createdAtControl.value != null && this.type() != null && this.price() != null){
+    const createdAt = this.createdAtControl.value
+    const type = this.type()
+    const price = this.price()
+
+    if(createdAt == null || type == null || price == null) {
+      this.showError = true;
+    }else {
       this.productService.addNewProductPrice({startDate: this.createdAtControl.value!, type: this.type()!, price: this.price()!})
         .subscribe((newProduct) => {
           this.dialogRef.close(newProduct)
         })
-    }else {
-      this.showError = true;
     }
   }
 

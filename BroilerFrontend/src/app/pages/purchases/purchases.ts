@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, ViewChild } from '@angular/core';
+import { Component, inject, OnInit, } from '@angular/core';
 import { PurchaseService } from '../../services/purchase-service';
 import { Purchase } from '../../model/purchase.type';
 import { catchError } from 'rxjs';
@@ -25,13 +25,13 @@ export class Purchases implements OnInit {
 
   ngOnInit(): void {
     this.purchaseService.getAllPurchasesFromBackend()
-    .pipe(catchError((err) => {
-      console.log(err)
-      throw err;
-    }))
-    .subscribe((purchasesFromBackend) => {
-      this.purchases = purchasesFromBackend
-    });
+      .pipe(catchError((err) => {
+        console.log(err)
+        throw err;
+      }))
+        .subscribe((purchasesFromBackend) => {
+          this.purchases = purchasesFromBackend
+        });
   }
 
   formatDateToString(date: Date) {
@@ -45,8 +45,13 @@ export class Purchases implements OnInit {
     dialogref.afterClosed()
     .subscribe(result => {
       if (result != undefined) {
-        this.purchases.push({givenName: result.givenName, surname: result.surname, 
-          date: result.date, products:result.products, paid: result.paid})
+        this.purchases.push({
+          givenName: result.givenName, 
+          surname: result.surname, 
+          date: result.date, 
+          products:result.products, 
+          paid: result.paid, 
+          price: result.price})
       }
     })
   }

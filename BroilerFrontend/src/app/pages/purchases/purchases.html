@@ -10,6 +10,7 @@
             <th mat-sort-header="date">Created At:</th>
             <th mat-sort-header="products">Products:</th>
             <th mat-sort-header="paid">Paid:</th>
+            <th mat-sort-header="Price">Price:</th>
         </tr>
 
         @for (purchase of purchases; track $index) {
@@ -17,8 +18,14 @@
                 <td> {{purchase.givenName}} </td>
                 <td> {{purchase.surname}} </td>
                 <td> {{formatDateToString(purchase.date)}} </td>
-                <td> {{purchase.products}} </td>
+                <td> 
+                    @for (type of purchase.products; track $index) {
+                        <div> {{type}}</div>
+                    }
+
+                </td>
                 <td> {{purchase.paid}} </td>
+                <td> {{purchase.price}} </td>
             </tr>
         }
     </table>
