@@ -14,13 +14,13 @@ import java.util.UUID;
 @Getter
 @Entity
 @Builder
-@Table(name="purchased_products")
+@Table(name="purchased_product")
 @NoArgsConstructor
 @AllArgsConstructor
-@IdClass(PPCompositeKey.class)
-public class PurchasedProducts {
+@IdClass(PurchasedProductCompositeKey.class)
+public class PurchasedProduct {
     @Id
     private UUID purchaseId;
     @Id
-    private String product;
+    private UUID productId;
 }

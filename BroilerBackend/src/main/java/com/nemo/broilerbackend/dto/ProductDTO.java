@@ -1,6 +1,6 @@
 package com.nemo.broilerbackend.dto;
 
-import com.nemo.broilerbackend.product.Product;
+import com.nemo.broilerbackend.readmodel.productsPricesView.ProductPriceView;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -17,9 +17,9 @@ public class ProductDTO {
     private String type;
     private double price;
 
-    public ProductDTO(Product product) {
-        this.type = product.getType();
-        this.price = product.getPrice();
-        this.startDate = product.getStartDate();
+    public ProductDTO(ProductPriceView productPriceView) {
+        this.startDate = productPriceView.getStartDate();
+        this.type = productPriceView.getType();
+        this.price = productPriceView.getPrice();
     }
 }

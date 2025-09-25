@@ -16,7 +16,7 @@ import java.util.UUID;
 @Entity
 public class PurchaseView {
     @Id
-    private UUID id;
+    private UUID purchaseId;
     private String givenName;
     private String surname;
     private Instant date;

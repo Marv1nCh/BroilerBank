@@ -1,45 +1,46 @@
 package com.nemo.broilerbackend.product;
 
 import com.nemo.broilerbackend.dto.ProductDTO;
+import com.nemo.broilerbackend.productPrices.ProductPriceRepository;
+import com.nemo.broilerbackend.productPrices.ProductPrice;
+import com.nemo.broilerbackend.readmodel.productsPricesView.ProductPriceViewRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Component
 public class ProductService {
 
     private final ProductRepository productRepository;
+    private final ProductPriceRepository productPriceRepository;
+    private final ProductPriceViewRepository productPriceViewRepository;
 
     @Autowired
-    public ProductService(ProductRepository productRepository) {
+    public ProductService(ProductRepository productRepository,
+                          ProductPriceRepository productPriceRepository, ProductPriceViewRepository productPriceViewRepository) {
         this.productRepository = productRepository;
+        this.productPriceRepository = productPriceRepository;
+        this.productPriceViewRepository = productPriceViewRepository;
     }
 
-    public List<Product> getAllProducts() {
-        return productRepository.findAll();
+    public List<ProductDTO> getAllProducts() {
+        return productPriceViewRepository.findAll().stream().map(ProductDTO::new).toList();
     }
 
-    public List<ProductDTO> getUniqueProducts() {
-        List<Product> products = productRepository.findAll();
-        return products.stream()
-                .collect(Collectors.toMap(
-                        Product::getType,
-                        ProductDTO::new,
-                        (existing, replacement) -> existing
-                ))
-                .values().stream().toList();
-    }
-
-    public Product addProduct(ProductDTO productDTO) {
-        Product product = Product.builder()
-                .price(productDTO.getPrice())
+    public ProductDTO addProduct(ProductDTO productDTO) {
+        boolean productExists = productRepository.existsByType(productDTO.getType());
+        Product product = productExists ? productRepository.findByType(productDTO.getType()) : Product.builder().type(productDTO.getType()).build();
+        if (!productExists) {
+            productRepository.save(product);
+        }
+        ProductPrice productPrice = ProductPrice.builder()
+                .productId(product.getId())
                 .startDate(productDTO.getStartDate())
-                .type(productDTO.getType())
+                .price(productDTO.getPrice())
                 .build();
 
-        return productRepository.save(product);
+        productPriceRepository.save(productPrice);
+        return productDTO;
     }
 }

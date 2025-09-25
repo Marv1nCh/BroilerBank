@@ -1,6 +1,7 @@
 package com.nemo.broilerbackend.product;
 
 import com.nemo.broilerbackend.dto.ProductDTO;
+import com.nemo.broilerbackend.readmodel.productsPricesView.ProductPriceViewService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -12,24 +13,26 @@ import java.util.List;
 public class ProductController {
 
     private final ProductService productService;
+    private final ProductPriceViewService productPriceViewService;
 
     @Autowired
-    public ProductController(ProductService productService) {
+    public ProductController(ProductService productService, ProductPriceViewService productPriceViewService) {
         this.productService = productService;
+        this.productPriceViewService = productPriceViewService;
     }
 
     @GetMapping
     public List<ProductDTO> getAllProducts() {
-        return productService.getAllProducts().stream().map(ProductDTO::new).toList();
+        return productPriceViewService.getProductPriceViews().stream().map(ProductDTO::new).toList();
     }
 
     @GetMapping(path = "/unique")
     public List<ProductDTO> getAllUniqueProducts() {
-        return productService.getUniqueProducts();
+        return productService.getAllProducts();
     }
 
     @PostMapping
-    public ProductDTO createProduct(@RequestBody ProductDTO productDTO) {
-        return new ProductDTO(productService.addProduct(productDTO));
+    public ProductDTO createNewProduct(@RequestBody ProductDTO productDTO) {
+        return productService.addProduct(productDTO);
     }
 }
