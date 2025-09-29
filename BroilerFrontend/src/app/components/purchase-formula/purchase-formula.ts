@@ -11,7 +11,6 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatOption } from '@angular/material/autocomplete';
 import { MatSelectModule } from '@angular/material/select';
 import { MatCheckbox } from '@angular/material/checkbox';
-import { Purchase } from '../../model/purchase.type';
 import { ProductService } from '../../services/product-service';
 
 @Component({

@@ -8,15 +8,16 @@ import { PurchaseFormula } from '../../components/purchase-formula/purchase-form
 import { MatIconModule } from '@angular/material/icon';
 import { MatSortHeader, MatSortModule, Sort } from "@angular/material/sort";
 import { compare } from '../../shared/utils';
+import { MatButtonModule } from '@angular/material/button';
 
 @Component({
   selector: 'app-purchases',
-  imports: [MatTableModule, MatIconModule, MatSortModule, MatSortHeader],
+  imports: [MatTableModule, MatIconModule, MatSortModule, MatSortHeader, MatButtonModule],
   templateUrl: './purchases.html',
   styleUrl: './purchases.scss'
 })
 export class Purchases implements OnInit {
-  displayedColumns: string[] = ['givenName', 'surname', 'date', 'products', 'paid']
+  displayedColumns: string[] = ['givenName', 'surname', 'date', 'products', 'paid', 'Edit']
   purchases = Array<Purchase>()
   
   purchaseService = inject(PurchaseService)
@@ -54,6 +55,10 @@ export class Purchases implements OnInit {
           price: result.price})
       }
     })
+  }
+
+  openEditDialog(){
+    
   }
 
   sortData(sort: Sort) {

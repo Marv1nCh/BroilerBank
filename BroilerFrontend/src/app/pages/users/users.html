@@ -1,7 +1,10 @@
 <div>
-    <button (click)="openDialog()">
-        <mat-icon>add</mat-icon>Add new User
-    </button>
+    <div class="add-button-container">
+        <button matFab extended class="add-user-button"  (click)="openDialog()">
+            <mat-icon>add</mat-icon>Add new User
+        </button>
+    </div>
+
     <table class="user-table" matSort (matSortChange)="sortData($event)">
         <tr>
             <th mat-sort-header="firstName">First Name:</th>

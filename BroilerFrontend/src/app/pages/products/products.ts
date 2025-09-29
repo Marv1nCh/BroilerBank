@@ -8,10 +8,11 @@ import { ProductFormula } from '../../components/product-formula/product-formula
 import { MatIconModule } from '@angular/material/icon';
 import { MatSortModule, Sort } from '@angular/material/sort';
 import { compare } from '../../shared/utils';
+import { MatButtonModule } from '@angular/material/button';
 
 @Component({
   selector: 'app-products',
-  imports: [MatTableModule, MatIconModule, MatSortModule],
+  imports: [MatTableModule, MatIconModule, MatSortModule, MatButtonModule],
   templateUrl: './products.html',
   styleUrl: './products.scss'
 })
