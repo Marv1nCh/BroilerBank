@@ -1,5 +1,5 @@
-import { Component, inject, OnInit, ViewChild } from '@angular/core';
-import { MatTable, MatTableModule } from '@angular/material/table';
+import { Component, inject, OnInit } from '@angular/core';
+import { MatTableModule } from '@angular/material/table';
 import { UserService } from '../../services/user-service';
 import { User } from '../../model/user.type';
 import { catchError } from 'rxjs';
@@ -21,7 +21,6 @@ export class Users implements OnInit{
   userService = inject(UserService)
 
   readonly dialog = inject(MatDialog)
-  @ViewChild('userTable', {static: true, read: MatTable}) table: any
 
   ngOnInit(): void {
     this.userService.getAllUsersFromBackend()
@@ -46,7 +45,6 @@ export class Users implements OnInit{
           email:result.email, 
           givenName: result.givenName, 
           surname: result.surname})
-        this.table.renderRows()
       }
     })
   }

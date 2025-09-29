@@ -3,6 +3,8 @@ package com.nemo.broilerbackend.purchase;
 import com.nemo.broilerbackend.dto.PurchaseDTO;
 import com.nemo.broilerbackend.readmodel.purchaseView.PurchaseViewService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -28,9 +30,11 @@ public class PurchaseController {
     }
 
     @PostMapping
-    public Optional<PurchaseDTO> createPurchase(@RequestBody PurchaseDTO purchaseDTO) {
-        return purchaseService.addNewPurchase(purchaseDTO)
+    public ResponseEntity<Optional<PurchaseDTO>> createPurchase(@RequestBody PurchaseDTO purchaseDTO) {
+        Optional<PurchaseDTO> savedPurchaseDto = purchaseService.addNewPurchase(purchaseDTO)
                 .flatMap(purchaseViewService::findById)
                 .map(PurchaseDTO::new);
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(savedPurchaseDto);
     }
 }

@@ -1,10 +1,7 @@
 package com.nemo.broilerbackend.dto;
 
 import com.nemo.broilerbackend.readmodel.purchaseView.PurchaseView;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.time.Instant;
 import java.util.Arrays;
@@ -12,6 +9,7 @@ import java.util.List;
 
 @Setter
 @Getter
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 public class PurchaseDTO {

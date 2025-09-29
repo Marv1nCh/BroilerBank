@@ -11,7 +11,7 @@ import java.time.Instant;
 import java.util.UUID;
 
 @Getter
-@Table(name = "products_prices_view")
+@Table(name = "product_price_view")
 @Immutable
 @Entity
 @IdClass(ProductPriceViewCompositeKey.class)
