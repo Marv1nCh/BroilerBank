@@ -6,7 +6,7 @@ import jakarta.persistence.Table;
 import lombok.*;
 import org.hibernate.annotations.Immutable;
 
-import java.time.Instant;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 
@@ -19,7 +19,7 @@ public class PurchaseView {
     private UUID purchaseId;
     private String givenName;
     private String surname;
-    private Instant date;
+    private LocalDate date;
     private List<String> products;
     private boolean paid;
     private double price;

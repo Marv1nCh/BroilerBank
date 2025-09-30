@@ -6,7 +6,7 @@ import jakarta.persistence.IdClass;
 import jakarta.persistence.Table;
 import lombok.*;
 
-import java.time.Instant;
+import java.time.LocalDate;
 import java.util.UUID;
 
 @Getter
@@ -20,6 +20,6 @@ public class ProductPrice {
     @Id
     private UUID productId;
     @Id
-    private Instant startDate;
+    private LocalDate startDate;
     private double price;
 }

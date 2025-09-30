@@ -28,7 +28,7 @@ public class ProductController {
 
     @GetMapping(path = "/unique")
     public List<ProductDTO> getAllUniqueProducts() {
-        return productService.getAllProducts();
+        return productService.getAllUniqueProducts();
     }
 
     @PostMapping

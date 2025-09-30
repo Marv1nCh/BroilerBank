@@ -43,13 +43,12 @@
     </div>
   }
 
-
   <div class="dialog-button-container">
     <mat-dialog-actions>
       <button matButton cdkFocusInitial (click)="onCancel()">Cancel</button>
     </mat-dialog-actions>
     <mat-dialog-actions>
-      <button matButton (click)="onAdd()" cdkFocusInitial>Add</button>
+      <button matButton (click)="onAdd()" cdkFocusInitial>{{this.data.update ? "Update" : "Add"}}</button>
     </mat-dialog-actions>
   </div>
 </div>

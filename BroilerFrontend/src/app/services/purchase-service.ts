@@ -16,4 +16,8 @@ export class PurchaseService {
   addNewPurchase(purchase: Purchase) {
     return this.http.post<Array<Purchase>>(AppConstants.BASE_URL + "/purchases", purchase)
   }
+
+  updatePurchase(purchase: Purchase) {
+    return this.http.put<Array<Purchase>>(AppConstants.BASE_URL + "/purchases", purchase)
+  }
 }

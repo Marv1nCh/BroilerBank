@@ -33,4 +33,11 @@ public class PurchaseController {
                 .flatMap(purchaseViewService::findById)
                 .map(PurchaseDTO::new);
     }
+
+    @PutMapping
+    public Optional<PurchaseDTO> updatePurchase(@RequestBody PurchaseDTO purchaseDTO) {
+        return purchaseService.updatePurchase(purchaseDTO)
+                .flatMap(purchaseViewService::findById)
+                .map(PurchaseDTO::new);
+    }
 }

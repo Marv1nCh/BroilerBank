@@ -1,5 +1,5 @@
 import { Component, inject, model, OnInit } from '@angular/core';
-import { MatDialogActions, MatDialogContent, MatDialogRef } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogActions, MatDialogContent, MatDialogRef } from '@angular/material/dialog';
 import { PurchaseService } from '../../services/purchase-service';
 import { UserService } from '../../services/user-service';
 import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -23,18 +23,30 @@ import { ProductService } from '../../services/product-service';
   styleUrl: './purchase-formula.scss'
 })
 export class PurchaseFormula implements OnInit{
+    data = inject(MAT_DIALOG_DATA) as {
+    update: boolean,
+    purchasedAt: Date,
+    foodOptions: string[],
+    givenName: string,
+    surname: string,
+    paid: boolean,
+    purchaseId: string
+  };
+
   dialogRef = inject(MatDialogRef<PurchaseFormula>)
   purchaseService = inject(PurchaseService)
   productService = inject(ProductService)
   userService = inject(UserService)
 
-  purchasedAtControl = new FormControl(null)
+  purchasedAtControl = new FormControl<string | null>(null)
   foodOptionControl = new FormControl<string[] | null>(null)
   userControl = new FormControl<User | null>(null)
   paidControl = model(false)
 
   users = Array<User>()
   foodOptions: Array<string> = []
+
+  purchaseId = ""
 
   showError = false
   errorMessage = "All fields need to be filled in!"
@@ -47,6 +59,8 @@ export class PurchaseFormula implements OnInit{
         }))
         .subscribe((usersFromBackend) => {
           this.users = usersFromBackend
+          const user = this.users.find(user => user.givenName === this.data.givenName && user.surname === this.data.surname)
+          this.userControl.setValue(user!)
         })
 
     this.productService.getUniqueProductsFromBackend()
@@ -57,6 +71,13 @@ export class PurchaseFormula implements OnInit{
           .subscribe((uniqueProductsFromBackend) => {
             this.foodOptions = uniqueProductsFromBackend.map(product => product.type)
           })
+
+      if(this.data.update) {
+        this.purchasedAtControl.setValue(this.data.purchasedAt.toString())
+        this.foodOptionControl.setValue(this.data.foodOptions)
+        this.paidControl.set(this.data.paid)
+        this.purchaseId = this.data.purchaseId
+      }
     }
 
   onAdd() {
@@ -67,25 +88,30 @@ export class PurchaseFormula implements OnInit{
     if (user == null  || foodOption == null || purchasedAt == null){
       this.showError = true;
     }else{
-      const foodsPurchased = this.foodOptionControl.value!
-      const first_name = this.userControl.value?.givenName!
-      const last_name = this.userControl.value?.surname!
-      const date = this.purchasedAtControl.value!
+      const purchasedAtDate = this.data.update ? purchasedAt : purchasedAt
       const paid = this.paidControl()
 
       const purchaseToCreate = {
-        givenName: first_name, 
-        surname: last_name, 
-        date: date, 
-        products: foodsPurchased, 
+       purchaseId: this.purchaseId,
+        givenName: user.givenName, 
+        surname: user.surname, 
+        date: purchasedAtDate, 
+        products: foodOption, 
         paid: paid, 
         price: 0
       }
-      
-      this.purchaseService.addNewPurchase(purchaseToCreate)
-        .subscribe((newPurchase) => {
-          this.dialogRef.close(newPurchase);
+
+      if(this.data.update) {
+        this.purchaseService.updatePurchase(purchaseToCreate)
+          .subscribe((updatedPurchase) => {
+            this.dialogRef.close(updatedPurchase);
         })
+      }else {
+        this.purchaseService.addNewPurchase(purchaseToCreate)
+          .subscribe((newPurchase) => {
+            this.dialogRef.close(newPurchase);
+          })
+      }
     }
   }
  

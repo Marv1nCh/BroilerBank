@@ -25,6 +25,10 @@ export class Purchases implements OnInit {
   readonly dialog = inject(MatDialog)
 
   ngOnInit(): void {
+    this.initializePurchases()
+  }
+
+  initializePurchases() {
     this.purchaseService.getAllPurchasesFromBackend()
       .pipe(catchError((err) => {
         console.log(err)
@@ -39,14 +43,24 @@ export class Purchases implements OnInit {
     return new Date(date).toDateString();
   }
 
-  openDialog() {
-    const dialogref = this.dialog.open(PurchaseFormula)
+  openAddDialog() {
+    const dialogref = this.dialog.open(PurchaseFormula, {
+      data: {
+        update: false,
+        purchasedAt: null,
+        givenName: null,
+        surname: null,
+        foodOptions: null,
+        paid: null,
+        purchaseId: null
+      }
+    })
 
-    //TODO add error catching
     dialogref.afterClosed()
     .subscribe(result => {
       if (result != undefined) {
         this.purchases.push({
+          purchaseId: result.purchaseId,
           givenName: result.givenName, 
           surname: result.surname, 
           date: result.date, 
@@ -57,8 +71,25 @@ export class Purchases implements OnInit {
     })
   }
 
-  openEditDialog(){
-    
+  openEditDialog(purchasedAt: string, givenName: string, surname:string, foodOptions: Array<string>, paid:boolean, purchaseId: string){
+    const dialogRef = this.dialog.open(PurchaseFormula, {
+      data: {
+        update: true,
+        purchasedAt: purchasedAt,
+        givenName: givenName,
+        surname: surname,
+        foodOptions: foodOptions,
+        paid: paid,
+        purchaseId: purchaseId
+      }
+    })
+
+    dialogRef.afterClosed()
+      .subscribe(result => {
+        if (result != undefined) {
+          this.initializePurchases()
+        }
+      })
   }
 
   sortData(sort: Sort) {

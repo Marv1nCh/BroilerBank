@@ -1,6 +1,6 @@
 <div>
     <div class="add-button-container">
-        <button matFab extended class="add-purchase-button" (click)="openDialog()">
+        <button matFab extended class="add-purchase-button" (click)="openAddDialog()">
             <mat-icon>add</mat-icon>Add new Purchase
         </button>
     </div>
@@ -13,14 +13,14 @@
             <th mat-sort-header="products">Products:</th>
             <th mat-sort-header="paid">Paid:</th>
             <th mat-sort-header="Price">Price:</th>
-            <th mat-sort-header="Edit">Edit:</th>
+            <th mat-sort-header="Edit"></th>
         </tr>
 
         @for (purchase of purchases; track $index) {
             <tr>
                 <td> {{purchase.givenName}} </td>
                 <td> {{purchase.surname}} </td>
-                <td> {{formatDateToString(purchase.date)}} </td>
+                <td> {{purchase.date}} </td>
                 <td> 
                     @for (type of purchase.products; track $index) {
                         <div> {{type}}</div>
@@ -30,7 +30,7 @@
                 <td> {{purchase.paid}} </td>
                 <td> {{purchase.price}} </td>
                 <td> 
-                    <button matFab class="edit-button" (click)="openEditDialog()"> 
+                    <button matFab class="edit-button" (click)="openEditDialog(purchase.date, purchase.givenName, purchase.surname, purchase.products, purchase.paid, purchase.purchaseId!)"> 
                         <mat-icon>edit</mat-icon>
                     </button>
                 </td>

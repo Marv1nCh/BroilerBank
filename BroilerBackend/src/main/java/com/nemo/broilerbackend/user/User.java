@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
 
-import java.time.Instant;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 
@@ -30,7 +30,7 @@ public class User {
     private String userType;
     private List<String> roles;
     @CreatedDate
-    private Instant createdAt;
-    private Instant updatedAt;
+    private LocalDate createdAt;
+    private LocalDate updatedAt;
 
 }
