@@ -8,15 +8,16 @@ import { PurchaseFormula } from '../../components/purchase-formula/purchase-form
 import { MatIconModule } from '@angular/material/icon';
 import { MatSortHeader, MatSortModule, Sort } from "@angular/material/sort";
 import { compare } from '../../shared/utils';
+import { MatButtonModule } from '@angular/material/button';
 
 @Component({
   selector: 'app-purchases',
-  imports: [MatTableModule, MatIconModule, MatSortModule, MatSortHeader],
+  imports: [MatTableModule, MatIconModule, MatSortModule, MatSortHeader, MatButtonModule],
   templateUrl: './purchases.html',
   styleUrl: './purchases.scss'
 })
 export class Purchases implements OnInit {
-  displayedColumns: string[] = ['givenName', 'surname', 'date', 'products', 'paid']
+  displayedColumns: string[] = ['givenName', 'surname', 'date', 'products', 'paid', 'Edit']
   purchases = Array<Purchase>()
   
   purchaseService = inject(PurchaseService)
@@ -24,6 +25,10 @@ export class Purchases implements OnInit {
   readonly dialog = inject(MatDialog)
 
   ngOnInit(): void {
+    this.initializePurchases()
+  }
+
+  initializePurchases() {
     this.purchaseService.getAllPurchasesFromBackend()
       .pipe(catchError((err) => {
         console.log(err)
@@ -38,14 +43,19 @@ export class Purchases implements OnInit {
     return new Date(date).toDateString();
   }
 
-  openDialog() {
-    const dialogref = this.dialog.open(PurchaseFormula)
+  openAddDialog() {
+    const dialogref = this.dialog.open(PurchaseFormula, {
+      data: {
+        update: false,
+        purchase: null
+      }
+    })
 
-    //TODO add error catching
     dialogref.afterClosed()
     .subscribe(result => {
       if (result != undefined) {
         this.purchases.push({
+          purchaseId: result.purchaseId,
           givenName: result.givenName, 
           surname: result.surname, 
           date: result.date, 
@@ -54,6 +64,22 @@ export class Purchases implements OnInit {
           price: result.price})
       }
     })
+  }
+
+  openEditDialog(purchase: Purchase){
+    const dialogRef = this.dialog.open(PurchaseFormula, {
+      data: {
+        update: true,
+        purchase: purchase
+      }
+    })
+
+    dialogRef.afterClosed()
+      .subscribe(result => {
+        if (result != undefined) {
+          this.initializePurchases()
+        }
+      })
   }
 
   sortData(sort: Sort) {
@@ -70,6 +96,10 @@ export class Purchases implements OnInit {
           return compare(a.surname, b.surname, isAsc)
         case 'date':
           return compare(a.date, b.date, isAsc)
+        case 'products':
+          return compare(a.products.length, b.products.length, isAsc)
+        case 'price':
+          return compare(a.price, b.price, isAsc)
         default:
           return 0;
       }

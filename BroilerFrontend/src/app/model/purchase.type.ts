@@ -1,8 +1,9 @@
 export type Purchase = {
+    purchaseId?: string
     givenName: string,
     surname: string,
-    date: Date,
-    products: Array<String>,
+    date: string,
+    products: Array<string>,
     paid: boolean,
     price: number
 }

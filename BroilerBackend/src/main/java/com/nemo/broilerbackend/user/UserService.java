@@ -4,7 +4,7 @@ import com.nemo.broilerbackend.dto.UserDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.time.Instant;
+import java.time.LocalDate;
 import java.util.Collections;
 import java.util.List;
 
@@ -33,7 +33,7 @@ public class UserService {
                 .accountEnabled(false)
                 .userType("Admin")
                 .roles(Collections.emptyList())
-                .updatedAt(Instant.now())
+                .updatedAt(LocalDate.now())
                 .build();
 
         return new UserDTO(userRepository.save(user));

@@ -1,7 +1,9 @@
 <div>
-    <button (click)="openDialog()">
-        <mat-icon>add</mat-icon>Add new Purchase
-    </button>
+    <div class="add-button-container">
+        <button matFab extended class="add-purchase-button" (click)="openAddDialog()">
+            <mat-icon>add</mat-icon>Add new Purchase
+        </button>
+    </div>
 
     <table class="user-table" matSort (matSortChange)="sortData($event)">
         <tr>
@@ -10,14 +12,15 @@
             <th mat-sort-header="date">Created At:</th>
             <th mat-sort-header="products">Products:</th>
             <th mat-sort-header="paid">Paid:</th>
-            <th mat-sort-header="Price">Price:</th>
+            <th mat-sort-header="price">Price:</th>
+            <th mat-sort-header="Edit"></th>
         </tr>
 
         @for (purchase of purchases; track $index) {
             <tr>
                 <td> {{purchase.givenName}} </td>
                 <td> {{purchase.surname}} </td>
-                <td> {{formatDateToString(purchase.date)}} </td>
+                <td> {{purchase.date}} </td>
                 <td> 
                     @for (type of purchase.products; track $index) {
                         <div> {{type}}</div>
@@ -25,7 +28,12 @@
 
                 </td>
                 <td> {{purchase.paid}} </td>
-                <td> {{purchase.price}} </td>
+                <td> {{purchase.price}} €</td>
+                <td> 
+                    <button matFab class="edit-button" (click)="openEditDialog(purchase)"> 
+                        <mat-icon>edit</mat-icon>
+                    </button>
+                </td>
             </tr>
         }
     </table>

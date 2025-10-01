@@ -1,5 +1,5 @@
 import { Component, inject, model, OnInit } from '@angular/core';
-import { MatDialogActions, MatDialogContent, MatDialogRef } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogActions, MatDialogContent, MatDialogRef } from '@angular/material/dialog';
 import { PurchaseService } from '../../services/purchase-service';
 import { UserService } from '../../services/user-service';
 import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -11,25 +11,31 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatOption } from '@angular/material/autocomplete';
 import { MatSelectModule } from '@angular/material/select';
 import { MatCheckbox } from '@angular/material/checkbox';
-import { Purchase } from '../../model/purchase.type';
 import { ProductService } from '../../services/product-service';
+import { Purchase } from '../../model/purchase.type';
+import { MatButtonModule } from '@angular/material/button';
 
 @Component({
   selector: 'app-purchase-formula',
   imports: [MatDialogContent, MatFormField, MatLabel, 
     MatDialogActions, FormsModule, MatInputModule, 
     MatDatepickerModule, MatOption, ReactiveFormsModule, 
-    MatSelectModule, MatCheckbox],
+    MatSelectModule, MatCheckbox, MatButtonModule],
   templateUrl: './purchase-formula.html',
   styleUrl: './purchase-formula.scss'
 })
 export class PurchaseFormula implements OnInit{
+    data = inject(MAT_DIALOG_DATA) as {
+    update: boolean,
+    purchase: Purchase
+  };
+
   dialogRef = inject(MatDialogRef<PurchaseFormula>)
   purchaseService = inject(PurchaseService)
   productService = inject(ProductService)
   userService = inject(UserService)
 
-  purchasedAtControl = new FormControl(null)
+  purchasedAtControl = new FormControl<string | null>(null)
   foodOptionControl = new FormControl<string[] | null>(null)
   userControl = new FormControl<User | null>(null)
   paidControl = model(false)
@@ -37,10 +43,13 @@ export class PurchaseFormula implements OnInit{
   users = Array<User>()
   foodOptions: Array<string> = []
 
+  purchaseId = ""
+
   showError = false
   errorMessage = "All fields need to be filled in!"
 
   ngOnInit(): void {
+    const purchase = this.data.purchase
     this.userService.getAllUsersFromBackend()
     .pipe(catchError((err) => {
           console.log(err);
@@ -48,6 +57,10 @@ export class PurchaseFormula implements OnInit{
         }))
         .subscribe((usersFromBackend) => {
           this.users = usersFromBackend
+          if(this.data.update){
+            const user = this.users.find(user => user.givenName === purchase.givenName && user.surname === purchase.surname)
+            this.userControl.setValue(user!)
+          }
         })
 
     this.productService.getUniqueProductsFromBackend()
@@ -58,6 +71,13 @@ export class PurchaseFormula implements OnInit{
           .subscribe((uniqueProductsFromBackend) => {
             this.foodOptions = uniqueProductsFromBackend.map(product => product.type)
           })
+
+      if(this.data.update) {
+        this.purchasedAtControl.setValue(purchase.date.toString())
+        this.foodOptionControl.setValue(purchase.products)
+        this.paidControl.set(purchase.paid)
+        this.purchaseId = purchase.purchaseId!
+      }
     }
 
   onAdd() {
@@ -68,25 +88,41 @@ export class PurchaseFormula implements OnInit{
     if (user == null  || foodOption == null || purchasedAt == null){
       this.showError = true;
     }else{
-      const foodsPurchased = this.foodOptionControl.value!
-      const first_name = this.userControl.value?.givenName!
-      const last_name = this.userControl.value?.surname!
-      const date = this.purchasedAtControl.value!
+      const purchasedAtDate = this.data.update ? purchasedAt : purchasedAt
       const paid = this.paidControl()
 
       const purchaseToCreate = {
-        givenName: first_name, 
-        surname: last_name, 
-        date: date, 
-        products: foodsPurchased, 
+       purchaseId: this.purchaseId,
+        givenName: user.givenName, 
+        surname: user.surname, 
+        date: purchasedAtDate, 
+        products: foodOption, 
         paid: paid, 
         price: 0
       }
-      
-      this.purchaseService.addNewPurchase(purchaseToCreate)
-        .subscribe((newPurchase) => {
-          this.dialogRef.close(newPurchase);
+
+      console.log(purchaseToCreate)
+      if(this.data.update) {
+        this.purchaseService.updatePurchase(purchaseToCreate)
+          .pipe(catchError((err) => {
+                this.showError = true
+                this.errorMessage = err.message;
+                throw err;
+              }))
+          .subscribe((updatedPurchase) => {
+            this.dialogRef.close(updatedPurchase);
         })
+      }else {
+        this.purchaseService.addNewPurchase(purchaseToCreate)
+          .pipe(catchError((err) => {
+            this.showError = true
+            this.errorMessage = err.message;
+            throw err;
+          }))
+          .subscribe((newPurchase) => {
+            this.dialogRef.close(newPurchase);
+          })
+      }
     }
   }
  

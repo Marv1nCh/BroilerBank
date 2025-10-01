@@ -30,10 +30,10 @@
 
   <div class="dialog-button-container">
     <mat-dialog-actions>
-      <button matButton cdkFocusInitial (click)="onCancel()">Cancel</button>
+      <button matButton="tonal" cdkFocusInitial (click)="onCancel()">Cancel</button>
     </mat-dialog-actions>
     <mat-dialog-actions>
-      <button matButton (click)="onAdd()" cdkFocusInitial>Add</button>
+      <button matButton="tonal" (click)="onAdd()" cdkFocusInitial>{{this.data.update ? "update" : "add"}}</button>
     </mat-dialog-actions>
   </div>
 </div>

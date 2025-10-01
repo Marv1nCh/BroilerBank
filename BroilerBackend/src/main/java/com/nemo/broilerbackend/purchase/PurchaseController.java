@@ -37,4 +37,11 @@ public class PurchaseController {
 
         return ResponseEntity.status(HttpStatus.CREATED).body(savedPurchaseDto);
     }
+
+    @PutMapping
+    public Optional<PurchaseDTO> updatePurchase(@RequestBody PurchaseDTO purchaseDTO) {
+        return purchaseService.updatePurchase(purchaseDTO)
+                .flatMap(purchaseViewService::findById)
+                .map(PurchaseDTO::new);
+    }
 }

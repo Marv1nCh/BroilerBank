@@ -8,10 +8,11 @@ import { UserFormula } from '../../components/user-formula/user-formula';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSortHeader, MatSortModule, Sort } from "@angular/material/sort";
 import { compare } from '../../shared/utils';
+import { MatButtonModule } from '@angular/material/button';
 
 @Component({
   selector: 'app-users',
-  imports: [MatTableModule, MatIconModule, MatSortModule, MatSortHeader],
+  imports: [MatTableModule, MatIconModule, MatSortModule, MatSortHeader, MatButtonModule],
   templateUrl: './users.html',
   styleUrl: './users.scss'
 })

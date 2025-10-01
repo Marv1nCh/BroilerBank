@@ -3,7 +3,7 @@ package com.nemo.broilerbackend.purchase;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.time.Instant;
+import java.time.LocalDate;
 import java.util.UUID;
 
 @Getter
@@ -17,6 +17,6 @@ public class Purchase {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
     private UUID userId;
-    private Instant date;
+    private LocalDate date;
     private boolean paid;
 }

@@ -1,11 +1,13 @@
 package com.nemo.broilerbackend.dto;
 
 import com.nemo.broilerbackend.readmodel.purchaseView.PurchaseView;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import lombok.*;
 
-import java.time.Instant;
-import java.util.Arrays;
+import java.time.LocalDate;
 import java.util.List;
+import java.util.UUID;
 
 @Setter
 @Getter
@@ -13,14 +15,17 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class PurchaseDTO {
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private UUID purchaseId;
     private String givenName;
     private String surname;
-    private Instant date;
+    private LocalDate date;
     private List<String> products;
     private boolean paid;
     private double price;
 
     public PurchaseDTO(PurchaseView purchaseView) {
+        this.purchaseId = purchaseView.getPurchaseId();
         this.givenName = purchaseView.getGivenName();
         this.surname = purchaseView.getSurname();
         this.date = purchaseView.getDate();

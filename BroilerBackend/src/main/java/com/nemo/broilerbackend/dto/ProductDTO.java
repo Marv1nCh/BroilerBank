@@ -6,18 +6,21 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.time.Instant;
+import java.time.LocalDate;
+import java.util.UUID;
 
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
 public class ProductDTO {
-    private Instant startDate;
+    private UUID productId;
+    private LocalDate startDate;
     private String type;
     private double price;
 
     public ProductDTO(ProductPriceView productPriceView) {
+        this.productId = productPriceView.getId();
         this.startDate = productPriceView.getStartDate();
         this.type = productPriceView.getType();
         this.price = productPriceView.getPrice();

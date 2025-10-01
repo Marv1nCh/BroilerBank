@@ -1,5 +1,6 @@
 export type Product = {
-    startDate: Date,
+    productId?: string,
+    startDate: string,
     type: string,
     price: number
 }
