@@ -1,5 +1,6 @@
 package com.nemo.broilerbackend.productPrices;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.IdClass;
@@ -20,6 +21,7 @@ public class ProductPrice {
     @Id
     private UUID productId;
     @Id
+    @JsonFormat(pattern = "EEE MMM dd yyyy", locale = "en")
     private LocalDate startDate;
     private double price;
 }

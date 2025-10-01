@@ -35,7 +35,7 @@ export class PurchaseFormula implements OnInit{
   productService = inject(ProductService)
   userService = inject(UserService)
 
-  purchasedAtControl = new FormControl<string | null>(null)
+  purchasedAtControl = new FormControl<Date | null>(null)
   foodOptionControl = new FormControl<string[] | null>(null)
   userControl = new FormControl<User | null>(null)
   paidControl = model(false)
@@ -73,7 +73,7 @@ export class PurchaseFormula implements OnInit{
           })
 
       if(this.data.update) {
-        this.purchasedAtControl.setValue(purchase.date.toString())
+        this.purchasedAtControl.setValue(new Date(this.data.purchase.date))
         this.foodOptionControl.setValue(purchase.products)
         this.paidControl.set(purchase.paid)
         this.purchaseId = purchase.purchaseId!
@@ -95,7 +95,7 @@ export class PurchaseFormula implements OnInit{
        purchaseId: this.purchaseId,
         givenName: user.givenName, 
         surname: user.surname, 
-        date: purchasedAtDate, 
+        date: purchasedAtDate.toDateString(), 
         products: foodOption, 
         paid: paid, 
         price: 0

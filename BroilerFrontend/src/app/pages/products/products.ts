@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, ViewChild } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { ProductService } from '../../services/product-service';
 import { Product } from '../../model/products.type';
 import { catchError } from 'rxjs';
@@ -41,6 +41,7 @@ export class Products implements OnInit{
 
   openAddDialog() {
     const dialogRef = this.dialog.open(ProductFormula, {
+      autoFocus: false,
       data: {
         update: false,
         product: null
@@ -60,6 +61,7 @@ export class Products implements OnInit{
 
   openEditDialog(product: Product) {
     const dialogRef = this.dialog.open(ProductFormula, {
+      autoFocus: false,
       data: {
         update: true,
         product: product

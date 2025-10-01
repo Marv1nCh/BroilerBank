@@ -1,5 +1,6 @@
 package com.nemo.broilerbackend.purchase;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -17,6 +18,7 @@ public class Purchase {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
     private UUID userId;
+    @JsonFormat(pattern = "EEE MMM dd yyyy", locale = "en")
     private LocalDate date;
     private boolean paid;
 }

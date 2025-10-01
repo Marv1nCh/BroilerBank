@@ -12,7 +12,17 @@
   <mat-dialog-content>
     <mat-form-field>
       <mat-label>Product Type:</mat-label>
-      <input matInput [(ngModel)]="type"/>
+      <input matInput 
+            [formControl]="type" 
+            [matAutocomplete]="auto"
+            type="text"
+            aria-label="Food Option"
+            >
+      <mat-autocomplete #auto="matAutocomplete">
+        @for (option of productsOptions | async; track $index) {
+          <mat-option [value]="option">{{option}}</mat-option>
+        }
+      </mat-autocomplete>
     </mat-form-field>
   </mat-dialog-content>
   <mat-dialog-content>

@@ -1,5 +1,6 @@
 package com.nemo.broilerbackend.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.nemo.broilerbackend.readmodel.productsPricesView.ProductPriceView;
 import lombok.*;
 
@@ -13,6 +14,7 @@ import java.util.UUID;
 @NoArgsConstructor
 public class ProductDTO {
     private UUID productId;
+    @JsonFormat(pattern = "EEE MMM dd yyyy", locale = "en")
     private LocalDate startDate;
     private String type;
     private double price;

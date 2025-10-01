@@ -1,5 +1,6 @@
 package com.nemo.broilerbackend.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.nemo.broilerbackend.readmodel.purchaseView.PurchaseView;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -19,6 +20,7 @@ public class PurchaseDTO {
     private UUID purchaseId;
     private String givenName;
     private String surname;
+    @JsonFormat(pattern = "EEE MMM dd yyyy", locale = "en")
     private LocalDate date;
     private List<String> products;
     private boolean paid;

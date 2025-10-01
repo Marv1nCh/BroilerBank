@@ -35,7 +35,7 @@ export class Users implements OnInit{
   }
 
   openDialog() {
-    const dialogRef = this.dialog.open(UserFormula)
+    const dialogRef = this.dialog.open(UserFormula, {autoFocus: false})
 
     dialogRef.afterClosed()
     .subscribe(result => {

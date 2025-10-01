@@ -38,15 +38,15 @@ public class ProductService {
     }
 
     public ProductDTO addProduct(ProductDTO productDTO) {
-        boolean editExistingProduct = productDTO.getProductId() != null;
-        boolean productExists = editExistingProduct ?
+        boolean doesProductExist = productDTO.getProductId() != null;
+        boolean productExists = doesProductExist ?
                 productRepository.existsById(productDTO.getProductId()) :
                 productRepository.existsByType(productDTO.getType());
 
         UUID productId;
 
         if (productExists) {
-            productId = editExistingProduct ?
+            productId = doesProductExist ?
                     productDTO.getProductId() :
                     productRepository.findByType(productDTO.getType()).getId();
         } else {

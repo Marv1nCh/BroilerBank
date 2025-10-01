@@ -50,6 +50,7 @@ export class Purchases implements OnInit {
 
   openAddDialog() {
     const dialogref = this.dialog.open(PurchaseFormula, {
+      autoFocus: false,
       data: {
         update: false,
         purchase: null
@@ -73,6 +74,7 @@ export class Purchases implements OnInit {
 
   openEditDialog(purchase: Purchase){
     const dialogRef = this.dialog.open(PurchaseFormula, {
+      autoFocus: false,
       data: {
         update: true,
         purchase: purchase

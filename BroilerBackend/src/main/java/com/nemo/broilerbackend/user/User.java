@@ -1,5 +1,6 @@
 package com.nemo.broilerbackend.user;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
@@ -31,6 +32,7 @@ public class User {
     private List<String> roles;
     @CreatedDate
     private LocalDate createdAt;
+    @JsonFormat(pattern = "EEE MMM dd yyyy", locale = "en")
     private LocalDate updatedAt;
 
 }

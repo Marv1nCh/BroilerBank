@@ -8,13 +8,16 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatSelectModule } from '@angular/material/select';
 import { Product } from '../../model/products.type';
 import { MatButtonModule } from '@angular/material/button';
-import { catchError } from 'rxjs';
+import { catchError, map, Observable, startWith } from 'rxjs';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { AsyncPipe } from '@angular/common';
 
 @Component({
   selector: 'app-product-formula',
   imports: [MatDialogContent, MatFormField, MatLabel, 
     MatDialogActions, FormsModule, MatInputModule, 
-    MatDatepickerModule, ReactiveFormsModule, MatSelectModule, MatButtonModule],
+    MatDatepickerModule, ReactiveFormsModule, MatSelectModule,
+    MatButtonModule, MatAutocompleteModule, ReactiveFormsModule, AsyncPipe],
   templateUrl: './product-formula.html',
   styleUrl: './product-formula.scss'
 })
@@ -27,27 +30,47 @@ export class ProductFormula implements OnInit{
   dialogRef = inject(MatDialogRef<ProductFormula>);
   productService = inject(ProductService)
 
-  createdAtControl = new FormControl<string | null>(null);
-  type = signal<string | null>(null)
+  createdAtControl = new FormControl<Date | null>(null);
+  type = new FormControl('')
   price = signal<number | null>(null)
 
   productId = ""
+  productsList: string[] = [];
+  productsOptions!: Observable<string[]>
 
   showError = false
   errorMessage = "All fields need to be filled in!"
 
   ngOnInit(): void {
     if(this.data.update) {
-      this.createdAtControl.setValue(this.data.product.startDate);
-      this.type.set(this.data.product.type);
+      this.createdAtControl.setValue(new Date(this.data.product.startDate));
+      this.type.setValue(this.data.product.type);
       this.price.set(this.data.product.price);
       this.productId = this.data.product.productId!
     }
+    this.productService.getUniqueProductsFromBackend()
+        .pipe(catchError((err) => {
+          console.log(err);
+          throw err;
+        }))
+        .subscribe((productsFromBackend) => {
+          this.productsList = productsFromBackend.map(product => product.type)
+          this.productsOptions = this.type.valueChanges.pipe(
+            startWith(''),
+            map(value => this.filter(value || '')),
+          );
+        })
+  }
+
+  filter(value: string): string[]  {
+    const filterValue = value.toLowerCase();
+
+    return this.productsList.filter(option => option.toLowerCase().includes(filterValue));
   }
 
   onAdd() {
     const createdAt = this.createdAtControl.value
-    const type = this.type()
+    const type = this.type.value
     const price = this.price()
 
     if(createdAt == null || type == null || price == null) {
@@ -55,7 +78,7 @@ export class ProductFormula implements OnInit{
     }else {
       const productToCreate = {
         productId: this.productId,
-        startDate: createdAt,
+        startDate: createdAt.toDateString(),
         type: type,
         price: price
       }
