@@ -12,25 +12,22 @@ import { MatOption } from '@angular/material/autocomplete';
 import { MatSelectModule } from '@angular/material/select';
 import { MatCheckbox } from '@angular/material/checkbox';
 import { ProductService } from '../../services/product-service';
+import { Purchase } from '../../model/purchase.type';
+import { MatButtonModule } from '@angular/material/button';
 
 @Component({
   selector: 'app-purchase-formula',
   imports: [MatDialogContent, MatFormField, MatLabel, 
     MatDialogActions, FormsModule, MatInputModule, 
     MatDatepickerModule, MatOption, ReactiveFormsModule, 
-    MatSelectModule, MatCheckbox],
+    MatSelectModule, MatCheckbox, MatButtonModule],
   templateUrl: './purchase-formula.html',
   styleUrl: './purchase-formula.scss'
 })
 export class PurchaseFormula implements OnInit{
     data = inject(MAT_DIALOG_DATA) as {
     update: boolean,
-    purchasedAt: Date,
-    foodOptions: string[],
-    givenName: string,
-    surname: string,
-    paid: boolean,
-    purchaseId: string
+    purchase: Purchase
   };
 
   dialogRef = inject(MatDialogRef<PurchaseFormula>)
@@ -52,6 +49,7 @@ export class PurchaseFormula implements OnInit{
   errorMessage = "All fields need to be filled in!"
 
   ngOnInit(): void {
+    const purchase = this.data.purchase
     this.userService.getAllUsersFromBackend()
     .pipe(catchError((err) => {
           console.log(err);
@@ -59,8 +57,10 @@ export class PurchaseFormula implements OnInit{
         }))
         .subscribe((usersFromBackend) => {
           this.users = usersFromBackend
-          const user = this.users.find(user => user.givenName === this.data.givenName && user.surname === this.data.surname)
-          this.userControl.setValue(user!)
+          if(this.data.update){
+            const user = this.users.find(user => user.givenName === purchase.givenName && user.surname === purchase.surname)
+            this.userControl.setValue(user!)
+          }
         })
 
     this.productService.getUniqueProductsFromBackend()
@@ -73,10 +73,10 @@ export class PurchaseFormula implements OnInit{
           })
 
       if(this.data.update) {
-        this.purchasedAtControl.setValue(this.data.purchasedAt.toString())
-        this.foodOptionControl.setValue(this.data.foodOptions)
-        this.paidControl.set(this.data.paid)
-        this.purchaseId = this.data.purchaseId
+        this.purchasedAtControl.setValue(purchase.date.toString())
+        this.foodOptionControl.setValue(purchase.products)
+        this.paidControl.set(purchase.paid)
+        this.purchaseId = purchase.purchaseId!
       }
     }
 
@@ -101,13 +101,24 @@ export class PurchaseFormula implements OnInit{
         price: 0
       }
 
+      console.log(purchaseToCreate)
       if(this.data.update) {
         this.purchaseService.updatePurchase(purchaseToCreate)
+          .pipe(catchError((err) => {
+                this.showError = true
+                this.errorMessage = err.message;
+                throw err;
+              }))
           .subscribe((updatedPurchase) => {
             this.dialogRef.close(updatedPurchase);
         })
       }else {
         this.purchaseService.addNewPurchase(purchaseToCreate)
+          .pipe(catchError((err) => {
+            this.showError = true
+            this.errorMessage = err.message;
+            throw err;
+          }))
           .subscribe((newPurchase) => {
             this.dialogRef.close(newPurchase);
           })

@@ -1,6 +1,6 @@
 <div>
     <div class="add-button-container">
-        <button matFab extended class="add-product-button" (click)="openDialog()">
+        <button matFab extended class="add-product-button" (click)="openAddDialog()">
             <mat-icon>add</mat-icon>Add new Product
         </button>
     </div>
@@ -11,13 +11,19 @@
             <th mat-sort-header="startDate">Start Date:</th>
             <th mat-sort-header="type">Type:</th>
             <th mat-sort-header="price">Price:</th>
+            <th mat-sort-header="edit"></th>
         </tr>
 
         @for (product of products; track $index) {
             <tr>
-                <td>{{formatDateToString(product.startDate)}}</td>
+                <td>{{product.startDate}}</td>
                 <td>{{product.type}}</td>
                 <td>{{product.price}}</td>
+                <td> 
+                    <button matFab class="edit-button" (click)="openEditDialog(product)"> 
+                        <mat-icon>edit</mat-icon>
+                    </button>
+                </td>
             </tr>
         }
     </table>

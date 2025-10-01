@@ -17,13 +17,17 @@ import { MatButtonModule } from '@angular/material/button';
   styleUrl: './products.scss'
 })
 export class Products implements OnInit{
-  displayedColumns: string[] = ['startDate', 'type', 'price']
+  displayedColumns: string[] = ['startDate', 'type', 'price', 'edit']
   productService = inject(ProductService)
   products = Array<Product>()
 
   readonly dialog = inject(MatDialog)
 
   ngOnInit(): void {
+    this.initializeProducts()
+  }
+
+  initializeProducts() {
     this.productService.getAllProductsFromBackend()
     .pipe(catchError((err) => {
       console.log(err);
@@ -34,8 +38,13 @@ export class Products implements OnInit{
     })
   }
 
-  openDialog() {
-    const dialogRef = this.dialog.open(ProductFormula, {})
+  openAddDialog() {
+    const dialogRef = this.dialog.open(ProductFormula, {
+      data: {
+        update: false,
+        product: null
+      }
+    })
  
     dialogRef.afterClosed()
     .subscribe( result => {
@@ -46,6 +55,22 @@ export class Products implements OnInit{
           price: result.price});
       }
     })
+  }
+
+  openEditDialog(product: Product) {
+    const dialogRef = this.dialog.open(ProductFormula, {
+      data: {
+        update: true,
+        product: product
+      }
+    })
+
+    dialogRef.afterClosed()
+      .subscribe(result => {
+        if (result != undefined) {
+          this.initializeProducts()
+        }
+      })
   }
 
   formatDateToString(date: Date) {

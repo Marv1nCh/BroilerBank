@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.UUID;
 
 @Component
 public class ProductService {
@@ -37,15 +38,19 @@ public class ProductService {
     }
 
     public ProductDTO addProduct(ProductDTO productDTO) {
-        boolean productExists = productRepository.existsByType(productDTO.getType());
-        Product product = productExists ? productRepository.findByType(productDTO.getType()) : Product.builder()
+        boolean productExists = productDTO.getProductId() != null ? productRepository.existsById(productDTO.getProductId()) : productRepository.existsByType(productDTO.getType());
+        UUID productId = productDTO.getProductId() != null ? productDTO.getProductId() : productRepository.findByType(productDTO.getType()).getId();
+
+        Product product = Product.builder()
+                .id(productId)
                 .type(productDTO.getType())
                 .build();
+
         if (!productExists) {
             productRepository.save(product);
         }
         ProductPrice productPrice = ProductPrice.builder()
-                .productId(product.getId())
+                .productId(productId)
                 .startDate(productDTO.getStartDate())
                 .price(productDTO.getPrice())
                 .build();

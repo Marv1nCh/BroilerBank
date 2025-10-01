@@ -47,12 +47,7 @@ export class Purchases implements OnInit {
     const dialogref = this.dialog.open(PurchaseFormula, {
       data: {
         update: false,
-        purchasedAt: null,
-        givenName: null,
-        surname: null,
-        foodOptions: null,
-        paid: null,
-        purchaseId: null
+        purchase: null
       }
     })
 
@@ -71,16 +66,11 @@ export class Purchases implements OnInit {
     })
   }
 
-  openEditDialog(purchasedAt: string, givenName: string, surname:string, foodOptions: Array<string>, paid:boolean, purchaseId: string){
+  openEditDialog(purchase: Purchase){
     const dialogRef = this.dialog.open(PurchaseFormula, {
       data: {
         update: true,
-        purchasedAt: purchasedAt,
-        givenName: givenName,
-        surname: surname,
-        foodOptions: foodOptions,
-        paid: paid,
-        purchaseId: purchaseId
+        purchase: purchase
       }
     })
 
@@ -106,6 +96,10 @@ export class Purchases implements OnInit {
           return compare(a.surname, b.surname, isAsc)
         case 'date':
           return compare(a.date, b.date, isAsc)
+        case 'products':
+          return compare(a.products.length, b.products.length, isAsc)
+        case 'price':
+          return compare(a.price, b.price, isAsc)
         default:
           return 0;
       }

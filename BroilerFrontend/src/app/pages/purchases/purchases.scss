@@ -1,7 +1,42 @@
 .user-table {
   background-color: #f4f6f7;
   width: 100%;
-  font-size: larger;
+  border-collapse: collapse;
+  font-size: medium;
+
+  td {
+    border-bottom: 1px solid #ccc;
+    padding: 1em;
+  }
+
+  td:last-child {
+    border-right: none;
+  }
+}
+
+::ng-deep .mat-sort-header-arrow svg path{
+    fill: white;
+    height: 100px;
+    width: 100px;
+  }
+
+::ng-deep .mat-sort-header-container {
+  padding: 0.5em 0.5em;
+  height: 1rem;
+  align-items: center;
+}
+
+::ng-deep .mat-sort-header-content {
+  color: #f4f6f7;
+  font-size: xx-large;
+  font-weight: bold;
+}
+
+::ng-deep .mat-sort-header {
+  margin: 1rem;
+  background-color: #34495e;
+  color: #f4f6f7;
+  font-size: xx-large;
 }
 
 .add-purchase-button {
@@ -14,14 +49,19 @@
   padding-bottom: 1rem;
 }
 
-.header {
-  margin: 1rem;
+.edit-button {
+  width: 32px;
+  height: 32px;
+  min-width: 32px;
+  min-height: 32px;
   background-color: #34495e;
-  color: #f4f6f7;
-  font-size: xx-large;
+  color: white;
+  box-shadow: none;
 }
 
-.edit-button {
-  background-color: #34495e;
-  color: #f4f6f7;
+.edit-button mat-icon {
+  font-size: 18px;
+  width: 18px;
+  height: 18px;
+  line-height: 18px;
 }

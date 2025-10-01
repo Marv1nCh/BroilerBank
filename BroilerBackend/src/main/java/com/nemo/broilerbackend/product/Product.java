@@ -6,6 +6,7 @@ import lombok.*;
 import java.util.UUID;
 
 @Getter
+@Setter
 @Entity
 @Table(name = "product")
 @Builder
@@ -14,7 +15,6 @@ import java.util.UUID;
 public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    @Setter
     private UUID id;
     private String type;
 }

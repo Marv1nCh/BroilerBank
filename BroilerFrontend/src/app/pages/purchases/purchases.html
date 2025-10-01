@@ -6,13 +6,13 @@
     </div>
 
     <table class="user-table" matSort (matSortChange)="sortData($event)">
-        <tr class="header">
+        <tr>
             <th mat-sort-header="givenName">First Name:</th>
             <th mat-sort-header="surname">Last Name:</th>
             <th mat-sort-header="date">Created At:</th>
             <th mat-sort-header="products">Products:</th>
             <th mat-sort-header="paid">Paid:</th>
-            <th mat-sort-header="Price">Price:</th>
+            <th mat-sort-header="price">Price:</th>
             <th mat-sort-header="Edit"></th>
         </tr>
 
@@ -28,9 +28,9 @@
 
                 </td>
                 <td> {{purchase.paid}} </td>
-                <td> {{purchase.price}} </td>
+                <td> {{purchase.price}} €</td>
                 <td> 
-                    <button matFab class="edit-button" (click)="openEditDialog(purchase.date, purchase.givenName, purchase.surname, purchase.products, purchase.paid, purchase.purchaseId!)"> 
+                    <button matFab class="edit-button" (click)="openEditDialog(purchase)"> 
                         <mat-icon>edit</mat-icon>
                     </button>
                 </td>
