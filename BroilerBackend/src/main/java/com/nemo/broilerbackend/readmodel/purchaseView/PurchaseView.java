@@ -13,6 +13,9 @@ import java.util.UUID;
 @Getter
 @Table(name = "complete_purchase_view")
 @Immutable
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
 public class PurchaseView {
     @Id

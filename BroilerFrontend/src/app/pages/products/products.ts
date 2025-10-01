@@ -34,6 +34,7 @@ export class Products implements OnInit{
       throw err;
     }))
     .subscribe((productsFromBackend) => {
+      console.log(productsFromBackend)
       this.products = productsFromBackend
     })
   }
