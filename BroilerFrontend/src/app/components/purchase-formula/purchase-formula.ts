@@ -101,7 +101,6 @@ export class PurchaseFormula implements OnInit{
         price: 0
       }
 
-      console.log(purchaseToCreate)
       if(this.data.update) {
         this.purchaseService.updatePurchase(purchaseToCreate)
           .pipe(catchError((err) => {

@@ -1,5 +1,5 @@
 <div class="user-formula-container">
-  <h2 mat-dialog-title>New Product</h2>
+  <h2 mat-dialog-title>New Purchase</h2>
 
   <mat-dialog-content>
     <mat-form-field>
@@ -45,10 +45,10 @@
 
   <div class="dialog-button-container">
     <mat-dialog-actions>
-      <button matButton="tonal" cdkFocusInitial (click)="onCancel()">Cancel</button>
+      <button matButton="tonal" (click)="onCancel()" class="button">Cancel</button>
     </mat-dialog-actions>
     <mat-dialog-actions>
-      <button matButton="tonal" (click)="onAdd()" cdkFocusInitial>{{this.data.update ? "Update" : "Add"}}</button>
+      <button matButton="tonal" (click)="onAdd()" class="button">{{this.data.update ? "Update" : "Add"}}</button>
     </mat-dialog-actions>
   </div>
 </div>

@@ -18,16 +18,27 @@
 
         @for (purchase of purchases; track $index) {
             <tr>
-                <td> {{purchase.givenName}} </td>
-                <td> {{purchase.surname}} </td>
+                <td> 
+                    <div class="givenName-container">
+                        <div class="{{purchase.paid ? 'paid-indicator-paid' : 'paid-indicator-not-paid'}}"> </div>
+                        {{purchase.givenName}} 
+                    </div>
+                </td>
+                <td> {{purchase.surname}} </td> 
                 <td> {{purchase.date}} </td>
                 <td> 
                     @for (type of purchase.products; track $index) {
                         <div> {{type}}</div>
                     }
-
                 </td>
-                <td> {{purchase.paid}} </td>
+                <td> 
+                    <div class="paid-container">
+                        {{purchase.paid}} 
+                        <mat-dialog-content class="checkbox">
+                            <mat-checkbox [(ngModel)]="purchase.paid" (change)="onPaidChange(purchase)"/>
+                        </mat-dialog-content>
+                    </div>
+                </td>
                 <td> {{purchase.price}} €</td>
                 <td> 
                     <button matFab class="edit-button" (click)="openEditDialog(purchase)"> 

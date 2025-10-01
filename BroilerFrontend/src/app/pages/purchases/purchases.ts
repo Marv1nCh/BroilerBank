@@ -1,24 +1,29 @@
-import { Component, inject, OnInit, } from '@angular/core';
+import { Component, inject, model, OnInit, } from '@angular/core';
 import { PurchaseService } from '../../services/purchase-service';
 import { Purchase } from '../../model/purchase.type';
 import { catchError } from 'rxjs';
 import { MatTableModule } from '@angular/material/table';
-import { MatDialog } from '@angular/material/dialog';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { PurchaseFormula } from '../../components/purchase-formula/purchase-formula';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSortHeader, MatSortModule, Sort } from "@angular/material/sort";
 import { compare } from '../../shared/utils';
 import { MatButtonModule } from '@angular/material/button';
+import { MatCheckbox } from '@angular/material/checkbox';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-purchases',
-  imports: [MatTableModule, MatIconModule, MatSortModule, MatSortHeader, MatButtonModule],
+  imports: [MatTableModule, MatIconModule, MatSortModule, 
+    MatSortHeader, MatButtonModule, MatDialogModule, 
+    MatCheckbox, FormsModule],
   templateUrl: './purchases.html',
   styleUrl: './purchases.scss'
 })
 export class Purchases implements OnInit {
   displayedColumns: string[] = ['givenName', 'surname', 'date', 'products', 'paid', 'Edit']
   purchases = Array<Purchase>()
+  paidControl = model(false)
   
   purchaseService = inject(PurchaseService)
 
@@ -80,6 +85,15 @@ export class Purchases implements OnInit {
           this.initializePurchases()
         }
       })
+  }
+
+  onPaidChange(purchase: Purchase) {
+    this.purchaseService.updatePurchase(purchase)
+      .pipe(catchError((err) => {
+            console.log(err)
+            throw err;
+          }))
+      .subscribe()
   }
 
   sortData(sort: Sort) {

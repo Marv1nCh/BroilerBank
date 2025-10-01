@@ -16,8 +16,6 @@
 
 ::ng-deep .mat-sort-header-arrow svg path{
     fill: white;
-    height: 100px;
-    width: 100px;
   }
 
 ::ng-deep .mat-sort-header-container {
@@ -64,4 +62,27 @@
   width: 18px;
   height: 18px;
   line-height: 18px;
+}
+
+.paid-indicator-not-paid{
+  height: 1em;
+  width: 1em;
+  background-color: red;
+  margin-right: 1em;
+}
+
+.paid-indicator-paid{
+  height: 1em;
+  width: 1em;
+  background-color: green;
+  margin-right: 1em;
+}
+
+.givenName-container {
+  display: flex;
+}
+
+.paid-container {
+  display: flex;
+  align-items: center;
 }
