@@ -25,6 +25,7 @@ import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import java.time.Instant;
+import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
 
@@ -54,7 +55,7 @@ public class PurchaseControllerTests {
         return Purchase.builder()
                 .id(UUID.randomUUID())
                 .userId(user.getId())
-                .date(Instant.now())
+                .date(LocalDate.now())
                 .paid(false)
                 .build();
     }
@@ -65,7 +66,7 @@ public class PurchaseControllerTests {
                 .surname(user.getSurname())
                 .givenName(user.getGivenName())
                 .products(Collections.emptyList())
-                .date(Instant.now())
+                .date(LocalDate.now())
                 .paid(false)
                 .build();
     }
@@ -157,8 +158,8 @@ public class PurchaseControllerTests {
         Assertions.assertEquals(purchaseDTO.getGivenName(), responsePurchaseDto.getGivenName());
         Assertions.assertEquals(purchaseDTO.getSurname(), responsePurchaseDto.getSurname());
 
-        Instant purchaseDTODate = purchaseDTO.getDate().truncatedTo(ChronoUnit.MINUTES);
-        Instant responsePurchaseDTODate = purchaseDTO.getDate().truncatedTo(ChronoUnit.MINUTES);
+        LocalDate purchaseDTODate = purchaseDTO.getDate();
+        LocalDate responsePurchaseDTODate = purchaseDTO.getDate();
         Assertions.assertEquals(purchaseDTODate, responsePurchaseDTODate);
     }
 

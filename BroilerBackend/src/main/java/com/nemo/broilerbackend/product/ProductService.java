@@ -38,17 +38,26 @@ public class ProductService {
     }
 
     public ProductDTO addProduct(ProductDTO productDTO) {
-        boolean productExists = productDTO.getProductId() != null ? productRepository.existsById(productDTO.getProductId()) : productRepository.existsByType(productDTO.getType());
-        UUID productId = productDTO.getProductId() != null ? productDTO.getProductId() : productRepository.findByType(productDTO.getType()).getId();
+        boolean editExistingProduct = productDTO.getProductId() != null;
+        boolean productExists = editExistingProduct ?
+                productRepository.existsById(productDTO.getProductId()) :
+                productRepository.existsByType(productDTO.getType());
 
-        Product product = Product.builder()
-                .id(productId)
-                .type(productDTO.getType())
-                .build();
+        UUID productId;
 
-        if (!productExists) {
-            productRepository.save(product);
+        if (productExists) {
+            productId = editExistingProduct ?
+                    productDTO.getProductId() :
+                    productRepository.findByType(productDTO.getType()).getId();
+        } else {
+            Product product = Product.builder()
+                    .type(productDTO.getType())
+                    .build();
+
+            Product savedProduct = productRepository.save(product);
+            productId = savedProduct.getId();
         }
+
         ProductPrice productPrice = ProductPrice.builder()
                 .productId(productId)
                 .startDate(productDTO.getStartDate())

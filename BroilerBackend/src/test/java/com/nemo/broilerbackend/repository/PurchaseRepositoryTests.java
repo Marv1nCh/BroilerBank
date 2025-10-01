@@ -10,7 +10,7 @@ import org.springframework.boot.jdbc.EmbeddedDatabaseConnection;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
-import java.time.Instant;
+import java.time.LocalDate;
 import java.util.UUID;
 
 @DataJpaTest
@@ -25,7 +25,7 @@ public class PurchaseRepositoryTests {
     private static Purchase buildPurchase() {
         return Purchase.builder()
                 .userId(UUID.randomUUID())
-                .date(Instant.now())
+                .date(LocalDate.now())
                 .paid(false)
                 .build();
     }
@@ -36,14 +36,14 @@ public class PurchaseRepositoryTests {
     }
 
     @Test
-    public void PurchaseRepository_Save_ReturnNotNull() {
+    public void purchaseRepository_Save_ReturnNotNull() {
         Purchase savedPurchase = purchaseRepository.save(purchase);
 
         Assertions.assertNotNull(savedPurchase);
     }
 
     @Test
-    public void PurchaseRepository_Save_ReturnCorrectPurchase() {
+    public void purchaseRepository_Save_ReturnCorrectPurchase() {
         Purchase savedPurchase = purchaseRepository.save(purchase);
 
         Assertions.assertEquals(savedPurchase.getUserId(), purchase.getUserId());
