@@ -8,5 +8,5 @@ import { Layout } from "./layout/layout";
   styleUrl: './app.scss'
 })
 export class App {
-  protected readonly title = signal('BroilerFrontend');
+  protected readonly title = signal('Broiler Thursday!');
 }

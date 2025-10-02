@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { RouterLink } from '@angular/router';
+import { ChickenIcon } from "../../../components/icons/chicken-icon/chicken-icon";
 
 interface MenuItem {
   icon: string;
@@ -13,7 +14,7 @@ interface MenuItem {
 
 @Component({
   selector: 'app-sidebar',
-  imports: [CommonModule, RouterLink, MatIconModule],
+  imports: [CommonModule, RouterLink, MatIconModule, ChickenIcon],
   templateUrl: './sidebar.html',
   styleUrl: './sidebar.scss',
 })
@@ -36,6 +37,11 @@ export class Sidebar {
       icon: 'business_center',
       label: 'Products',
       urlSuffix: '/products'
+    },
+    {
+      icon: 'emoji_events',
+      label: 'Leaderboard',
+      urlSuffix: '/leaderboard'
     }
   ];
 

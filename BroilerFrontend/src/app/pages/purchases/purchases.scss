@@ -1,45 +1,61 @@
 .user-table {
-  background-color: #f4f6f7;
+  background-color: #f4f6f7;;
   width: 100%;
   border-collapse: collapse;
   font-size: medium;
-
-  td {
-    border-bottom: 1px solid #ccc;
-    padding: 1em;
-  }
-
-  td:last-child {
-    border-right: none;
-  }
+  box-shadow: 1px 0 50px #b1abab;
+  border-radius: 10px;
+  margin-top: 5em;
+  margin-left: 2em;
 }
 
 ::ng-deep .mat-sort-header-arrow svg path{
     fill: white;
+    height: 100px;
+    width: 100px;
   }
 
 ::ng-deep .mat-sort-header-container {
-  padding: 0.5em 0.5em;
-  height: 1rem;
+  padding: 0.75em 1em;
+  height: 2.25rem;
   align-items: center;
+  background-color: #edc328;
+  margin: 0.4em;
+  border-radius: 10px;
 }
 
 ::ng-deep .mat-sort-header-content {
-  color: #f4f6f7;
+  color: #000;
   font-size: xx-large;
   font-weight: bold;
 }
 
+.user-table td {
+  border-bottom: 1px solid #ccc;
+  padding: 1em;
+  align-items: center;
+}
+
+.user-table td:last-child {
+  border-right: none;
+}
+
+.user-table td:first-child {
+  width: 1em;
+}
+
+.user-table th {
+  line-height: 1.2;
+}
+
 ::ng-deep .mat-sort-header {
   margin: 1rem;
-  background-color: #34495e;
-  color: #f4f6f7;
   font-size: xx-large;
 }
 
-.add-purchase-button {
-  background-color: #34495e;
-  color: #f4f6f7;
+.add-product-button {
+  background-color: #edc328;
+  color: #000;
   padding: 1rem;
 }
 
@@ -48,13 +64,13 @@
 }
 
 .edit-button {
-  width: 32px;
-  height: 32px;
-  min-width: 32px;
-  min-height: 32px;
-  background-color: #34495e;
-  color: white;
+  width: 40px;
+  height: 40px;
+  color: #000;
   box-shadow: none;
+  cursor: pointer;
+  text-align: center;
+  align-content: center;
 }
 
 .edit-button mat-icon {
@@ -62,6 +78,30 @@
   width: 18px;
   height: 18px;
   line-height: 18px;
+}
+
+.input-container {
+  padding: 1em 0.15em 0.15em 0.15em;
+}
+
+.input-row-container {
+  display: flex;
+}
+
+.add-button {
+  width: 4.2em;
+  height: 4em;
+  margin-bottom: 1em;
+  background-color: #edc328;
+  box-shadow: 1px 0 5px #b1abab;
+}
+
+.dialog-error {
+    color: red; 
+}
+
+.user-mat-field {
+  margin-top: 1em;
 }
 
 .paid-indicator-not-paid{
@@ -85,4 +125,33 @@
 .paid-container {
   display: flex;
   align-items: center;
+}
+
+.edit-icon {
+  cursor: pointer;
+  margin-left: 0.5em;
+}
+
+.strikethrough-wrapper {
+  margin-top: 1em;
+  position: relative;
+  display: inline-block;
+  width: 100%;
+
+  &.disabled::after {
+    content: '';
+    position: absolute;
+    top: 35%;
+    left: 0.5em;
+    width: 95%;
+    height: 2px;
+    background-color: #000;
+    transform: rotate(-20deg);
+    pointer-events: none;
+    z-index: 10;
+  }
+
+  mat-form-field {
+    width: 100%;
+  }
 }

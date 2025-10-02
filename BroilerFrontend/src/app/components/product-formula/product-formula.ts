@@ -17,7 +17,7 @@ import { WarningDialog } from '../warning-dialog/warning-dialog';
   selector: 'app-product-formula',
   imports: [MatDialogContent, MatFormField, MatLabel, 
     MatDialogActions, FormsModule, MatInputModule, 
-    MatDatepickerModule, ReactiveFormsModule, MatSelectModule,
+    MatDatepickerModule, MatSelectModule,
     MatButtonModule, MatAutocompleteModule, ReactiveFormsModule, AsyncPipe],
   templateUrl: './product-formula.html',
   styleUrl: './product-formula.scss'

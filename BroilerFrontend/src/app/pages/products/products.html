@@ -1,29 +1,86 @@
 <div>
-    <div class="add-button-container">
-        <button matFab extended class="add-product-button" (click)="openDialog()">
-            <mat-icon>add</mat-icon>Add new Product
-        </button>
-    </div>
-
-    
     <table class="user-table" matSort (matSortChange)="sortData($event)">
         <tr>
+            <th mat-sort-header="actions">Actions:</th>
             <th mat-sort-header="startDate">Start Date:</th>
             <th mat-sort-header="type">Type:</th>
             <th mat-sort-header="price">Price:</th>
-            <th mat-sort-header="edit"></th>
+        </tr>
+        <tr>
+            <td>
+                <button matFab class="add-button" (click)="onAdd()">
+                    <mat-icon>add</mat-icon>
+                </button>
+            </td>
+            <td>
+                <div class="input-container">
+                    <mat-dialog-content>
+                        <mat-form-field>
+                            <mat-label>New Price set at:</mat-label>
+                            <input matInput [matDatepicker]="picker" [formControl]="createdAtControl" (change)="disableErrors()">
+                            <mat-hint>MM/DD/YYYY</mat-hint>
+                            <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+                            <mat-datepicker #picker></mat-datepicker>
+                        </mat-form-field>
+                    </mat-dialog-content>
+                    @if (dateError) {
+                        <div class="dialog-error">
+                            {{dateErrorMessage}}
+                        </div>                         
+                    }                  
+                </div>
+            </td>
+            <td>
+                <div class="input-container">
+                    <mat-dialog-content>
+                        <mat-form-field>
+                            <mat-label>Product Type:</mat-label>
+                            <input matInput 
+                                    [formControl]="type"
+                                    [matAutocomplete]="auto"
+                                    type="text"
+                                    aria-label="Food Option"
+                                    (change)="disableErrors()"
+                                    >
+                            <mat-autocomplete #auto="matAutocomplete">
+                                @for (option of productsOptions | async; track $index) {
+                                <mat-option [value]="option">{{option}}</mat-option>
+                                }
+                            </mat-autocomplete>
+                        </mat-form-field>
+                    </mat-dialog-content>
+                    @if (typeError) {
+                        <div class="dialog-error">
+                            {{typeErrorMessage}}
+                        </div>
+                    }
+                </div>
+            </td>
+            <td>
+                <div class="input-container">
+                    <mat-dialog-content>
+                        <mat-form-field>
+                            <mat-label>New Price:</mat-label>
+                            <input matInput [(ngModel)]="price"  (change)="disableErrors()"/>
+                        </mat-form-field>
+                    </mat-dialog-content>
+                    @if (priceError) {
+                        <div class="dialog-error">
+                            {{priceErrorMessage}}
+                        </div>
+                    }
+                </div>
+            </td>
         </tr>
 
         @for (product of products; track $index) {
             <tr>
+                <td> 
+                    <mat-icon class="edit-button" (click)="openDialog(product)">edit</mat-icon>
+                </td>
                 <td>{{product.startDate}}</td>
                 <td>{{product.type}}</td>
-                <td>{{product.price}}</td>
-                <td> 
-                    <button matFab class="edit-button" (click)="openDialog(product)"> 
-                        <mat-icon>edit</mat-icon>
-                    </button>
-                </td>
+                <td>{{product.price}} €</td>
             </tr>
         }
     </table>

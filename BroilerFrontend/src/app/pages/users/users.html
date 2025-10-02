@@ -1,26 +1,52 @@
 <div>
-    <div class="add-button-container">
-        <button matFab extended class="add-user-button"  (click)="openDialog()">
-            <mat-icon>add</mat-icon>Add new User
-        </button>
-    </div>
-
     <table class="user-table" matSort (matSortChange)="sortData($event)">
         <tr>
+            <th mat-sort-header="actions">Actions:</th>
             <th mat-sort-header="firstName">First Name:</th>
             <th mat-sort-header="name">Last Name:</th>
-            <th mat-sort-header="edit"></th>
+        </tr>
+        
+        <tr>
+            <td>
+                <button matFab class="add-button" (click)="onAdd()">
+                    <mat-icon>add</mat-icon>
+                </button>
+            </td>        
+            <td>
+                <mat-dialog-content>
+                    <mat-form-field>
+                    <mat-label>First Name:</mat-label>
+                    <input matInput [(ngModel)]="givenName" (change)="disableErrors()"/>
+                    </mat-form-field>    
+                </mat-dialog-content>
+                    @if (givenNameError) {
+                        <div class="dialog-error">
+                            {{givenNameErrorMessage}}
+                        </div>                         
+                    }                   
+            </td>   
+            <td>
+                <mat-dialog-content>
+                    <mat-form-field>
+                    <mat-label>Last Name:</mat-label>
+                    <input matInput [(ngModel)]="surname" (change)="disableErrors()"/>
+                    </mat-form-field>
+                </mat-dialog-content>  
+                    @if (surnameError) {
+                        <div class="dialog-error">
+                            {{surnameErrorMessage}}
+                        </div>                         
+                    }                                 
+            </td> 
         </tr>
 
         @for (user of users; track $index) {
             <tr>
+                <td>
+                    <mat-icon class="edit-icon" (click)="openDialog(user)">edit</mat-icon>
+                </td>
                 <td> {{user.givenName}} </td>
                 <td> {{user.surname}} </td>
-                <td>
-                    <button matFab class="edit-button" (click)="openDialog(user)"> 
-                        <mat-icon>edit</mat-icon>
-                    </button>
-                </td>
             </tr>
         }
     </table>
