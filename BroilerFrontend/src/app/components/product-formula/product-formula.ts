@@ -1,5 +1,5 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialogActions, MatDialogContent, MatDialogRef } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogActions, MatDialogContent, MatDialogRef } from '@angular/material/dialog';
 import { ProductService } from '../../services/product-service';
 import { MatFormField, MatLabel } from '@angular/material/form-field';
 import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -11,6 +11,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { catchError, map, Observable, startWith } from 'rxjs';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { AsyncPipe } from '@angular/common';
+import { WarningDialog } from '../warning-dialog/warning-dialog';
 
 @Component({
   selector: 'app-product-formula',
@@ -37,6 +38,8 @@ export class ProductFormula implements OnInit{
   productId = ""
   productsList: string[] = [];
   productsOptions!: Observable<string[]>
+
+  readonly dialog = inject(MatDialog)
 
   showError = false
   errorMessage = "All fields need to be filled in!"
@@ -76,20 +79,33 @@ export class ProductFormula implements OnInit{
     if(createdAt == null || type == null || price == null) {
       this.showError = true;
     }else {
-      const productToCreate = {
-        productId: this.productId,
-        startDate: createdAt.toDateString(),
-        type: type,
-        price: price
-      }
-      this.productService.addNewProductPrice(productToCreate)
-        .pipe(catchError( err => {
-          this.showError = true
-          this.errorMessage = err.message
-          throw err
-        }))
-        .subscribe((newProduct) => {
-          this.dialogRef.close(newProduct)
+      const dialogRef = this.dialog.open(WarningDialog, {
+        autoFocus: false,
+        data: {
+          warning: "Are you sure you chose the correct name?",
+          message: "Changing this to an already existing type is not possible after this."
+        }
+      })
+
+      dialogRef.afterClosed()
+        .subscribe( result => {
+          if (result) {
+            const productToCreate = {
+              productId: this.productId,
+              startDate: createdAt.toDateString(),
+              type: type,
+              price: price
+            }
+            this.productService.addNewProductPrice(productToCreate)
+              .pipe(catchError( err => {
+                this.showError = true
+                this.errorMessage = err.message
+                throw err
+              }))
+              .subscribe((newProduct) => {
+                this.dialogRef.close(newProduct)
+              })
+          }
         })
     }
   }

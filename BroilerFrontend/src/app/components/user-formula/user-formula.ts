@@ -30,8 +30,6 @@ export class UserFormula implements OnInit{
 
   showError = false
   errorMessage = "All fields need to be filled in!"
-  
-  readonly dialog = inject(MatDialog)
 
   ngOnInit(): void {
     if(this.data.update){

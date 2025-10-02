@@ -1,0 +1,12 @@
+<div class="warning-dialog-container">
+    <h1> {{this.data.warning}}</h1>
+    <h4> {{this.data.message}}</h4>
+    <div class="dialog-button-container">
+        <mat-dialog-actions>
+            <button matButton="tonal" (click)="onClose(false)" class="button-cancel">Cancel</button>
+        </mat-dialog-actions>
+        <mat-dialog-actions>
+            <button matButton="tonal" (click)="onClose(true)" class="button-proceed">Proceed</button>
+        </mat-dialog-actions>
+    </div>
+</div>
