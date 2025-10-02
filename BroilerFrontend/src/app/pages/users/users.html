@@ -9,12 +9,18 @@
         <tr>
             <th mat-sort-header="firstName">First Name:</th>
             <th mat-sort-header="name">Last Name:</th>
+            <th mat-sort-header="edit"></th>
         </tr>
 
         @for (user of users; track $index) {
             <tr>
                 <td> {{user.givenName}} </td>
                 <td> {{user.surname}} </td>
+                <td>
+                    <button matFab class="edit-button" (click)="openDialog(user)"> 
+                        <mat-icon>edit</mat-icon>
+                    </button>
+                </td>
             </tr>
         }
     </table>

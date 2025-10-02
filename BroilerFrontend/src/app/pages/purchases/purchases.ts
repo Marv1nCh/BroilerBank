@@ -21,7 +21,6 @@ import { FormsModule } from '@angular/forms';
   styleUrl: './purchases.scss'
 })
 export class Purchases implements OnInit {
-  displayedColumns: string[] = ['givenName', 'surname', 'date', 'products', 'paid', 'Edit']
   purchases = Array<Purchase>()
   paidControl = model(false)
   
@@ -48,35 +47,11 @@ export class Purchases implements OnInit {
     return new Date(date).toDateString();
   }
 
-  openAddDialog() {
-    const dialogref = this.dialog.open(PurchaseFormula, {
-      autoFocus: false,
-      data: {
-        update: false,
-        purchase: null
-      }
-    })
-
-    dialogref.afterClosed()
-    .subscribe(result => {
-      if (result != undefined) {
-        this.purchases.push({
-          purchaseId: result.purchaseId,
-          givenName: result.givenName, 
-          surname: result.surname, 
-          date: result.date, 
-          products:result.products, 
-          paid: result.paid, 
-          price: result.price})
-      }
-    })
-  }
-
-  openEditDialog(purchase: Purchase){
+  openDialog(purchase?: Purchase){
     const dialogRef = this.dialog.open(PurchaseFormula, {
       autoFocus: false,
       data: {
-        update: true,
+        update: purchase != null,
         purchase: purchase
       }
     })

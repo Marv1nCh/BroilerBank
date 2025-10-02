@@ -24,6 +24,10 @@ export class Users implements OnInit{
   readonly dialog = inject(MatDialog)
 
   ngOnInit(): void {
+    this.initializeUsers()
+  }
+
+  initializeUsers() {
     this.userService.getAllUsersFromBackend()
     .pipe(catchError((err) => {
       console.log(err);
@@ -34,20 +38,20 @@ export class Users implements OnInit{
     })
   }
 
-  openDialog() {
-    const dialogRef = this.dialog.open(UserFormula, {autoFocus: false})
-
-    dialogRef.afterClosed()
-    .subscribe(result => {
-      if (result != undefined) {
-        this.users.push( {
-          userPrincipleName: result.userPrincipleName, 
-          displayName: result.displayName, 
-          email:result.email, 
-          givenName: result.givenName, 
-          surname: result.surname})
+  openDialog(user?: User) {
+    const dialogRef = this.dialog.open(UserFormula, {
+      autoFocus: false,
+      data: {
+        update: user != null,
+        user: user
       }
-    })
+    });
+    dialogRef.afterClosed()
+      .subscribe(result => {
+        if (result != undefined) {
+          this.initializeUsers()
+        }
+      })
   }
 
   formatDateToString(date: Date) {

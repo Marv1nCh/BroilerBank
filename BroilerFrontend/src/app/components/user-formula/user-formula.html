@@ -24,7 +24,7 @@
       <button matButton="tonal" (click)="onCancel()" class="button">Cancel</button>
     </mat-dialog-actions>
     <mat-dialog-actions>
-      <button matButton="tonal" (click)="onAdd()" class="button">Add</button>
+      <button matButton="tonal" (click)="onAdd()" class="button">{{this.data.update ? "Update" : "Add"}}</button>
     </mat-dialog-actions>
   </div>
 </div>

@@ -13,9 +13,7 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 import static org.mockito.Mockito.when;
 
@@ -57,19 +55,52 @@ public class UserServiceTests {
     }
 
     @Test
-    public void UserService_addUser_ReturnNotNull() {
+    public void UserService_addOrUpdateUser_ReturnNotNull() {
+        when(userRepository.existsByGivenNameAndSurname(Mockito.anyString(), Mockito.anyString())).thenReturn(false);
         when(userRepository.save(Mockito.any(User.class))).thenReturn(user1);
 
-        UserDTO savedUserDTO = userService.addUser(userDTO1);
+        UserDTO savedUserDTO = userService.addOrUpdateUser(userDTO1);
 
         Assertions.assertNotNull(savedUserDTO);
     }
 
     @Test
-    public void UserService_addUser_ReturnCorrectUserDTO() {
+    public void UserService_addOrUpdateUser_ReturnCorrectUserDTO() {
+        when(userRepository.existsByGivenNameAndSurname(Mockito.anyString(), Mockito.anyString())).thenReturn(false);
         when(userRepository.save(Mockito.any(User.class))).thenReturn(user1);
 
-        UserDTO savedUserDTO = userService.addUser(userDTO1);
+        UserDTO savedUserDTO = userService.addOrUpdateUser(userDTO1);
+
+        Assertions.assertEquals(userDTO1.getGivenName(), savedUserDTO.getGivenName());
+        Assertions.assertEquals(userDTO1.getSurname(), savedUserDTO.getSurname());
+    }
+
+    @Test
+    public void UserService_addOrUpdateUser_ReturnNotNUllWhenUserExists() {
+        UserDTO userDTOForTest = new UserDTO(user1);
+        User userForTest = buildUser("TestUser1");
+        userForTest.setId(userForTest.getId());
+        userDTOForTest.setUserId(UUID.randomUUID());
+
+        when(userRepository.findById((UUID) Mockito.any())).thenReturn(Optional.of(userForTest));
+        when(userRepository.save(Mockito.any(User.class))).thenReturn(userForTest);
+
+        UserDTO savedUserDTO = userService.addOrUpdateUser(userDTOForTest);
+
+        Assertions.assertNotNull(savedUserDTO);
+    }
+
+    @Test
+    public void UserService_addOrUpdateUser_ReturnCorrectUserDTOWhenUserExists() {
+        UserDTO userDTOForTest = new UserDTO(user1);
+        User userForTest = buildUser("TestUser1");
+        userForTest.setId(userForTest.getId());
+        userDTOForTest.setUserId(UUID.randomUUID());
+
+        when(userRepository.findById((UUID) Mockito.any())).thenReturn(Optional.of(userForTest));
+        when(userRepository.save(Mockito.any(User.class))).thenReturn(userForTest);
+
+        UserDTO savedUserDTO = userService.addOrUpdateUser(userDTOForTest);
 
         Assertions.assertEquals(userDTO1.getGivenName(), savedUserDTO.getGivenName());
         Assertions.assertEquals(userDTO1.getSurname(), savedUserDTO.getSurname());

@@ -73,7 +73,7 @@ public class UserControllerTests {
 
     @Test
     public void UserController_CreateUser_ReturnsNotNull() throws Exception {
-        given(userService.addUser(ArgumentMatchers.any()))
+        given(userService.addOrUpdateUser(ArgumentMatchers.any()))
                 .willAnswer(invocation -> invocation.getArgument(0));
 
         ResultActions response = mockMvc.perform(post("/users")
@@ -85,7 +85,7 @@ public class UserControllerTests {
 
     @Test
     public void UserController_CreateUser_returnsNotNUllUserDTO() throws Exception {
-        given(userService.addUser(ArgumentMatchers.any()))
+        given(userService.addOrUpdateUser(ArgumentMatchers.any()))
             .willAnswer(invocation -> invocation.getArgument(0));
 
         ResultActions response = mockMvc.perform(post("/users")
@@ -100,7 +100,7 @@ public class UserControllerTests {
 
     @Test
     public void UserController_CreateUser_returnsCorrectUserDTO() throws Exception {
-        given(userService.addUser(ArgumentMatchers.any()))
+        given(userService.addOrUpdateUser(ArgumentMatchers.any()))
                 .willAnswer(invocation -> invocation.getArgument(0));
 
         ResultActions response = mockMvc.perform(post("/users")

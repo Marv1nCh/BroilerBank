@@ -1,6 +1,6 @@
 <div>
     <div class="add-button-container">
-        <button matFab extended class="add-purchase-button" (click)="openAddDialog()">
+        <button matFab extended class="add-purchase-button" (click)="openDialog()">
             <mat-icon>add</mat-icon>Add new Purchase
         </button>
     </div>
@@ -41,7 +41,7 @@
                 </td>
                 <td> {{purchase.price}} €</td>
                 <td> 
-                    <button matFab class="edit-button" (click)="openEditDialog(purchase)"> 
+                    <button matFab class="edit-button" (click)="openDialog(purchase)"> 
                         <mat-icon>edit</mat-icon>
                     </button>
                 </td>

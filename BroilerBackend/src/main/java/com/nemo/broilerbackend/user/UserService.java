@@ -22,7 +22,7 @@ public class UserService {
         return userRepository.findAll().stream().map(UserDTO::new).toList();
     }
 
-    public UserDTO addUser(UserDTO userDTO) {
+    public UserDTO addOrUpdateUser(UserDTO userDTO) {
         //TODO remove hardcoded values when ready
         User user = User.builder()
                 .userPrincipleName(userDTO.getUserPrincipleName())
@@ -35,6 +35,13 @@ public class UserService {
                 .roles(Collections.emptyList())
                 .updatedAt(LocalDate.now())
                 .build();
+
+        if(userDTO.getUserId() != null) {
+            User foundUser = userRepository.findById(userDTO.getUserId()).get();
+            user.setId(foundUser.getId());
+            user.setCreatedAt(foundUser.getCreatedAt());
+            user.setUpdatedAt(LocalDate.now());
+        }
 
         return new UserDTO(userRepository.save(user));
     }

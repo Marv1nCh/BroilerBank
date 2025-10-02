@@ -49,3 +49,18 @@
 .add-button-container {
   padding-bottom: 1rem;
 }
+
+.edit-button {
+  width: 32px;
+  height: 32px;
+  background-color: #34495e;
+  color: white;
+  box-shadow: none;
+}
+
+.edit-button mat-icon {
+  font-size: 18px;
+  width: 18px;
+  height: 18px;
+  line-height: 18px;
+}

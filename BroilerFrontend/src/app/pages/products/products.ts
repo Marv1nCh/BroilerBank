@@ -17,7 +17,6 @@ import { MatButtonModule } from '@angular/material/button';
   styleUrl: './products.scss'
 })
 export class Products implements OnInit{
-  displayedColumns: string[] = ['startDate', 'type', 'price', 'edit']
   productService = inject(ProductService)
   products = Array<Product>()
 
@@ -39,31 +38,11 @@ export class Products implements OnInit{
     })
   }
 
-  openAddDialog() {
+  openDialog(product?: Product) {
     const dialogRef = this.dialog.open(ProductFormula, {
       autoFocus: false,
       data: {
-        update: false,
-        product: null
-      }
-    })
- 
-    dialogRef.afterClosed()
-    .subscribe( result => {
-      if (result != undefined) {
-        this.products.push({
-          startDate: result.startDate, 
-          type: result.type, 
-          price: result.price});
-      }
-    })
-  }
-
-  openEditDialog(product: Product) {
-    const dialogRef = this.dialog.open(ProductFormula, {
-      autoFocus: false,
-      data: {
-        update: true,
+        update: product != null,
         product: product
       }
     })

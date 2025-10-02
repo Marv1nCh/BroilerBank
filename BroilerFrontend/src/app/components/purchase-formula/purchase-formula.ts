@@ -26,9 +26,9 @@ import { MatButtonModule } from '@angular/material/button';
 })
 export class PurchaseFormula implements OnInit{
     data = inject(MAT_DIALOG_DATA) as {
-    update: boolean,
-    purchase: Purchase
-  };
+      update: boolean,
+      purchase: Purchase
+    };
 
   dialogRef = inject(MatDialogRef<PurchaseFormula>)
   purchaseService = inject(PurchaseService)

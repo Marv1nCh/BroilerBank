@@ -6,11 +6,14 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.UUID;
+
 @Setter
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
 public class UserDTO {
+    private UUID userId;
     private String userPrincipleName;
     private String displayName;
     private String email;
@@ -18,6 +21,7 @@ public class UserDTO {
     private String surname;
 
     public UserDTO(User user) {
+        this.userId = user.getId();
         this.userPrincipleName = user.getUserPrincipleName();
         this.displayName = user.getDisplayName();
         this.email = user.getEmail();

@@ -31,8 +31,11 @@ public class User {
     private String userType;
     private List<String> roles;
     @CreatedDate
+    @JsonFormat(pattern = "EEE MMM dd yyyy", locale = "en")
+    @Setter
     private LocalDate createdAt;
     @JsonFormat(pattern = "EEE MMM dd yyyy", locale = "en")
+    @Setter
     private LocalDate updatedAt;
 
 }
