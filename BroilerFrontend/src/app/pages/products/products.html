@@ -8,7 +8,7 @@
         </tr>
         <tr>
             <td>
-                <button matFab class="add-button" (click)="onAdd()">
+                <button matFab class="button" (click)="onSavedNewProduct()">
                     <mat-icon>add</mat-icon>
                 </button>
             </td>
@@ -74,14 +74,78 @@
         </tr>
 
         @for (product of products; track $index) {
-            <tr>
-                <td> 
-                    <mat-icon class="edit-button" (click)="openDialog(product)">edit</mat-icon>
-                </td>
-                <td>{{product.startDate}}</td>
-                <td>{{product.type}}</td>
-                <td>{{product.price}} €</td>
-            </tr>
+            @if (currentlyEditingId == product.productId && currentlyEditingDate == product.startDate) {
+                <tr>
+                    <td>
+                        <button matFab class="button-save" (click)="onSaveEdit(product)">
+                            <mat-icon>save</mat-icon>
+                        </button>
+                        <button matFab class="button" (click)="onCancelEdit()">
+                            <mat-icon>cancel</mat-icon>
+                        </button>
+                    </td>
+                    <td>
+                        <mat-dialog-content>
+                        <div class="strikethrough-wrapper" [class.disabled]="true">
+                            <mat-form-field appearance="fill">
+                            <input placeholder="{{product.startDate}}" matInput [disabled]="true" />
+                            </mat-form-field>
+                        </div>
+                        </mat-dialog-content>
+                    </td>
+                    <td>
+                        <div class="input-container">
+                            <mat-dialog-content>
+                                <mat-form-field>
+                                    <mat-label>Product Type:</mat-label>
+                                    <input matInput 
+                                            [formControl]="typeEdit"
+                                            [matAutocomplete]="auto"
+                                            type="text"
+                                            aria-label="Food Option"
+                                            (change)="disableEditErrors()"
+                                            >
+                                    <mat-autocomplete #auto="matAutocomplete">
+                                        @for (option of productsOptions | async; track $index) {
+                                        <mat-option [value]="option">{{option}}</mat-option>
+                                        }
+                                    </mat-autocomplete>
+                                </mat-form-field>
+                            </mat-dialog-content>
+                            @if (typeErrorEdit) {
+                                <div class="dialog-error">
+                                    {{typeErrorMessageEdit}}
+                                </div>
+                            }
+                        </div>
+                    </td>
+                    <td>
+                        <div class="input-container">
+                            <mat-dialog-content>
+                                <mat-form-field>
+                                    <mat-label>New Price:</mat-label>
+                                    <input matInput [formControl]="priceEdit"  (change)="disableEditErrors()"/>
+                                </mat-form-field>
+                            </mat-dialog-content>
+                            @if (priceErrorEdit) {
+                                <div class="dialog-error">
+                                    {{priceErrorMessageEdit}}
+                                </div>
+                            }
+                        </div>
+                    </td>
+                </tr>
+            }
+            @else {
+                <tr>
+                    <td> 
+                        <mat-icon class="edit-button" (click)="onEdit(product)">edit</mat-icon>
+                    </td>
+                    <td>{{product.startDate}}</td>
+                    <td>{{product.type}}</td>
+                    <td>{{product.price}} €</td>
+                </tr>
+            }
         }
     </table>
 </div>

@@ -4,7 +4,6 @@ import { Product } from '../../model/products.type';
 import { catchError, map, Observable, startWith } from 'rxjs';
 import { MatTableModule } from '@angular/material/table';
 import { MatDialog, MatDialogContent, MatDialogModule } from '@angular/material/dialog';
-import { ProductFormula } from '../../components/product-formula/product-formula';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSortModule, Sort } from '@angular/material/sort';
 import { compare } from '../../shared/utils';
@@ -17,6 +16,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { WarningDialog } from '../../components/warning-dialog/warning-dialog';
 import { AsyncPipe } from '@angular/common';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-products',
@@ -28,6 +28,8 @@ import { AsyncPipe } from '@angular/common';
   styleUrl: './products.scss'
 })
 export class Products implements OnInit{
+  constructor(private snackBar: MatSnackBar) {}
+
   productService = inject(ProductService)
   products = Array<Product>()
 
@@ -47,6 +49,21 @@ export class Products implements OnInit{
   productsList: string[] = [];
   productsOptions!: Observable<string[]>
 
+  createdAtControlEdit = new FormControl<Date | null>(null);
+  typeEdit = new FormControl<string | null>(null)
+  priceEdit = new FormControl<number | null>(null)
+
+  dateErrorEdit = false
+  dateErrorMessageEdit = "Date has to be filled in!"
+  typeErrorEdit = false
+  typeErrorMessageEdit = "Type has to be filled in!"
+  priceErrorEdit = false
+  priceErrorMessageEdit = "Price has to be filled in!"
+
+  currentlyEditingId: string | null = null
+  currentlyEditingDate: string | null = null
+  rowBeingEdited: Product | null = null
+
   ngOnInit(): void {
     this.initializeProducts()
     
@@ -57,6 +74,7 @@ export class Products implements OnInit{
         }))
         .subscribe((productsFromBackend) => {
           this.productsList = productsFromBackend.map(product => product.type)
+          this.sortData({active: 'startDate', direction: 'asc'})
           this.productsOptions = this.type.valueChanges.pipe(
             startWith(''),
             map(value => this.filter(value || '')),
@@ -72,7 +90,86 @@ export class Products implements OnInit{
     }))
     .subscribe((productsFromBackend) => {
       this.products = productsFromBackend
+      this.sortData({active: 'startDate', direction: 'asc'})
     })
+  }
+
+  onSaveEdit(product: Product) {
+    const createdAt = this.createdAtControlEdit.value
+    const type = this.typeEdit.value
+    const price = this.priceEdit.value
+
+    if(createdAt == null){
+      this.dateErrorEdit = true
+    }
+    else if(type == null || type == ''){
+      this.typeErrorEdit = true
+    }
+    else if(price == null || price == undefined){
+      this.priceErrorEdit = true
+    }
+    else {
+      const productToUpdate = {
+        productId: product.productId,
+        startDate: product.startDate,
+        type: type,
+        price: price
+      }
+      this.addProduct(productToUpdate)
+      this.resetEditingValues()
+    }
+  }
+
+  onSavedNewProduct() {
+    const createdAt = this.createdAtControl.value
+    const type = this.type.value
+    const price = this.price()
+
+    if(createdAt == null){
+      this.dateError = true
+    }
+    else if(type == null || type == ''){
+      this.typeError = true
+    }
+    else if(price == null){
+      this.priceError = true
+    }
+    else {
+      const productToCreate = {
+        startDate: createdAt.toDateString(),
+        type: type,
+        price: price
+      }
+      this.addProduct(productToCreate)
+      this.resetEditingValues()
+    }
+  }
+
+  addProduct(product: Product){
+    const dialogRef = this.dialog.open(WarningDialog, {
+      autoFocus: false,
+      data: {
+        warning: "Are you sure you chose the correct name?",
+        message: "Changing this to an already existing type is not possible after this. Also changing the Date is not possible after this."
+      }
+    });
+    dialogRef.afterClosed()
+      .subscribe( result => {
+        if (result) {
+          this.productService.addNewProductPrice(product)
+            .pipe(catchError( err => {
+              console.log(err)
+              throw err
+            }))
+            .subscribe(() => {
+              this.initializeProducts()
+              this.createdAtControl.setValue(null)
+              this.type.setValue(null)
+              this.price.set(null)
+              this.openSnackBar("Product has been saved!")
+            })
+        }
+      })
   }
   
   filter(value: string): string[]  {
@@ -81,74 +178,56 @@ export class Products implements OnInit{
     return this.productsList.filter(option => option.toLowerCase().includes(filterValue));
   }
 
-  openDialog(product?: Product) {
-    const dialogRef = this.dialog.open(ProductFormula, {
-      autoFocus: false,
-      data: {
-        update: product != null,
-        product: product
-      }
-    })
-
-    dialogRef.afterClosed()
-      .subscribe(result => {
-        if (result != undefined) {
-          this.initializeProducts()
-        }
-      })
-  }
-
   disableErrors() {
     this.dateError = false
     this.typeError = false
     this.priceError = false
   }
 
-  onAdd() {
-    const createdAt = this.createdAtControl.value
-    const type = this.type.value
-    const price = this.price()
+  disableEditErrors() {}
 
-    if(createdAt == null){
-      this.dateError = true
-    }
-    if(type == null || type == ''){
-      this.typeError = true
-    }
-    if(price == null){
-      this.priceError = true
+  onEdit(newCurrentlyEditedProduct: Product){
+    this.dateErrorEdit = false
+    this.typeErrorEdit = false
+    this.priceErrorEdit = false
+
+    if (this.rowBeingEdited != null) {
+      const purchaseIndex = this.products.findIndex(product => product.productId == this.currentlyEditingId && product.startDate == this.currentlyEditingDate)
+      this.products[purchaseIndex] = this.rowBeingEdited 
     }
 
-    if(createdAt != null && type != null && type != '' && price != null) {
-        const dialogRef = this.dialog.open(WarningDialog, {
-          autoFocus: false,
-          data: {
-            warning: "Are you sure you chose the correct name?",
-            message: "Changing this to an already existing type is not possible after this."
-          }
-        });
-        dialogRef.afterClosed()
-          .subscribe( result => {
-            if (result) {
-              const productToCreate = {
-                startDate: createdAt.toDateString(),
-                type: type,
-                price: price
-              }
-              this.productService.addNewProductPrice(productToCreate)
-                .pipe(catchError( err => {
-                  console.log(err)
-                  throw err
-                }))
-                .subscribe(() => {
-                  this.initializeProducts()
-                  this.createdAtControl.setValue(null)
-                  this.type.setValue(null)
-                  this.price.set(null)
-                })
-            }
-          })
+    const newProductBeingEdited = this.products.find(product => 
+      product.productId == newCurrentlyEditedProduct.productId &&
+       product.startDate == newCurrentlyEditedProduct.startDate)
+
+    if(newProductBeingEdited != null) {
+      this.rowBeingEdited = newProductBeingEdited
+      this.currentlyEditingId = newProductBeingEdited.productId!
+      this.currentlyEditingDate = newProductBeingEdited.startDate
+
+      this.createdAtControlEdit.setValue(new Date(newProductBeingEdited.startDate))
+      this.typeEdit.setValue(newProductBeingEdited.type)
+      this.priceEdit.setValue(Number(newProductBeingEdited.price))
     }
+  }
+
+  onCancelEdit() {
+    if(this.rowBeingEdited != null) {
+      const productIndex = this.products.findIndex(product => product.productId == this.currentlyEditingId && product.startDate == this.currentlyEditingDate)
+      this.products[productIndex] = this.rowBeingEdited
+
+      this.resetEditingValues()
+    }
+  }
+
+  resetEditingValues() {
+    this.createdAtControlEdit.setValue(null)
+    this.typeEdit.setValue(null)
+    this.priceEdit.setValue(null)
+
+    this.currentlyEditingDate = null
+    this.currentlyEditingId = null
+    this.rowBeingEdited = null
   }
 
   formatDateToString(date: Date) {
@@ -173,5 +252,9 @@ export class Products implements OnInit{
           return 0;
       }
     });
+  }
+
+  openSnackBar (message: string) {
+    this.snackBar.open(message, "close")
   }
 }

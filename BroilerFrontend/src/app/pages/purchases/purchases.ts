@@ -4,7 +4,6 @@ import { Purchase } from '../../model/purchase.type';
 import { catchError } from 'rxjs';
 import { MatTableModule } from '@angular/material/table';
 import { MatDialog, MatDialogContent, MatDialogModule } from '@angular/material/dialog';
-import { PurchaseFormula } from '../../components/purchase-formula/purchase-formula';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSortModule, Sort } from "@angular/material/sort";
 import { compare } from '../../shared/utils';
@@ -19,6 +18,7 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { User } from '../../model/user.type';
 import { ProductService } from '../../services/product-service';
 import { UserService } from '../../services/user-service';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-purchases',
@@ -30,6 +30,8 @@ import { UserService } from '../../services/user-service';
   styleUrl: './purchases.scss'
 })
 export class Purchases implements OnInit {
+  constructor(private snackBar: MatSnackBar) {}
+
   purchases = Array<Purchase>()  
   foodOptions: Array<string> = []
   users = Array<User>()
@@ -50,6 +52,12 @@ export class Purchases implements OnInit {
   userError = false
   userErrorMessage = "User has to be filled out!"
 
+  purchasedAtControlEdit = new FormControl<Date | null>(null)
+  foodOptionControlEdit = new FormControl<string[] | null>(null)
+  paidControlEdit = model(false)
+
+  currentlyEditingId: string | null = null
+  rowBeingEdited: Purchase | null = null
 
   readonly dialog = inject(MatDialog)
 
@@ -83,28 +91,13 @@ export class Purchases implements OnInit {
       }))
         .subscribe((purchasesFromBackend) => {
           this.purchases = purchasesFromBackend
+
+          this.sortData({active: 'date', direction: 'asc'})
         });
   }
 
   formatDateToString(date: Date) {
     return new Date(date).toDateString();
-  }
-
-  openDialog(purchase?: Purchase){
-    const dialogRef = this.dialog.open(PurchaseFormula, {
-      autoFocus: false,
-      data: {
-        update: purchase != null,
-        purchase: purchase
-      }
-    })
-
-    dialogRef.afterClosed()
-      .subscribe(result => {
-        if (result != undefined) {
-          this.initializePurchases()
-        }
-      })
   }
 
   onPaidChange(purchase: Purchase) {
@@ -116,7 +109,7 @@ export class Purchases implements OnInit {
       .subscribe()
   }
 
-  onAdd() {
+  onSaveNewPurchase() {
     const purchasedAt = this.purchasedAtControl.value
     const user = this.userControl.value
     const foodOption = this.foodOptionControl.value
@@ -152,6 +145,101 @@ export class Purchases implements OnInit {
               this.paidControl.set(false)
               this.purchasedAtControl.setValue(null)
             })
+            this.openSnackBar("Purchase has been saved!")
+    }
+  }
+
+  onSaveEdit(purchase: Purchase) {
+    const purchasedAt = this.purchasedAtControlEdit.value
+    const foodOption = this.foodOptionControlEdit.value
+
+    if(purchasedAt == null) {
+      this.dateError = true
+    }
+    else if(foodOption == null) {
+      this.typeError = true
+    }
+    else if (purchasedAt.toDateString() == this.rowBeingEdited?.date && 
+              foodOption == this.rowBeingEdited.products && 
+                this.paidControlEdit() == this.rowBeingEdited.paid) {
+      this.openSnackBar("Nothing saved, due to no changes!")
+
+      this.resetEditingValues()
+    }
+
+    else {
+          const purchaseToUpdate = {
+            purchaseId: purchase.purchaseId,
+            givenName: purchase.givenName, 
+            surname: purchase.surname, 
+            date: purchasedAt.toDateString(), 
+            products: foodOption, 
+            paid: this.paidControlEdit(), 
+            price: 0
+          }
+          this.purchaseService.updatePurchase(purchaseToUpdate)
+            .pipe(catchError((err) => {
+              console.log(err)
+              throw err;
+            }))
+            .subscribe(() => { 
+              this.initializePurchases()
+              this.resetEditingValues()
+            })          
+
+            this.openSnackBar("Purchase has been updated!")
+
+            this.resetEditingValues()
+    }
+  }
+
+  addPurchase(purchase: Purchase) {
+  this.purchaseService.addNewPurchase(purchase)
+    .pipe(catchError((err) => {
+      console.log(err)
+      throw err;
+    }))
+    .subscribe(() => { 
+      this.initializePurchases()
+      this.userControl.setValue(null)
+      this.foodOptionControl.setValue(null)
+      this.paidControl.set(false)
+      this.purchasedAtControl.setValue(null)
+    })
+  }
+
+  onCancelEdit() {
+    if(this.rowBeingEdited != null) {
+      const purchaseIndex = this.purchases.findIndex( purchase => purchase.purchaseId == this.currentlyEditingId)
+      this.purchases[purchaseIndex] = this.rowBeingEdited
+
+      this.resetEditingValues()
+    }
+  }
+
+  resetEditingValues() {
+    this.purchasedAtControlEdit.setValue(null)
+    this.foodOptionControlEdit.setValue(null)
+    this.paidControlEdit.set(false)
+
+    this.currentlyEditingId = null
+    this.rowBeingEdited = null
+  }
+
+  onEdit(newCurrentlyEditingId: string){
+    if(this.rowBeingEdited != null) {
+      const purchaseIndex = this.purchases.findIndex(purchase => purchase.purchaseId == this.currentlyEditingId)
+      this.purchases[purchaseIndex] = this.rowBeingEdited
+    }
+
+    const newPurchaseBeingEdited = this.purchases.find(purchase => purchase.purchaseId == newCurrentlyEditingId)
+    if (newPurchaseBeingEdited != null) {
+      this.rowBeingEdited = newPurchaseBeingEdited
+      this.currentlyEditingId = newPurchaseBeingEdited.purchaseId!
+
+      this.purchasedAtControlEdit.setValue(new Date(newPurchaseBeingEdited.date))
+      this.foodOptionControlEdit.setValue(newPurchaseBeingEdited.products)
+      this.paidControlEdit.set(newPurchaseBeingEdited.paid)
     }
   }
 
@@ -183,5 +271,9 @@ export class Purchases implements OnInit {
           return 0;
       }
     })
+  }
+
+  openSnackBar (message: string) {
+    this.snackBar.open(message, "close")
   }
 }

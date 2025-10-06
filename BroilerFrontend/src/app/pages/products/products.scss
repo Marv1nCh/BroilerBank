@@ -85,7 +85,7 @@
   display: flex;
 }
 
-.add-button {
+.button {
   width: 4.2em;
   height: 4em;
   margin-bottom: 1em;
@@ -93,6 +93,39 @@
   box-shadow: 1px 0 5px #b1abab;
 }
 
+.button-save {
+  width: 4.2em;
+  height: 4em;
+  margin-bottom: 1em;
+  background-color: #edc328;
+  box-shadow: 1px 0 5px #b1abab;
+    margin-right: 1em;
+}
+
 .dialog-error {
     color: red; 
+}
+
+.strikethrough-wrapper {
+  margin-top: 1em;
+  position: relative;
+  display: inline-block;
+  width: 100%;
+
+  &.disabled::after {
+    content: '';
+    position: absolute;
+    top: 35%;
+    left: 0.5em;
+    width: 95%;
+    height: 2px;
+    background-color: #000;
+    transform: rotate(-20deg);
+    pointer-events: none;
+    z-index: 10;
+  }
+
+  mat-form-field {
+    width: 100%;
+  }
 }

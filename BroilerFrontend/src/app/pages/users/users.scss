@@ -72,12 +72,21 @@
   cursor: pointer;
 }
 
-.add-button {
+.button {
   width: 4.2em;
   height: 4em;
   margin-bottom: 1em;
   background-color: #edc328;
   box-shadow: 1px 0 5px #b1abab;
+}
+
+.button-save {
+  width: 4.2em;
+  height: 4em;
+  margin-bottom: 1em;
+  background-color: #edc328;
+  box-shadow: 1px 0 5px #b1abab;
+    margin-right: 1em;
 }
 
 .dialog-error {
