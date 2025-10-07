@@ -24,4 +24,12 @@ export const routes: Routes = [{
             (m) => m.Purchases
         )
     }
+},
+{
+    path: 'leaderboard',
+    loadComponent: () => {
+        return import('./pages/leaderboard/leaderboardPage').then(
+            (m) => m.LeaderboardPage
+        )
+    }
 }];

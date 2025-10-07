@@ -1,0 +1,35 @@
+.leaderboard-table {
+  background-color: #f4f6f7;
+  border-collapse: collapse;
+  font-size: medium;
+  box-shadow: 1px 0 50px #b1abab;
+  border-radius: 10px;
+  margin-top: 5em;
+  margin-left: 20em;
+}
+
+.leaderboard-container {
+    width: 70%;
+}
+
+.mat-mdc-header-cell {
+  font-size: xx-large;
+  font-weight: bold;
+  line-height: 120%;
+  border-bottom: none;
+  text-align: center;
+  align-items: center;
+}
+
+.header-cell {
+  padding: 0.75em 1em;
+  background-color: #edc328 !important;
+  border-radius: 10px;
+  margin: 0.15em;
+  color: #000;
+  height: 4rem;
+}
+
+.mat-mdc-cell {
+  border-bottom: 1px solid #ccc;
+}
