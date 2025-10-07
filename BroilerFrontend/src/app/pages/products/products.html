@@ -1,17 +1,12 @@
 <div>
     <table class="user-table" matSort (matSortChange)="sortData($event)">
         <tr>
-            <th mat-sort-header="actions">Actions:</th>
             <th mat-sort-header="startDate">Start Date:</th>
             <th mat-sort-header="type">Type:</th>
             <th mat-sort-header="price">Price:</th>
+            <th mat-sort-header="actions">Actions:</th>
         </tr>
         <tr>
-            <td>
-                <button matFab class="button" (click)="onSavedNewProduct()">
-                    <mat-icon>add</mat-icon>
-                </button>
-            </td>
             <td>
                 <div class="input-container">
                     <mat-dialog-content>
@@ -71,19 +66,16 @@
                     }
                 </div>
             </td>
+            <td>
+                <button matFab class="button" (click)="onSavedNewProduct()">
+                    <mat-icon>add</mat-icon>
+                </button>
+            </td>
         </tr>
 
         @for (product of products; track $index) {
             @if (currentlyEditingId == product.productId && currentlyEditingDate == product.startDate) {
                 <tr>
-                    <td>
-                        <button matFab class="button-save" (click)="onSaveEdit(product)">
-                            <mat-icon>save</mat-icon>
-                        </button>
-                        <button matFab class="button" (click)="onCancelEdit()">
-                            <mat-icon>cancel</mat-icon>
-                        </button>
-                    </td>
                     <td>
                         <mat-dialog-content>
                         <div class="strikethrough-wrapper" [class.disabled]="true">
@@ -134,16 +126,24 @@
                             }
                         </div>
                     </td>
+                    <td>
+                        <button matFab class="button-save" (click)="onSaveEdit(product)">
+                            <mat-icon>save</mat-icon>
+                        </button>
+                        <button matFab class="button" (click)="onCancelEdit()">
+                            <mat-icon>cancel</mat-icon>
+                        </button>
+                    </td>
                 </tr>
             }
             @else {
                 <tr>
-                    <td> 
-                        <mat-icon class="edit-button" (click)="onEdit(product)">edit</mat-icon>
-                    </td>
                     <td>{{product.startDate}}</td>
                     <td>{{product.type}}</td>
                     <td>{{product.price}} €</td>
+                    <td> 
+                        <mat-icon class="edit-button" (click)="onEdit(product)">edit</mat-icon>
+                    </td>
                 </tr>
             }
         }

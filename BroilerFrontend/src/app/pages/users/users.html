@@ -1,17 +1,12 @@
 <div>
     <table class="user-table" matSort (matSortChange)="sortData($event)">
         <tr>
-            <th mat-sort-header="actions">Actions:</th>
             <th mat-sort-header="firstName">First Name:</th>
             <th mat-sort-header="name">Last Name:</th>
+            <th mat-sort-header="actions">Actions:</th>
         </tr>
         
-        <tr>
-            <td>
-                <button matFab class="button" (click)="onSaveNewUser()">
-                    <mat-icon>add</mat-icon>
-                </button>
-            </td>        
+        <tr>       
             <td>
                 <mat-dialog-content>
                     <mat-form-field>
@@ -38,19 +33,16 @@
                         </div>                         
                     }                                 
             </td> 
+            <td>
+                <button matFab class="button" (click)="onSaveNewUser()">
+                    <mat-icon>add</mat-icon>
+                </button>
+            </td> 
         </tr>
 
         @for (user of users; track $index) {
             @if(user.userId == this.currentlyEditingId){
-                <tr>
-                    <td>
-                        <button matFab class="button-save" (click)="onSaveEdit(user)">
-                            <mat-icon>save</mat-icon>
-                        </button>
-                        <button matFab class="button" (click)="onCancelEdit()">
-                            <mat-icon>cancel</mat-icon>
-                        </button>
-                    </td>        
+                <tr>      
                     <td>
                         <mat-dialog-content>
                             <mat-form-field>
@@ -77,15 +69,23 @@
                                 </div>                         
                             }                                 
                     </td> 
+                    <td>
+                        <button matFab class="button-save" (click)="onSaveEdit(user)">
+                            <mat-icon>save</mat-icon>
+                        </button>
+                        <button matFab class="button" (click)="onCancelEdit()">
+                            <mat-icon>cancel</mat-icon>
+                        </button>
+                    </td>  
                 </tr>
             }
             @else {
                 <tr>
+                    <td> {{user.givenName}} </td>
+                    <td> {{user.surname}} </td>
                     <td>
                         <mat-icon class="edit-icon" (click)="onEdit(user.userId!)">edit</mat-icon>
                     </td>
-                    <td> {{user.givenName}} </td>
-                    <td> {{user.surname}} </td>
                 </tr>
             }
         }

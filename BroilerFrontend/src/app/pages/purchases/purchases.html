@@ -1,28 +1,54 @@
 <div>
+    <h1>Broiler Purchases</h1>
     <table class="user-table" matSort (matSortChange)="sortData($event)">
         <tr>
-            <th mat-sort-header="actions">Actions:</th>
             <th mat-sort-header="givenName">First Name:</th>
             <th mat-sort-header="surname">Last Name:</th>
-            <th mat-sort-header="date">Created At:</th>
+            <th mat-sort-header="date">
+                <div class="date-header-container">
+                    Created At:
+                    <button mat-icon-button [matMenuTriggerFor]="dateMenu" (click)="$event.stopPropagation()" aria-label="Filter by date range">
+                        <mat-icon>calendar_today</mat-icon>
+                    </button>
+
+                    <mat-menu #dateMenu="matMenu">
+                        <div class="mat-menu-container">
+
+                            <mat-form-field>
+                                <mat-label>Start Date</mat-label>
+                                <input matInput [matDatepicker]="startPicker" [(ngModel)]="startDate" (dateChange)="applyDateRangeFilter()" />
+                                <mat-datepicker-toggle matSuffix [for]="startPicker"></mat-datepicker-toggle>
+                                <mat-datepicker #startPicker></mat-datepicker>
+                            </mat-form-field>
+
+                            <mat-form-field>
+                                <mat-label>End Date</mat-label>
+                                <input matInput [matDatepicker]="endPicker" [(ngModel)]="endDate" (dateChange)="applyDateRangeFilter()" />
+                                <mat-datepicker-toggle matSuffix [for]="endPicker"></mat-datepicker-toggle>
+                                <mat-datepicker #endPicker></mat-datepicker>
+                            </mat-form-field>
+
+                            <div class="date-filter-actions">
+                                <button mat-stroked-button color="primary" (click)="clearDateFilter()">Clear</button>
+                            </div>
+                        </div>
+                    </mat-menu>
+                </div>
+            </th>
             <th mat-sort-header="products">Products:</th>
             <th mat-sort-header="paid">Paid:</th>
             <th mat-sort-header="price">Price:</th>
+            <th mat-sort-header="actions">Actions:</th>
         </tr>
 
         <tr>
-            <td>
-                <button matFab class="button" (click)="onSaveNewPurchase()">
-                    <mat-icon>add</mat-icon>
-                </button>
-            </td>
             <td>
                 <mat-dialog-content>
                     <mat-form-field class="user-mat-field">
                         <mat-label>User:</mat-label>
                         <mat-select [formControl]="userControl" class="user-mat-select">
                             @for (user of users; track $index) {
-                            <mat-option [value]="user"> {{user.givenName}} {{user.surname}}</mat-option>
+                                <mat-option [value]="user"> {{user.givenName}} {{user.surname}}</mat-option>
                             }
                         </mat-select>
                     </mat-form-field>   
@@ -93,19 +119,16 @@
                 </div>
                 </mat-dialog-content>
             </td>
+            <td>
+                <button matFab class="button" (click)="onSaveNewPurchase()">
+                    <mat-icon>add</mat-icon>
+                </button>
+            </td>
         </tr>
 
-        @for (purchase of purchases; track $index) {
+        @for (purchase of filteredPurchases; track $index) {
             @if (currentlyEditingId == purchase.purchaseId) {
                 <tr>
-                    <td>
-                        <button matFab class="button-save" (click)="onSaveEdit(purchase)">
-                            <mat-icon>save</mat-icon>
-                        </button>
-                        <button matFab class="button" (click)="onCancelEdit()">
-                            <mat-icon>cancel</mat-icon>
-                        </button>
-                    </td>
                     <td>
                         <mat-dialog-content>
                         <div class="strikethrough-wrapper" [class.disabled]="true">
@@ -165,13 +188,18 @@
                         </div>
                         </mat-dialog-content>
                     </td>
+                    <td>
+                        <button matFab class="button-save" (click)="onSaveEdit(purchase)">
+                            <mat-icon>save</mat-icon>
+                        </button>
+                        <button matFab class="button" (click)="onCancelEdit()">
+                            <mat-icon>cancel</mat-icon>
+                        </button>
+                    </td>
                 </tr>
             }
             @else {
                 <tr>
-                    <td> 
-                        <mat-icon (click)="onEdit(purchase.purchaseId!)" class="edit-icon">edit</mat-icon>
-                    </td>
                     <td> 
                         <div class="givenName-container">
                             <div class="{{purchase.paid ? 'paid-indicator-paid' : 'paid-indicator-not-paid'}}"> </div>
@@ -191,6 +219,9 @@
                                 </mat-dialog-content>
                             </td>
                             <td> {{purchase.price}} €</td>
+                    <td> 
+                        <mat-icon (click)="onEdit(purchase.purchaseId!)" class="edit-icon">edit</mat-icon>
+                    </td>
                 </tr>
             }
         }

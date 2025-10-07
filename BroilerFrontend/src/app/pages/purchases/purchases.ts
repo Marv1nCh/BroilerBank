@@ -19,13 +19,14 @@ import { User } from '../../model/user.type';
 import { ProductService } from '../../services/product-service';
 import { UserService } from '../../services/user-service';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatMenuModule } from '@angular/material/menu';
 
 @Component({
   selector: 'app-purchases',
   imports: [MatTableModule, MatIconModule, MatSortModule, MatButtonModule,
     MatDialogModule, MatFormField, MatLabel, MatInputModule, MatDatepicker,
     ReactiveFormsModule, MatDialogContent, MatDatepickerModule, MatSelectModule, 
-    MatAutocompleteModule, MatCheckbox, FormsModule],
+    MatAutocompleteModule, MatCheckbox, FormsModule, MatMenuModule],
   templateUrl: './purchases.html',
   styleUrl: './purchases.scss'
 })
@@ -33,6 +34,7 @@ export class Purchases implements OnInit {
   constructor(private snackBar: MatSnackBar) {}
 
   purchases = Array<Purchase>()  
+  filteredPurchases = Array<Purchase>()
   foodOptions: Array<string> = []
   users = Array<User>()
 
@@ -58,6 +60,9 @@ export class Purchases implements OnInit {
 
   currentlyEditingId: string | null = null
   rowBeingEdited: Purchase | null = null
+  
+  startDate: Date | null = null;
+  endDate: Date | null = null;
 
   readonly dialog = inject(MatDialog)
 
@@ -91,6 +96,7 @@ export class Purchases implements OnInit {
       }))
         .subscribe((purchasesFromBackend) => {
           this.purchases = purchasesFromBackend
+          this.filteredPurchases = this.purchases
 
           this.sortData({active: 'date', direction: 'asc'})
         });
@@ -210,8 +216,8 @@ export class Purchases implements OnInit {
 
   onCancelEdit() {
     if(this.rowBeingEdited != null) {
-      const purchaseIndex = this.purchases.findIndex( purchase => purchase.purchaseId == this.currentlyEditingId)
-      this.purchases[purchaseIndex] = this.rowBeingEdited
+      const purchaseIndex = this.filteredPurchases.findIndex( purchase => purchase.purchaseId == this.currentlyEditingId)
+      this.filteredPurchases[purchaseIndex] = this.rowBeingEdited
 
       this.resetEditingValues()
     }
@@ -228,11 +234,11 @@ export class Purchases implements OnInit {
 
   onEdit(newCurrentlyEditingId: string){
     if(this.rowBeingEdited != null) {
-      const purchaseIndex = this.purchases.findIndex(purchase => purchase.purchaseId == this.currentlyEditingId)
-      this.purchases[purchaseIndex] = this.rowBeingEdited
+      const purchaseIndex = this.filteredPurchases.findIndex(purchase => purchase.purchaseId == this.currentlyEditingId)
+      this.filteredPurchases[purchaseIndex] = this.rowBeingEdited
     }
 
-    const newPurchaseBeingEdited = this.purchases.find(purchase => purchase.purchaseId == newCurrentlyEditingId)
+    const newPurchaseBeingEdited = this.filteredPurchases.find(purchase => purchase.purchaseId == newCurrentlyEditingId)
     if (newPurchaseBeingEdited != null) {
       this.rowBeingEdited = newPurchaseBeingEdited
       this.currentlyEditingId = newPurchaseBeingEdited.purchaseId!
@@ -254,7 +260,7 @@ export class Purchases implements OnInit {
       return
     }
 
-    this.purchases.sort((a,b) => {
+    this.filteredPurchases.sort((a,b) => {
       const isAsc = sort.direction == 'asc';
       switch(sort.active) {
         case 'firstName':
@@ -275,5 +281,58 @@ export class Purchases implements OnInit {
 
   openSnackBar (message: string) {
     this.snackBar.open(message, "close")
+  }
+
+  clearDateFilter(){
+    this.startDate = null
+    this.endDate = null
+    this.applyDateRangeFilter()
+  }
+
+  applyDateRangeFilter(): void {
+    const start = this.startDate ? this.startDate.toISOString() : '';
+    const end = this.endDate ? this.endDate.toISOString() : '';
+    this.filteredPurchases = this.filterByDate(start, end)
+  }
+
+  filterByDate(start: string, end:string): Array<Purchase> {
+    var newPurchases: Array<Purchase> = []
+
+    const startDate = new Date(start)
+    const endDate = new Date(end)
+
+    this.purchases.forEach( purchase => {
+      const purchaseDate = new Date(purchase.date)
+      if (this.isBefore(purchaseDate, endDate) && this.isAfter(purchaseDate, startDate)) {
+        newPurchases.push(purchase)
+      }
+    })
+    return newPurchases
+  }
+
+  isBefore(date: Date, dateToCompare: Date): boolean {
+    if(date.getFullYear() > dateToCompare.getFullYear()) {
+      return false
+    }
+    else if(date.getMonth() > dateToCompare.getMonth()) {
+      return false
+    }
+    else if(date.getDay() > dateToCompare.getDay()) {
+      return false
+    }
+    return true
+  }
+
+  isAfter(date: Date, dateToCompare: Date): boolean  {
+    if(date.getFullYear() < dateToCompare.getFullYear()) {
+      return false
+    }
+    else if(date.getMonth() < dateToCompare.getMonth()) {
+      return false
+    }
+    else if(date.getDay() < dateToCompare.getDay()) {
+      return false
+    }
+    return true
   }
 }
