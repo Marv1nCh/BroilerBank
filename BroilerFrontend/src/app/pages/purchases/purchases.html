@@ -215,7 +215,7 @@
                             </td>
                             <td> 
                                 <mat-dialog-content class="checkbox">
-                                    <mat-checkbox [(ngModel)]="purchase.paid" (change)="onPaidChange(purchase)"/>
+                                    <mat-checkbox [checked]="purchase.paid" (change)="onPaidChange(purchase)"/>
                                 </mat-dialog-content>
                             </td>
                             <td> {{purchase.price}} €</td>

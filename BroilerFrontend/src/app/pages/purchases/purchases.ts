@@ -64,6 +64,9 @@ export class Purchases implements OnInit {
   startDate: Date | null = null;
   endDate: Date | null = null;
 
+ tempPaidStates: { [purchaseId: string]: boolean } = {};
+ isLoading: { [purchaseId: string]: boolean } = {};
+
   readonly dialog = inject(MatDialog)
 
   ngOnInit(): void {
@@ -99,6 +102,11 @@ export class Purchases implements OnInit {
           this.filteredPurchases = this.purchases
 
           this.sortData({active: 'date', direction: 'asc'})
+
+            this.purchases.forEach(p => {
+              this.tempPaidStates[p.purchaseId!] = p.paid;
+              this.isLoading[p.purchaseId!] = false;
+            });
         });
   }
 
@@ -112,7 +120,9 @@ export class Purchases implements OnInit {
             console.log(err)
             throw err;
           }))
-      .subscribe()
+      .subscribe(() => 
+      purchase.paid = !purchase.paid
+    )
   }
 
   onSaveNewPurchase() {
