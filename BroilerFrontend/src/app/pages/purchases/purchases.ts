@@ -273,9 +273,9 @@ export class Purchases implements OnInit {
     this.filteredPurchases.sort((a,b) => {
       const isAsc = sort.direction == 'asc';
       switch(sort.active) {
-        case 'firstName':
+        case 'givenName':
           return compare(a.givenName, b.givenName, isAsc)
-        case 'lastName':
+        case 'surname':
           return compare(a.surname, b.surname, isAsc)
         case 'date':
           return compare(a.date, b.date, isAsc)
