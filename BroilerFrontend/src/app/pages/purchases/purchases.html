@@ -1,5 +1,5 @@
 <div>
-    <h1>Broiler Purchases</h1>
+    <h1  class="page-title">Broiler Purchases</h1>
     <table class="user-table" matSort (matSortChange)="sortData($event)">
         <tr>
             <th mat-sort-header="givenName">First Name:</th>
@@ -74,7 +74,7 @@
                         <mat-form-field>
                             <mat-label>Product purchased at:</mat-label>
                             <input matInput [matDatepicker]="picker" [formControl]="purchasedAtControl" (change)="disableErrors()">
-                            <mat-hint>MM/DD/YYYY</mat-hint>
+                            <mat-hint>DD/MM/YYYY</mat-hint>
                             <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
                             <mat-datepicker #picker></mat-datepicker>
                         </mat-form-field>
@@ -153,7 +153,7 @@
                                 <mat-form-field>
                                     <mat-label>Product purchased at:</mat-label>
                                     <input matInput [matDatepicker]="picker" [formControl]="purchasedAtControlEdit" (change)="disableErrors()">
-                                    <mat-hint>MM/DD/YYYY</mat-hint>
+                                    <mat-hint>DD/MM/YYYY</mat-hint>
                                     <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
                                     <mat-datepicker #picker></mat-datepicker>
                                 </mat-form-field>

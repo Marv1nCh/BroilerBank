@@ -1,5 +1,5 @@
 <div>
-    <h1>Products and their Prices</h1>
+    <h1 class="page-title">Products and their Prices</h1>
     <table class="user-table" matSort (matSortChange)="sortData($event)">
         <tr>
             <th mat-sort-header="startDate">Start Date:</th>
@@ -14,7 +14,7 @@
                         <mat-form-field>
                             <mat-label>New Price set at:</mat-label>
                             <input matInput [matDatepicker]="picker" [formControl]="createdAtControl" (change)="disableErrors()">
-                            <mat-hint>MM/DD/YYYY</mat-hint>
+                            <mat-hint>DD/MM/YYYY</mat-hint>
                             <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
                             <mat-datepicker #picker></mat-datepicker>
                         </mat-form-field>
