@@ -2,10 +2,18 @@
   <h1 class="page-title">Products and their Prices</h1>
   <table class="user-table" matSort (matSortChange)="sortData($event)">
     <tr>
-      <th mat-sort-header="startDate">Start Date:</th>
-      <th mat-sort-header="type">Type:</th>
-      <th mat-sort-header="price">Price:</th>
-      <th mat-sort-header="actions">Actions:</th>
+      <th mat-sort-header="startDate">
+        <div class="header-cell">Start Date</div>
+      </th>
+      <th mat-sort-header="type">
+        <div class="header-cell">Type</div>
+      </th>
+      <th mat-sort-header="price">
+        <div class="header-cell">Price</div>
+      </th>
+      <th mat-sort-header="actions">
+        <div class="header-cell">Actions</div>
+      </th>
     </tr>
     <tr
       appEditProduct

@@ -61,7 +61,7 @@ export class EditProduct implements OnInit {
   ngOnInit(): void {
     this.createdAtControl.setValue(new Date(this.product().startDate));
     this.type.setValue(this.product().type);
-    this.price.set(this.product().price);
+    this.price.set(this.product().price > 0 ? this.product().price : null);
 
     this.productsOptions = this.type.valueChanges.pipe(
       startWith(''),

@@ -9,24 +9,8 @@
 }
 
 ::ng-deep .mat-sort-header-arrow svg path {
-  fill: white;
   height: 100px;
   width: 100px;
-}
-
-::ng-deep .mat-sort-header-container {
-  padding: 0.75em 1em;
-  height: 1rem;
-  align-items: center;
-  background-color: #edc328;
-  margin: 0.4em;
-  border-radius: 10px;
-}
-
-::ng-deep .mat-sort-header-content {
-  color: #000;
-  font-size: xx-large;
-  font-weight: bold;
 }
 
 .user-table td {
@@ -40,19 +24,17 @@
   width: 1em;
 }
 
-::ng-deep .mat-sort-header {
+.header-cell{
   margin: 1rem;
   font-size: xx-large;
-}
-
-.add-product-button {
-  background-color: #edc328;
+  font-weight: bold;
   color: #000;
-  padding: 1rem;
-}
-
-.add-button-container {
-  padding-bottom: 1rem;
+  padding: 0.75em 3em;
+  height: 1rem;
+  align-items: center;
+  background-color: #edc328;
+  margin: 0.4em;
+  border-radius: 10px;
 }
 
 .edit-button {
@@ -63,56 +45,6 @@
   cursor: pointer;
   text-align: center;
   align-content: center;
-}
-
-.edit-button mat-icon {
-  font-size: 18px;
-  width: 18px;
-  height: 18px;
-  line-height: 18px;
-}
-
-.input-container {
-  padding: 1em 0.15em 0.15em 0.15em;
-}
-
-.input-row-container {
-  display: flex;
-}
-
-.button {
-  width: 4.2em;
-  height: 4em;
-  margin-bottom: 1em;
-  background-color: #edc328;
-  box-shadow: 1px 0 5px #b1abab;
-}
-
-.button-save {
-  width: 4.2em;
-  height: 4em;
-  margin-bottom: 1em;
-  background-color: #edc328;
-  box-shadow: 1px 0 5px #b1abab;
-  margin-right: 1em;
-}
-
-.dialog-error {
-  color: red;
-}
-
-.strikethrough-wrapper {
-  margin-top: 1em;
-  position: relative;
-  display: inline-block;
-  width: 65%;
-  mat-form-field {
-    width: 100%;
-  }
-
-  mat-form-field {
-    width: 100%;
-  }
 }
 
 .page-title {

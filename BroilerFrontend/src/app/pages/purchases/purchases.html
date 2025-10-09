@@ -2,18 +2,20 @@
   <h1 class="page-title">Broiler Purchases</h1>
   <table class="user-table" matSort (matSortChange)="sortData($event)">
     <tr>
-      <th mat-sort-header="givenName">First Name:</th>
-      <th mat-sort-header="surname">Last Name:</th>
+      <th mat-sort-header="givenName"><div class="header-cell">First Name</div></th>
+      <th mat-sort-header="surname"><div class="header-cell">Last Name</div></th>
       <th mat-sort-header="date">
-        <app-date-range-filter
-          [purchases]="purchases"
-          (filteredPurchases)="applyDateRangeFilter($event)"
-        ></app-date-range-filter>
+        <div class="header-cell">
+          <app-date-range-filter
+            [purchases]="purchases"
+            (filteredPurchases)="applyDateRangeFilter($event)"
+          ></app-date-range-filter>
+        </div>
       </th>
-      <th mat-sort-header="products">Products:</th>
-      <th mat-sort-header="paid">Paid:</th>
-      <th mat-sort-header="price">Price:</th>
-      <th mat-sort-header="actions">Actions:</th>
+      <th mat-sort-header="products"><div class="header-cell">Products</div></th>
+      <th mat-sort-header="paid"><div class="header-cell header-cell-small">Paid</div></th>
+      <th mat-sort-header="price"><div class="header-cell header-cell-small">Price</div></th>
+      <th mat-sort-header="actions"><div class="header-cell header-cell-small">Actions</div></th>
     </tr>
 
     <tr

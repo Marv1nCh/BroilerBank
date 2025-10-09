@@ -2,18 +2,20 @@
 <td class="cell">
   <div class="input-container">
     <mat-dialog-content>
-      <mat-form-field>
-        <mat-label>New Price set at:</mat-label>
-        <input
-          matInput
-          [matDatepicker]="picker"
-          [formControl]="createdAtControl"
-          (change)="disableErrors()"
-        />
-        <mat-hint>DD/MM/YYYY</mat-hint>
-        <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
-        <mat-datepicker #picker></mat-datepicker>
-      </mat-form-field>
+      <div class="date-picker-container">
+        <mat-form-field>
+          <mat-label>New Price set at:</mat-label>
+          <input
+            matInput
+            [matDatepicker]="picker"
+            [formControl]="createdAtControl"
+            (change)="disableErrors()"
+          />
+          <mat-hint>DD/MM/YYYY</mat-hint>
+          <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
+      </div>
     </mat-dialog-content>
     @if (dateError) {
     <div class="dialog-error">
@@ -83,7 +85,7 @@
 </td>
 
 <td class="cell">
-  <button matFab class="button-save" (click)="onSave()">
+  <button matFab class="button button-save" (click)="onSave()">
     <mat-icon>save</mat-icon>
   </button>
   @if (!isNewProduct()) {

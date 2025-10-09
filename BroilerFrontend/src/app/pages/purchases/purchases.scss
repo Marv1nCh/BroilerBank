@@ -14,19 +14,22 @@
   width: 100px;
 }
 
-::ng-deep .mat-sort-header-container {
+.header-cell {
+  color: #000;
+  font-size: xx-large;
+  font-weight: bold;
   padding: 0.75em 1em;
   height: 2.25rem;
+  width: 6.5em;
   align-items: center;
   background-color: #edc328;
   margin: 0.4em;
   border-radius: 10px;
+  line-height: 1.2;
 }
 
-::ng-deep .mat-sort-header-content {
-  color: #000;
-  font-size: xx-large;
-  font-weight: bold;
+.header-cell-small {
+  width: 3em;
 }
 
 .user-table td {
@@ -43,25 +46,6 @@
   width: 1em;
 }
 
-.user-table th {
-  line-height: 1.2;
-}
-
-::ng-deep .mat-sort-header {
-  margin: 1rem;
-  font-size: xx-large;
-}
-
-.add-product-button {
-  background-color: #edc328;
-  color: #000;
-  padding: 1rem;
-}
-
-.add-button-container {
-  padding-bottom: 1rem;
-}
-
 .edit-button {
   width: 40px;
   height: 40px;
@@ -70,42 +54,6 @@
   cursor: pointer;
   text-align: center;
   align-content: center;
-}
-
-.edit-button mat-icon {
-  font-size: 18px;
-  width: 18px;
-  height: 18px;
-  line-height: 18px;
-}
-
-.input-container {
-  padding: 1em 0.15em 0.15em 0.15em;
-}
-
-.input-row-container {
-  display: flex;
-}
-
-.button {
-  width: 4.2em;
-  height: 4em;
-  margin-bottom: 1em;
-  background-color: #edc328;
-  box-shadow: 1px 0 5px #b1abab;
-}
-
-.button-save {
-  width: 4.2em;
-  height: 4em;
-  margin-bottom: 1em;
-  background-color: #edc328;
-  box-shadow: 1px 0 5px #b1abab;
-  margin-right: 1em;
-}
-
-.dialog-error {
-  color: red;
 }
 
 .user-mat-field {
@@ -130,24 +78,9 @@
   display: flex;
 }
 
-.paid-container {
-  display: flex;
-  align-items: center;
-}
-
 .edit-icon {
   cursor: pointer;
   margin-left: 0.5em;
-}
-
-.strikethrough-wrapper {
-  margin-top: 1em;
-  position: relative;
-  display: inline-block;
-  width: 100%;
-  mat-form-field {
-    width: 80%;
-  }
 }
 
 .mat-menu-container {

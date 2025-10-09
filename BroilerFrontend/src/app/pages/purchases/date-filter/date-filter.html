@@ -1,12 +1,12 @@
 <div class="date-header-container">
-  Created At:
+  Created At
   <button
     mat-icon-button
     [matMenuTriggerFor]="dateMenu"
     (click)="$event.stopPropagation()"
     aria-label="Filter by date range"
   >
-    <mat-icon>calendar_today</mat-icon>
+    <mat-icon class="date-menu-icon">calendar_today</mat-icon>
   </button>
 
   <mat-menu #dateMenu="matMenu">

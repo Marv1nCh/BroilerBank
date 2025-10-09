@@ -4,14 +4,9 @@
   margin-bottom: 1em;
   background-color: #edc328;
   box-shadow: 1px 0 5px #b1abab;
+  color: black;
 }
-
 .button-save {
-  width: 4.2em;
-  height: 4em;
-  margin-bottom: 1em;
-  background-color: #edc328;
-  box-shadow: 1px 0 5px #b1abab;
   margin-right: 1em;
 }
 
@@ -33,4 +28,17 @@
   border-bottom: 1px solid #ccc;
   padding: 1em;
   align-items: center;
+}
+
+.disabled-input-container-price {
+  width: 50%;
+  mat-form-field {
+    width: 60%;
+  }
+}
+
+.date-picker-container {
+  mat-form-field {
+    width: 75%;
+  }
 }
