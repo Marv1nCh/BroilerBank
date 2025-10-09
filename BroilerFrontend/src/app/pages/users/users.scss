@@ -1,19 +1,18 @@
 .user-table {
-  background-color: #f4f6f7;;
-  width: 70%;
+  background-color: #f4f6f7;
   border-collapse: collapse;
   font-size: medium;
   box-shadow: 1px 0 50px #b1abab;
   border-radius: 10px;
   margin-top: 5em;
-  margin-left: 20em;
+  margin-left: 15%;
 }
 
-::ng-deep .mat-sort-header-arrow svg path{
-    fill: white;
-    height: 100px;
-    width: 100px;
-  }
+::ng-deep .mat-sort-header-arrow svg path {
+  fill: white;
+  height: 100px;
+  width: 100px;
+}
 
 ::ng-deep .mat-sort-header-container {
   padding: 0.75em 1em;
@@ -28,6 +27,10 @@
   color: #000;
   font-size: xx-large;
   font-weight: bold;
+}
+
+.user-table tr {
+  margin: 1em;
 }
 
 .user-table td {
@@ -82,13 +85,13 @@
   margin-bottom: 1em;
   background-color: #edc328;
   box-shadow: 1px 0 5px #b1abab;
-    margin-right: 1em;
+  margin-right: 1em;
 }
 
 .dialog-error {
-    color: red; 
+  color: red;
 }
 
-.page-title{
-  margin-left: 11em;
+.page-title {
+  margin-left: 15%;
 }

@@ -4,12 +4,12 @@ import { Leaderboard } from '../model/leaderboard.type';
 import { environment } from '../../environments/environment';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class LeaderboardService {
-  http = inject(HttpClient)
-  
+  http = inject(HttpClient);
+
   getLeaderboardFromBackend() {
-    return this.http.get<Array<Leaderboard>>(environment.apiPath + "/leaderboard")
+    return this.http.get<Array<Leaderboard>>(environment.apiPath + '/leaderboard');
   }
 }

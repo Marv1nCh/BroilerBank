@@ -4,16 +4,16 @@ import { User } from '../model/user.type';
 import { environment } from '../../environments/environment';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class UserService {
-  http = inject(HttpClient)
+  http = inject(HttpClient);
 
-  getAllUsersFromBackend(){
-    return this.http.get<Array<User>>(environment.apiPath + "/users");
+  getAllUsersFromBackend() {
+    return this.http.get<Array<User>>(environment.apiPath + '/users');
   }
 
   addNewUser(user: User) {
-    return this.http.post<User>(environment.apiPath + "/users", user)
+    return this.http.post<User>(environment.apiPath + '/users', user);
   }
 }

@@ -1,43 +1,43 @@
 <div class="sidebar" [ngClass]="{ 'sidebar-collapsed': isSidebarCollapsed }">
   <div class="sidebar-menu">
-      <button
-        class="sidebar-toggle-btn"
-        [ngClass]="{ 'sidebar-collapsed': isSidebarCollapsed }"
-        (click)="toggleSidebar()"
-      >
+    <button
+      class="sidebar-toggle-btn"
+      [ngClass]="{ 'sidebar-collapsed': isSidebarCollapsed }"
+      (click)="toggleSidebar()"
+    >
       @if (isSidebarCollapsed) {
-        <mat-icon>arrow_forward</mat-icon>
+      <mat-icon>arrow_forward</mat-icon>
+      } @else {
+      <mat-icon>arrow_back</mat-icon>
       }
-      @else {
-        <mat-icon>arrow_back</mat-icon>
-      }
-      </button>
+    </button>
     <ul>
       @if (!isSidebarCollapsed) {
-        <h1 class="title-first-part">Broiler</h1>
-        <h1 class="title-second-part">Thursday!</h1>
-        <div class="chicken-icon">
-          <app-chicken-icon/>
-        </div>
-      }
-      @for (item of menuItems; track $index) {
-        <ng-container>
-          <li class="sidebar-menu-item">
-            <a
-              href="#"
-              class="sidebar-item"
-              [ngClass]="{
-                'has-children': item.children,
-                'menu-item-active': item.isOpen
-              }"
-              routerLink="{{item.urlSuffix}}"
-              (click)="toggleMenuItem(item)"
+      <h1 class="title-first-part">Broiler</h1>
+      <h1 class="title-second-part">Thursday!</h1>
+      <div class="chicken-icon">
+        <app-chicken-icon />
+      </div>
+      } @for (item of menuItems; track $index) {
+      <ng-container>
+        <li class="sidebar-menu-item">
+          <a
+            href="#"
+            class="sidebar-item"
+            [ngClass]="{
+              'has-children': item.children,
+              'menu-item-active': item.isOpen
+            }"
+            routerLink="{{ item.urlSuffix }}"
+            (click)="toggleMenuItem(item)"
+          >
+            <mat-icon class="sibebar-icon" [ngClass]="{ 'icon-collapsed': isSidebarCollapsed }">
+              {{ item.icon }}</mat-icon
             >
-              <mat-icon class="sibebar-icon" [ngClass]="{'icon-collapsed': isSidebarCollapsed}"> {{item.icon}}</mat-icon>
-              <span class="sidebar-item-text"> {{ item.label }} </span>
-            </a>
-          </li>
-        </ng-container>
+            <span class="sidebar-item-text"> {{ item.label }} </span>
+          </a>
+        </li>
+      </ng-container>
       }
     </ul>
   </div>

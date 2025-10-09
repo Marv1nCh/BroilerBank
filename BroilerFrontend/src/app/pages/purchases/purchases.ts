@@ -1,348 +1,95 @@
-import { Component, inject, model, OnInit, } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { PurchaseService } from '../../services/purchase-service';
-import { Purchase } from '../../model/purchase.type';
+import { emptyPurchase, Purchase } from '../../model/purchase.type';
 import { catchError } from 'rxjs';
-import { MatTableModule } from '@angular/material/table';
-import { MatDialog, MatDialogContent, MatDialogModule } from '@angular/material/dialog';
+import { MatDialogContent } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
-import { MatSortModule, Sort } from "@angular/material/sort";
-import { compare } from '../../shared/utils';
-import { MatButtonModule } from '@angular/material/button';
+import { MatSortModule, Sort } from '@angular/material/sort';
 import { MatCheckbox } from '@angular/material/checkbox';
-import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { MatFormField, MatLabel } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
-import { MatDatepicker, MatDatepickerModule } from '@angular/material/datepicker';
-import { MatSelectModule } from '@angular/material/select';
-import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { User } from '../../model/user.type';
 import { ProductService } from '../../services/product-service';
 import { UserService } from '../../services/user-service';
-import { MatSnackBar } from '@angular/material/snack-bar';
-import { MatMenuModule } from '@angular/material/menu';
+import { SnackbarService } from '../../services/components/snackbar-service';
+import { EditPurchase } from './edit-purchase/edit-purchase';
+import { DateRangeFilter } from './date-filter/date-filter';
+import { sortPurchaseData } from '../../shared/sort-utils';
 
 @Component({
   selector: 'app-purchases',
-  imports: [MatTableModule, MatIconModule, MatSortModule, MatButtonModule,
-    MatDialogModule, MatFormField, MatLabel, MatInputModule, MatDatepicker,
-    ReactiveFormsModule, MatDialogContent, MatDatepickerModule, MatSelectModule, 
-    MatAutocompleteModule, MatCheckbox, FormsModule, MatMenuModule],
+  imports: [
+    MatIconModule,
+    MatSortModule,
+    MatDialogContent,
+    MatCheckbox,
+    EditPurchase,
+    DateRangeFilter,
+  ],
   templateUrl: './purchases.html',
-  styleUrl: './purchases.scss'
+  styleUrl: './purchases.scss',
 })
 export class Purchases implements OnInit {
-  constructor(private snackBar: MatSnackBar) {}
+  purchases = Array<Purchase>();
+  filteredPurchases = Array<Purchase>();
+  foodOptions: Array<string> = [];
+  users = Array<User>();
 
-  purchases = Array<Purchase>()  
-  filteredPurchases = Array<Purchase>()
-  foodOptions: Array<string> = []
-  users = Array<User>()
+  emptyPurchase = emptyPurchase();
 
-  purchaseService = inject(PurchaseService)
-  productService = inject(ProductService)
-  userService = inject(UserService)
+  purchaseService = inject(PurchaseService);
+  productService = inject(ProductService);
+  userService = inject(UserService);
+  snackbarService = inject(SnackbarService);
 
-  purchasedAtControl = new FormControl<Date | null>(null)
-  foodOptionControl = new FormControl<string[] | null>(null)
-  userControl = new FormControl<User | null>(null)
-  paidControl = model(false)
-
-  dateError = false
-  dateErrorMessage = "Date has to be filled out!"
-  typeError = false
-  typeErrorMessage = "Type has to be filled out!"
-  userError = false
-  userErrorMessage = "User has to be filled out!"
-
-  purchasedAtControlEdit = new FormControl<Date | null>(null)
-  foodOptionControlEdit = new FormControl<string[] | null>(null)
-  paidControlEdit = model(false)
-
-  currentlyEditingId: string | null = null
-  rowBeingEdited: Purchase | null = null
-  
-  startDate: Date | null = null;
-  endDate: Date | null = null;
-
- tempPaidStates: { [purchaseId: string]: boolean } = {};
- isLoading: { [purchaseId: string]: boolean } = {};
-
-  readonly dialog = inject(MatDialog)
+  currentlyEditingId: string | null = null;
 
   ngOnInit(): void {
-    this.initializePurchases()
+    this.initializePurchases();
 
-    this.userService.getAllUsersFromBackend()
-    .pipe(catchError((err) => {
+    this.userService
+      .getAllUsersFromBackend()
+      .pipe(
+        catchError((err) => {
           console.log(err);
           throw err;
-        }))
-        .subscribe((usersFromBackend) => {
-          this.users = usersFromBackend
         })
+      )
+      .subscribe((usersFromBackend) => {
+        this.users = usersFromBackend;
+      });
 
-    this.productService.getUniqueProductsFromBackend()
-      .pipe(catchError((err) => {
-            console.log(err);
-            throw err;
-          }))
-          .subscribe((uniqueProductsFromBackend) => {
-            this.foodOptions = uniqueProductsFromBackend.map(product => product.type)
-      })
+    this.productService
+      .getUniqueProductsFromBackend()
+      .pipe(
+        catchError((err) => {
+          console.log(err);
+          throw err;
+        })
+      )
+      .subscribe((uniqueProductsFromBackend) => {
+        this.foodOptions = uniqueProductsFromBackend.map((product) => product.type);
+      });
   }
 
   initializePurchases() {
-    this.purchaseService.getAllPurchasesFromBackend()
-      .pipe(catchError((err) => {
-        console.log(err)
-        throw err;
-      }))
-        .subscribe((purchasesFromBackend) => {
-          this.purchases = purchasesFromBackend
-          this.filteredPurchases = this.purchases
+    this.purchaseService.getAllPurchasesFromBackend().subscribe((purchasesFromBackend) => {
+      this.purchases = purchasesFromBackend;
+      this.filteredPurchases = this.purchases;
 
-          this.sortData({active: 'date', direction: 'asc'})
-
-            this.purchases.forEach(p => {
-              this.tempPaidStates[p.purchaseId!] = p.paid;
-              this.isLoading[p.purchaseId!] = false;
-            });
-        });
+      this.sortData({ active: 'date', direction: 'asc' });
+    });
   }
 
-  formatDateToString(date: Date) {
-    return new Date(date).toDateString();
-  }
+  formatDateToString = (date: Date) => new Date(date).toDateString();
 
-  onPaidChange(purchase: Purchase) {
-    this.purchaseService.updatePurchase(purchase)
-      .pipe(catchError((err) => {
-            console.log(err)
-            throw err;
-          }))
-      .subscribe(() => 
-      purchase.paid = !purchase.paid
-    )
-  }
+  onPaidChange = (purchase: Purchase) =>
+    this.purchaseService.updatePurchase(purchase).subscribe(() => (purchase.paid = !purchase.paid));
 
-  onSaveNewPurchase() {
-    const purchasedAt = this.purchasedAtControl.value
-    const user = this.userControl.value
-    const foodOption = this.foodOptionControl.value
+  onCancelEdit = () => (this.currentlyEditingId = null);
 
-    if(purchasedAt == null) {
-      this.dateError = true
-    }
-    if(user == null) {
-      this.userError = true
-    }
-    if(foodOption == null) {
-      this.typeError = true
-    }
+  onEdit = (newCurrentlyEditingId: string) => (this.currentlyEditingId = newCurrentlyEditingId);
 
-    if (purchasedAt != null && user != null && foodOption != null) {
-          const purchaseToCreate = {
-            givenName: user.givenName, 
-            surname: user.surname, 
-            date: purchasedAt.toDateString(), 
-            products: foodOption, 
-            paid: this.paidControl(), 
-            price: 0
-          }
-          this.purchaseService.addNewPurchase(purchaseToCreate)
-            .pipe(catchError((err) => {
-              console.log(err)
-              throw err;
-            }))
-            .subscribe(() => { 
-              this.initializePurchases()
-              this.userControl.setValue(null)
-              this.foodOptionControl.setValue(null)
-              this.paidControl.set(false)
-              this.purchasedAtControl.setValue(null)
-            })
-            this.openSnackBar("Purchase has been saved!")
-    }
-  }
+  applyDateRangeFilter = (newlyFilteredPurchases: Array<Purchase>) =>
+    (this.filteredPurchases = newlyFilteredPurchases);
 
-  onSaveEdit(purchase: Purchase) {
-    const purchasedAt = this.purchasedAtControlEdit.value
-    const foodOption = this.foodOptionControlEdit.value
-
-    if(purchasedAt == null) {
-      this.dateError = true
-    }
-    else if(foodOption == null) {
-      this.typeError = true
-    }
-    else if (purchasedAt.toDateString() == this.rowBeingEdited?.date && 
-              foodOption == this.rowBeingEdited.products && 
-                this.paidControlEdit() == this.rowBeingEdited.paid) {
-      this.openSnackBar("Nothing saved, due to no changes!")
-
-      this.resetEditingValues()
-    }
-
-    else {
-          const purchaseToUpdate = {
-            purchaseId: purchase.purchaseId,
-            givenName: purchase.givenName, 
-            surname: purchase.surname, 
-            date: purchasedAt.toDateString(), 
-            products: foodOption, 
-            paid: this.paidControlEdit(), 
-            price: 0
-          }
-          this.purchaseService.updatePurchase(purchaseToUpdate)
-            .pipe(catchError((err) => {
-              console.log(err)
-              throw err;
-            }))
-            .subscribe(() => { 
-              this.initializePurchases()
-              this.resetEditingValues()
-            })          
-
-            this.openSnackBar("Purchase has been updated!")
-
-            this.resetEditingValues()
-    }
-  }
-
-  addPurchase(purchase: Purchase) {
-  this.purchaseService.addNewPurchase(purchase)
-    .pipe(catchError((err) => {
-      console.log(err)
-      throw err;
-    }))
-    .subscribe(() => { 
-      this.initializePurchases()
-      this.userControl.setValue(null)
-      this.foodOptionControl.setValue(null)
-      this.paidControl.set(false)
-      this.purchasedAtControl.setValue(null)
-    })
-  }
-
-  onCancelEdit() {
-    if(this.rowBeingEdited != null) {
-      const purchaseIndex = this.filteredPurchases.findIndex( purchase => purchase.purchaseId == this.currentlyEditingId)
-      this.filteredPurchases[purchaseIndex] = this.rowBeingEdited
-
-      this.resetEditingValues()
-    }
-  }
-
-  resetEditingValues() {
-    this.purchasedAtControlEdit.setValue(null)
-    this.foodOptionControlEdit.setValue(null)
-    this.paidControlEdit.set(false)
-
-    this.currentlyEditingId = null
-    this.rowBeingEdited = null
-  }
-
-  onEdit(newCurrentlyEditingId: string){
-    if(this.rowBeingEdited != null) {
-      const purchaseIndex = this.filteredPurchases.findIndex(purchase => purchase.purchaseId == this.currentlyEditingId)
-      this.filteredPurchases[purchaseIndex] = this.rowBeingEdited
-    }
-
-    const newPurchaseBeingEdited = this.filteredPurchases.find(purchase => purchase.purchaseId == newCurrentlyEditingId)
-    if (newPurchaseBeingEdited != null) {
-      this.rowBeingEdited = newPurchaseBeingEdited
-      this.currentlyEditingId = newPurchaseBeingEdited.purchaseId!
-
-      this.purchasedAtControlEdit.setValue(new Date(newPurchaseBeingEdited.date))
-      this.foodOptionControlEdit.setValue(newPurchaseBeingEdited.products)
-      this.paidControlEdit.set(newPurchaseBeingEdited.paid)
-    }
-  }
-
-  disableErrors() {
-    this.dateError = false
-    this.userError = false
-    this.typeError = false
-  }
-
-  sortData(sort: Sort) {
-    if (!sort.active || sort.direction == ''){
-      return
-    }
-
-    this.filteredPurchases.sort((a,b) => {
-      const isAsc = sort.direction == 'asc';
-      switch(sort.active) {
-        case 'givenName':
-          return compare(a.givenName, b.givenName, isAsc)
-        case 'surname':
-          return compare(a.surname, b.surname, isAsc)
-        case 'date':
-          return compare(a.date, b.date, isAsc)
-        case 'products':
-          return compare(a.products.length, b.products.length, isAsc)
-        case 'price':
-          return compare(a.price, b.price, isAsc)
-        default:
-          return 0;
-      }
-    })
-  }
-
-  openSnackBar (message: string) {
-    this.snackBar.open(message, "close")
-  }
-
-  clearDateFilter(){
-    this.startDate = null
-    this.endDate = null
-    this.applyDateRangeFilter()
-  }
-
-  applyDateRangeFilter(): void {
-    const start = this.startDate ? this.startDate.toISOString() : '';
-    const end = this.endDate ? this.endDate.toISOString() : '';
-    this.filteredPurchases = this.filterByDate(start, end)
-  }
-
-  filterByDate(start: string, end:string): Array<Purchase> {
-    var newPurchases: Array<Purchase> = []
-
-    const startDate = new Date(start)
-    const endDate = new Date(end)
-
-    this.purchases.forEach( purchase => {
-      const purchaseDate = new Date(purchase.date)
-      if (this.isBefore(purchaseDate, endDate) && this.isAfter(purchaseDate, startDate)) {
-        newPurchases.push(purchase)
-      }
-    })
-    return newPurchases
-  }
-
-  isBefore(date: Date, dateToCompare: Date): boolean {
-    if(date.getFullYear() > dateToCompare.getFullYear()) {
-      return false
-    }
-    else if(date.getMonth() > dateToCompare.getMonth()) {
-      return false
-    }
-    else if(date.getDay() > dateToCompare.getDay()) {
-      return false
-    }
-    return true
-  }
-
-  isAfter(date: Date, dateToCompare: Date): boolean  {
-    if(date.getFullYear() < dateToCompare.getFullYear()) {
-      return false
-    }
-    else if(date.getMonth() < dateToCompare.getMonth()) {
-      return false
-    }
-    else if(date.getDay() < dateToCompare.getDay()) {
-      return false
-    }
-    return true
-  }
+  sortData = (sort: Sort) => sortPurchaseData(sort, this.purchases);
 }

@@ -1,0 +1,36 @@
+.button {
+  width: 4.2em;
+  height: 4em;
+  margin-bottom: 1em;
+  background-color: #edc328;
+  box-shadow: 1px 0 5px #b1abab;
+}
+
+.button-save {
+  width: 4.2em;
+  height: 4em;
+  margin-bottom: 1em;
+  background-color: #edc328;
+  box-shadow: 1px 0 5px #b1abab;
+  margin-right: 1em;
+}
+
+.input-row-container {
+  display: flex;
+}
+
+.dialog-error {
+  color: red;
+}
+
+.td {
+  border-bottom: 1px solid #ccc;
+  padding: 1em;
+  align-items: center;
+}
+
+.cell {
+  border-bottom: 1px solid #ccc;
+  padding: 1em;
+  align-items: center;
+}

@@ -2,12 +2,12 @@ import { CommonModule } from '@angular/common';
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { RouterLink } from '@angular/router';
-import { ChickenIcon } from "../../../components/icons/chicken-icon/chicken-icon";
+import { ChickenIcon } from '../../../components/icons/chicken-icon/chicken-icon';
 
 interface MenuItem {
   icon: string;
   label: string;
-  urlSuffix: string,
+  urlSuffix: string;
   children?: MenuItem[];
   isOpen?: boolean;
 }
@@ -26,23 +26,23 @@ export class Sidebar {
     {
       icon: 'group',
       label: 'Users',
-      urlSuffix: '/'
+      urlSuffix: '/',
     },
     {
       icon: 'receipt',
       label: 'Purchases',
-      urlSuffix: '/purchases'
+      urlSuffix: '/purchases',
     },
     {
       icon: 'business_center',
       label: 'Products',
-      urlSuffix: '/products'
+      urlSuffix: '/products',
     },
     {
       icon: 'emoji_events',
       label: 'Leaderboard',
-      urlSuffix: '/leaderboard'
-    }
+      urlSuffix: '/leaderboard',
+    },
   ];
 
   toggleSidebar() {

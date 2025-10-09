@@ -1,5 +1,5 @@
 export const environment = {
   production: false,
   name: 'stage',
-  apiPath: '/stage/api'
-}
+  apiPath: '/stage/api',
+};

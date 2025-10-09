@@ -1,94 +1,36 @@
 <div>
-    <h1 class="page-title">Users</h1>
-    <table class="user-table" matSort (matSortChange)="sortData($event)">
-        <tr>
-            <th mat-sort-header="firstName">First Name:</th>
-            <th mat-sort-header="name">Last Name:</th>
-            <th mat-sort-header="actions">Actions:</th>
-        </tr>
-        
-        <tr>       
-            <td>
-                <mat-dialog-content>
-                    <mat-form-field>
-                    <mat-label>First Name:</mat-label>
-                    <input matInput [(ngModel)]="givenName" (change)="disableErrors()"/>
-                    </mat-form-field>    
-                </mat-dialog-content>
-                    @if (givenNameError) {
-                        <div class="dialog-error">
-                            {{givenNameErrorMessage}}
-                        </div>                         
-                    }                   
-            </td>   
-            <td>
-                <mat-dialog-content>
-                    <mat-form-field>
-                    <mat-label>Last Name:</mat-label>
-                    <input matInput [(ngModel)]="surname" (change)="disableErrors()"/>
-                    </mat-form-field>
-                </mat-dialog-content>  
-                    @if (surnameError) {
-                        <div class="dialog-error">
-                            {{surnameErrorMessage}}
-                        </div>                         
-                    }                                 
-            </td> 
-            <td>
-                <button matFab class="button" (click)="onSaveNewUser()">
-                    <mat-icon>add</mat-icon>
-                </button>
-            </td> 
-        </tr>
+  <h1 class="page-title">Users</h1>
+  <table class="user-table" matSort (matSortChange)="sortData($event)">
+    <tr>
+      <th mat-sort-header="firstName">First Name:</th>
+      <th mat-sort-header="name">Last Name:</th>
+      <th mat-sort-header="actions">Actions:</th>
+    </tr>
 
-        @for (user of users; track $index) {
-            @if(user.userId == this.currentlyEditingId){
-                <tr>      
-                    <td>
-                        <mat-dialog-content>
-                            <mat-form-field>
-                            <mat-label>First Name:</mat-label>
-                            <input matInput [(ngModel)]="givenNameEdit" (change)="disableEditErrors()"/>
-                            </mat-form-field>    
-                        </mat-dialog-content>
-                            @if (givenNameErrorEdit) {
-                                <div class="dialog-error">
-                                    {{givenNameErrorMessageEdit}}
-                                </div>                         
-                            }                   
-                    </td>   
-                    <td>
-                        <mat-dialog-content>
-                            <mat-form-field>
-                            <mat-label>Last Name:</mat-label>
-                            <input matInput [(ngModel)]="surnameEdit" (change)="disableEditErrors()"/>
-                            </mat-form-field>
-                        </mat-dialog-content>  
-                            @if (surnameErrorEdit) {
-                                <div class="dialog-error">
-                                    {{surnameErrorMessageEdit}}
-                                </div>                         
-                            }                                 
-                    </td> 
-                    <td>
-                        <button matFab class="button-save" (click)="onSaveEdit(user)">
-                            <mat-icon>save</mat-icon>
-                        </button>
-                        <button matFab class="button" (click)="onCancelEdit()">
-                            <mat-icon>cancel</mat-icon>
-                        </button>
-                    </td>  
-                </tr>
-            }
-            @else {
-                <tr>
-                    <td> {{user.givenName}} </td>
-                    <td> {{user.surname}} </td>
-                    <td>
-                        <mat-icon class="edit-icon" (click)="onEdit(user.userId!)">edit</mat-icon>
-                    </td>
-                </tr>
-            }
-        }
-    </table>
+    <tr
+      appEditUser
+      [user]="emptyUser"
+      [isNewUser]="true"
+      (isCanceled)="onCancelEdit()"
+      (isSaved)="initializeUsers()"
+    ></tr>
+
+    @for (user of users; track $index) { @if(user.userId == this.currentlyEditingId){
+    <tr
+      appEditUser
+      [user]="user"
+      [isNewUser]="false"
+      (isCanceled)="onCancelEdit()"
+      (isSaved)="initializeUsers()"
+    ></tr>
+    } @else {
+    <tr>
+      <td>{{ user.givenName }}</td>
+      <td>{{ user.surname }}</td>
+      <td>
+        <mat-icon class="edit-icon" (click)="onEdit(user.userId!)">edit</mat-icon>
+      </td>
+    </tr>
+    } }
+  </table>
 </div>

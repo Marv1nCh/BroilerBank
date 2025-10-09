@@ -1,0 +1,94 @@
+@if (isNewProduct()) {
+<td class="cell">
+  <div class="input-container">
+    <mat-dialog-content>
+      <mat-form-field>
+        <mat-label>New Price set at:</mat-label>
+        <input
+          matInput
+          [matDatepicker]="picker"
+          [formControl]="createdAtControl"
+          (change)="disableErrors()"
+        />
+        <mat-hint>DD/MM/YYYY</mat-hint>
+        <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+      </mat-form-field>
+    </mat-dialog-content>
+    @if (dateError) {
+    <div class="dialog-error">
+      {{ dateErrorMessage }}
+    </div>
+    }
+  </div>
+</td>
+} @else {
+<td class="cell">
+  <mat-dialog-content>
+    <div class="strikethrough-wrapper" [class.disabled]="true">
+      <mat-form-field appearance="fill">
+        <input
+          placeholder="{{ createdAtControl.value?.toDateString() }}"
+          matInput
+          [disabled]="true"
+        />
+      </mat-form-field>
+    </div>
+  </mat-dialog-content>
+</td>
+}
+
+<td class="cell">
+  <div class="input-container">
+    <mat-dialog-content>
+      <mat-form-field>
+        <mat-label>Product Type:</mat-label>
+        <input
+          matInput
+          [formControl]="type"
+          [matAutocomplete]="auto"
+          type="text"
+          aria-label="Food Option"
+          (change)="disableErrors()"
+        />
+        <mat-autocomplete #auto="matAutocomplete">
+          @for (option of productsOptions |async; track $index) {
+          <mat-option [value]="option">{{ option }}</mat-option>
+          }
+        </mat-autocomplete>
+      </mat-form-field>
+    </mat-dialog-content>
+    @if (typeError) {
+    <div class="dialog-error">
+      {{ typeErrorMessage }}
+    </div>
+    }
+  </div>
+</td>
+
+<td class="cell">
+  <div class="input-container">
+    <mat-dialog-content>
+      <mat-form-field>
+        <mat-label>New Price:</mat-label>
+        <input matInput [(ngModel)]="price" (change)="disableErrors()" />
+      </mat-form-field>
+    </mat-dialog-content>
+    @if (priceError) {
+    <div class="dialog-error">
+      {{ priceErrorMessage }}
+    </div>
+    }
+  </div>
+</td>
+
+<td class="cell">
+  <button matFab class="button-save" (click)="onSave()">
+    <mat-icon>save</mat-icon>
+  </button>
+  @if (!isNewProduct()) {
+  <button matFab class="button" (click)="exit()">
+    <mat-icon>cancel</mat-icon>
+  </button>
+  }
+</td>

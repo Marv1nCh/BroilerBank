@@ -1,0 +1,43 @@
+<div class="date-header-container">
+  Created At:
+  <button
+    mat-icon-button
+    [matMenuTriggerFor]="dateMenu"
+    (click)="$event.stopPropagation()"
+    aria-label="Filter by date range"
+  >
+    <mat-icon>calendar_today</mat-icon>
+  </button>
+
+  <mat-menu #dateMenu="matMenu">
+    <div class="mat-menu-container">
+      <mat-form-field>
+        <mat-label>Start Date</mat-label>
+        <input
+          matInput
+          [matDatepicker]="startPicker"
+          [(ngModel)]="startDate"
+          (dateChange)="applyDateRangeFilter()"
+        />
+        <mat-datepicker-toggle matSuffix [for]="startPicker"></mat-datepicker-toggle>
+        <mat-datepicker #startPicker></mat-datepicker>
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>End Date</mat-label>
+        <input
+          matInput
+          [matDatepicker]="endPicker"
+          [(ngModel)]="endDate"
+          (dateChange)="applyDateRangeFilter()"
+        />
+        <mat-datepicker-toggle matSuffix [for]="endPicker"></mat-datepicker-toggle>
+        <mat-datepicker #endPicker></mat-datepicker>
+      </mat-form-field>
+
+      <div class="date-filter-actions">
+        <button mat-stroked-button color="primary" (click)="clearDateFilter()">Clear</button>
+      </div>
+    </div>
+  </mat-menu>
+</div>

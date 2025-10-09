@@ -1,229 +1,69 @@
 <div>
-    <h1  class="page-title">Broiler Purchases</h1>
-    <table class="user-table" matSort (matSortChange)="sortData($event)">
-        <tr>
-            <th mat-sort-header="givenName">First Name:</th>
-            <th mat-sort-header="surname">Last Name:</th>
-            <th mat-sort-header="date">
-                <div class="date-header-container">
-                    Created At:
-                    <button mat-icon-button [matMenuTriggerFor]="dateMenu" (click)="$event.stopPropagation()" aria-label="Filter by date range">
-                        <mat-icon>calendar_today</mat-icon>
-                    </button>
+  <h1 class="page-title">Broiler Purchases</h1>
+  <table class="user-table" matSort (matSortChange)="sortData($event)">
+    <tr>
+      <th mat-sort-header="givenName">First Name:</th>
+      <th mat-sort-header="surname">Last Name:</th>
+      <th mat-sort-header="date">
+        <app-date-range-filter
+          [purchases]="purchases"
+          (filteredPurchases)="applyDateRangeFilter($event)"
+        ></app-date-range-filter>
+      </th>
+      <th mat-sort-header="products">Products:</th>
+      <th mat-sort-header="paid">Paid:</th>
+      <th mat-sort-header="price">Price:</th>
+      <th mat-sort-header="actions">Actions:</th>
+    </tr>
 
-                    <mat-menu #dateMenu="matMenu">
-                        <div class="mat-menu-container">
+    <tr
+      appEditPurchase
+      [isNewPurchase]="true"
+      [purchase]="emptyPurchase"
+      [users]="users"
+      [foodOptions]="foodOptions"
+      (isExited)="onCancelEdit()"
+      (isSaved)="initializePurchases()"
+    ></tr>
 
-                            <mat-form-field>
-                                <mat-label>Start Date</mat-label>
-                                <input matInput [matDatepicker]="startPicker" [(ngModel)]="startDate" (dateChange)="applyDateRangeFilter()" />
-                                <mat-datepicker-toggle matSuffix [for]="startPicker"></mat-datepicker-toggle>
-                                <mat-datepicker #startPicker></mat-datepicker>
-                            </mat-form-field>
-
-                            <mat-form-field>
-                                <mat-label>End Date</mat-label>
-                                <input matInput [matDatepicker]="endPicker" [(ngModel)]="endDate" (dateChange)="applyDateRangeFilter()" />
-                                <mat-datepicker-toggle matSuffix [for]="endPicker"></mat-datepicker-toggle>
-                                <mat-datepicker #endPicker></mat-datepicker>
-                            </mat-form-field>
-
-                            <div class="date-filter-actions">
-                                <button mat-stroked-button color="primary" (click)="clearDateFilter()">Clear</button>
-                            </div>
-                        </div>
-                    </mat-menu>
-                </div>
-            </th>
-            <th mat-sort-header="products">Products:</th>
-            <th mat-sort-header="paid">Paid:</th>
-            <th mat-sort-header="price">Price:</th>
-            <th mat-sort-header="actions">Actions:</th>
-        </tr>
-
-        <tr>
-            <td>
-                <mat-dialog-content>
-                    <mat-form-field class="user-mat-field">
-                        <mat-label>User:</mat-label>
-                        <mat-select [formControl]="userControl" class="user-mat-select">
-                            @for (user of users; track $index) {
-                                <mat-option [value]="user"> {{user.givenName}} {{user.surname}}</mat-option>
-                            }
-                        </mat-select>
-                    </mat-form-field>   
-                </mat-dialog-content>
-                    @if (userError) {
-                        <div class="dialog-error">
-                            {{userErrorMessage}}
-                        </div>
-                    }
-            </td>
-            <td>
-                <mat-dialog-content>
-                <div class="strikethrough-wrapper" [class.disabled]="true">
-                    <mat-form-field appearance="fill">
-                    <input matInput [disabled]="true" />
-                    </mat-form-field>
-                </div>
-                </mat-dialog-content>
-            </td>
-            <td>
-                <div class="input-container">
-                    <mat-dialog-content>
-                        <mat-form-field>
-                            <mat-label>Product purchased at:</mat-label>
-                            <input matInput [matDatepicker]="picker" [formControl]="purchasedAtControl" (change)="disableErrors()">
-                            <mat-hint>DD/MM/YYYY</mat-hint>
-                            <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
-                            <mat-datepicker #picker></mat-datepicker>
-                        </mat-form-field>
-                    </mat-dialog-content>
-                    @if (dateError) {
-                        <div class="dialog-error">
-                            {{dateErrorMessage}}
-                        </div>                         
-                    }                  
-                </div>
-            </td>
-            <td>
-                 <div class="input-container">
-                    <mat-dialog-content>
-                        <mat-form-field>
-                        <mat-label>Food Options:</mat-label>
-                        <mat-select [formControl]="foodOptionControl" multiple>
-                            @for (foodOption of foodOptions; track $index) {
-                            <mat-option [value]="foodOption"> {{foodOption}}</mat-option>
-                            }
-                        </mat-select>
-                        </mat-form-field>
-                    </mat-dialog-content>
-                    @if (typeError) {
-                        <div class="dialog-error">
-                            {{typeErrorMessage}}
-                        </div>
-                    }
-                </div>               
-            </td>
-            <td>
-                <mat-dialog-content class="checkbox">
-                    <mat-checkbox [(ngModel)]="paidControl"/>
-                </mat-dialog-content>
-            </td>
-            <td>
-                <mat-dialog-content>
-                <div class="strikethrough-wrapper" [class.disabled]="true">
-                    <mat-form-field appearance="fill">
-                    <input matInput [disabled]="true" />
-                    </mat-form-field>
-                </div>
-                </mat-dialog-content>
-            </td>
-            <td>
-                <button matFab class="button" (click)="onSaveNewPurchase()">
-                    <mat-icon>add</mat-icon>
-                </button>
-            </td>
-        </tr>
-
-        @for (purchase of filteredPurchases; track $index) {
-            @if (currentlyEditingId == purchase.purchaseId) {
-                <tr>
-                    <td>
-                        <mat-dialog-content>
-                        <div class="strikethrough-wrapper" [class.disabled]="true">
-                            <mat-form-field appearance="fill">
-                            <input placeholder="{{purchase.givenName}}" matInput [disabled]="true" />
-                            </mat-form-field>
-                        </div>
-                        </mat-dialog-content>
-                    </td>
-                    <td>
-                        <mat-dialog-content>
-                        <div class="strikethrough-wrapper" [class.disabled]="true">
-                            <mat-form-field appearance="fill">
-                            <input placeholder="{{purchase.surname}}" matInput [disabled]="true" />
-                            </mat-form-field>
-                        </div>
-                        </mat-dialog-content>
-                    </td>
-                    <td>
-                        <div class="input-container">
-                            <mat-dialog-content>
-                                <mat-form-field>
-                                    <mat-label>Product purchased at:</mat-label>
-                                    <input matInput [matDatepicker]="picker" [formControl]="purchasedAtControlEdit" (change)="disableErrors()">
-                                    <mat-hint>DD/MM/YYYY</mat-hint>
-                                    <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
-                                    <mat-datepicker #picker></mat-datepicker>
-                                </mat-form-field>
-                            </mat-dialog-content>            
-                        </div>
-                    </td>
-                    <td>
-                        <div class="input-container">
-                            <mat-dialog-content>
-                                <mat-form-field>
-                                <mat-label>Food Options:</mat-label>
-                                <mat-select [formControl]="foodOptionControlEdit" multiple>
-                                    @for (foodOption of foodOptions; track $index) {
-                                    <mat-option [value]="foodOption"> {{foodOption}}</mat-option>
-                                    }
-                                </mat-select>
-                                </mat-form-field>
-                            </mat-dialog-content>
-                        </div>               
-                    </td>
-                    <td>
-                        <mat-dialog-content class="checkbox">
-                            <mat-checkbox [(ngModel)]="paidControlEdit"/>
-                        </mat-dialog-content>
-                    </td>
-                    <td>
-                        <mat-dialog-content>
-                        <div class="strikethrough-wrapper" [class.disabled]="true">
-                            <mat-form-field appearance="fill">
-                            <input placeholder="{{purchase.price}} €" matInput [disabled]="true" />
-                            </mat-form-field>
-                        </div>
-                        </mat-dialog-content>
-                    </td>
-                    <td>
-                        <button matFab class="button-save" (click)="onSaveEdit(purchase)">
-                            <mat-icon>save</mat-icon>
-                        </button>
-                        <button matFab class="button" (click)="onCancelEdit()">
-                            <mat-icon>cancel</mat-icon>
-                        </button>
-                    </td>
-                </tr>
-            }
-            @else {
-                <tr>
-                    <td> 
-                        <div class="givenName-container">
-                            <div class="{{purchase.paid ? 'paid-indicator-paid' : 'paid-indicator-not-paid'}}"> </div>
-                            {{purchase.givenName}} 
-                        </div>
-                    </td>
-                    <td> {{purchase.surname}} </td> 
-                    <td> {{purchase.date}} </td>
-                    <td>
-                        @for (type of purchase.products; track $index) {
-                            <div> {{type}}</div>
-                        }
-                            </td>
-                            <td> 
-                                <mat-dialog-content class="checkbox">
-                                    <mat-checkbox [checked]="purchase.paid" (change)="onPaidChange(purchase)"/>
-                                </mat-dialog-content>
-                            </td>
-                            <td> {{purchase.price}} €</td>
-                    <td> 
-                        <mat-icon (click)="onEdit(purchase.purchaseId!)" class="edit-icon">edit</mat-icon>
-                    </td>
-                </tr>
-            }
+    @for (purchase of filteredPurchases; track $index) { @if (currentlyEditingId ==
+    purchase.purchaseId) {
+    <tr
+      appEditPurchase
+      [isNewPurchase]="false"
+      [purchase]="purchase"
+      [users]="users"
+      [foodOptions]="foodOptions"
+      (isExited)="onCancelEdit()"
+      (isSaved)="initializePurchases()"
+    ></tr>
+    } @else {
+    <tr>
+      <td>
+        <div class="givenName-container">
+          <div
+            class="{{ purchase.paid ? 'paid-indicator-paid' : 'paid-indicator-not-paid' }}"
+          ></div>
+          {{ purchase.givenName }}
+        </div>
+      </td>
+      <td>{{ purchase.surname }}</td>
+      <td>{{ purchase.date }}</td>
+      <td>
+        @for (type of purchase.products; track $index) {
+        <div>{{ type }}</div>
         }
-    </table>
+      </td>
+      <td>
+        <mat-dialog-content class="checkbox">
+          <mat-checkbox [checked]="purchase.paid" (change)="onPaidChange(purchase)" />
+        </mat-dialog-content>
+      </td>
+      <td>{{ purchase.price }} €</td>
+      <td>
+        <mat-icon (click)="onEdit(purchase.purchaseId!)" class="edit-icon">edit</mat-icon>
+      </td>
+    </tr>
+    } }
+  </table>
 </div>

@@ -4,8 +4,6 @@ import { Component } from '@angular/core';
   selector: 'app-chicken-icon',
   imports: [],
   templateUrl: './chicken-icon.svg',
-  styleUrl: './chicken-icon.scss'
+  styleUrl: './chicken-icon.scss',
 })
-export class ChickenIcon {
-
-}
+export class ChickenIcon {}

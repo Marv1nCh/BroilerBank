@@ -6,17 +6,17 @@ import { MAT_DIALOG_DATA, MatDialogActions, MatDialogRef } from '@angular/materi
   selector: 'app-warning-dialog',
   imports: [MatDialogActions, MatButtonModule],
   templateUrl: './warning-dialog.html',
-  styleUrl: './warning-dialog.scss'
+  styleUrl: './warning-dialog.scss',
 })
 export class WarningDialog {
-    data = inject(MAT_DIALOG_DATA) as {
-      warning: string
-      message: string
-    };
+  data = inject(MAT_DIALOG_DATA) as {
+    warning: string;
+    message: string;
+  };
 
-    warningDialogRef = inject(MatDialogRef<WarningDialog>)
+  warningDialogRef = inject(MatDialogRef<WarningDialog>);
 
-    onClose(accepted: boolean){
-      this.warningDialogRef.close(accepted)
-    }
+  onClose(accepted: boolean) {
+    this.warningDialogRef.close(accepted);
+  }
 }
