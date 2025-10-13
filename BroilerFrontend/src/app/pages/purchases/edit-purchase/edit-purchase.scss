@@ -36,7 +36,10 @@
   mat-form-field {
     width: 60%;
   }
-  color: #ccc;
+}
+
+.disabled-input-container {
+  --mat-form-field-filled-disabled-container-color: var(--disabled-input-color);
 }
 
 .date-picker-container {

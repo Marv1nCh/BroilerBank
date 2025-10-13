@@ -24,6 +24,7 @@ html {
   --text-color: #000;
   --component-color: #edc328;
   --component-text-color: #000;
+  --disabled-input-color:#dfdfdf;
 }
 
 body {
@@ -57,4 +58,5 @@ body.dark-mode {
   color-scheme: dark;
   --bg-color: #464242;
   --text-color: #fff;
+  --disabled-input-color:#5e5a5a;
 }
