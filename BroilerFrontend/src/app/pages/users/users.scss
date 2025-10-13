@@ -1,5 +1,5 @@
 .user-table {
-  background-color: #f4f6f7;
+  background-color: var(--bg-color);
   border-collapse: collapse;
   font-size: medium;
   box-shadow: 1px 0 50px #b1abab;
@@ -20,7 +20,7 @@
   padding: 0.75em 1em;
   height: 1rem;
   align-items: center;
-  background-color: #edc328;
+  background-color: var(--component-color);
   margin: 0.4em;
   border-radius: 10px;
 }

@@ -18,6 +18,14 @@ html {
   );
 }
 
+:root {
+  //standard colors
+  --bg-color: #fff;
+  --text-color: #000;
+  --component-color: #edc328;
+  --component-text-color: #000;
+}
+
 body {
   // Default the application to a light color theme. This can be changed to
   // `dark` to enable the dark color theme, or to `light dark` to defer to the
@@ -43,4 +51,10 @@ body {
 body {
   margin: 0;
   font-family: Roboto, 'Helvetica Neue', sans-serif;
+}
+
+body.dark-mode {
+  color-scheme: dark;
+  --bg-color: #464242;
+  --text-color: #fff;
 }

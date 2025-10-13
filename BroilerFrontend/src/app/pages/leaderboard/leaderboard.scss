@@ -1,5 +1,5 @@
 .leaderboard-table {
-  background-color: #f4f6f7;
+  background-color: var(--bg-color);
   border-collapse: collapse;
   font-size: medium;
   box-shadow: 1px 0 50px #b1abab;
@@ -17,17 +17,16 @@
   font-weight: bold;
   line-height: 120%;
   border-bottom: none;
-  text-align: center;
-  align-items: center;
 }
 
 .header-cell {
-  padding: 0.75em 1em;
-  background-color: #edc328 !important;
+  padding: 0.5em 1em;
+  background-color: var(--component-color);
   border-radius: 10px;
   margin: 0.15em;
-  color: #000;
-  height: 4rem;
+  color: var(--component-text-color);
+  text-align: center;
+  align-content: center;
 }
 
 .mat-mdc-cell {

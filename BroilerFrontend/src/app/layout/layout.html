@@ -4,7 +4,20 @@
     </app-sidebar>
   </div>
 
-  <main class="content" [ngClass]="{ 'content-expanded': isSidebarCollapsed }">
+  <div class="fixed-dark-mode-container">
+    <button matFab class="button" (click)="onToggleDarkMode()">
+      @if (isDarkMode) {
+      <mat-icon>wb_sunny</mat-icon>
+      } @else {
+      <mat-icon>dark_mode</mat-icon>
+      }
+    </button>
+  </div>
+
+  <main
+    class="content"
+    [ngClass]="{ 'content-expanded': isSidebarCollapsed, 'content-dark-mode': isDarkMode }"
+  >
     <div class="content-inner"><router-outlet></router-outlet></div>
   </main>
 </div>

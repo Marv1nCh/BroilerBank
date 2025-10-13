@@ -1,5 +1,5 @@
 .user-table {
-  background-color: #f4f6f7;
+  background-color: var(--bg-color);
   border-collapse: collapse;
   font-size: medium;
   box-shadow: 1px 0 50px #b1abab;
@@ -9,20 +9,20 @@
 }
 
 ::ng-deep .mat-sort-header-arrow svg path {
-  fill: white;
+  fill: var(--text-color);
   height: 100px;
   width: 100px;
 }
 
 .header-cell {
-  color: #000;
+  color: var(--component-text-color);
   font-size: xx-large;
   font-weight: bold;
-  padding: 0.75em 1em;
-  height: 2.25rem;
+  padding: 0.5em 1em;
   width: 6.5em;
+  text-align: center;
   align-items: center;
-  background-color: #edc328;
+  background-color: var(--component-color);
   margin: 0.4em;
   border-radius: 10px;
   line-height: 1.2;

@@ -2,10 +2,11 @@
   width: 4.2em;
   height: 4em;
   margin-bottom: 1em;
-  background-color: #edc328;
+  background-color: var(--component-color);
   box-shadow: 1px 0 5px #b1abab;
-  color: black;
+  color: var(--component-text-color);
 }
+
 .button-save {
   margin-right: 1em;
 }
@@ -35,6 +36,7 @@
   mat-form-field {
     width: 60%;
   }
+  color: #ccc;
 }
 
 .date-picker-container {

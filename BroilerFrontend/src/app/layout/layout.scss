@@ -20,8 +20,31 @@
     margin-left: 1rem;
   }
 
-  background-color: #fff;
+  background-color: var(--bg-color);
   background-image: linear-gradient(to right, #ddd 1px, transparent 1px),
     linear-gradient(to bottom, #ddd 1px, transparent 1px);
   background-size: 50px 50px;
+}
+
+.content-dark-mode {
+  background-image: none;
+}
+
+.fixed-dark-mode-container {
+  position: fixed;
+  left: 97%;
+  top: 2%;
+  width: 40px;
+  height: 40px;
+  box-shadow: none;
+  cursor: pointer;
+}
+
+.button {
+  width: 4.2em;
+  height: 4em;
+  margin-bottom: 1em;
+  background-color: var(--component-color);
+  box-shadow: 1px 0 5px #b1abab;
+  color: var(--component-text-color);
 }
