@@ -47,3 +47,7 @@
     width: 75%;
   }
 }
+
+.input {
+  --mat-form-field-filled-container-color: var(--input-color);
+}

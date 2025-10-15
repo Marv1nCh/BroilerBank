@@ -8,12 +8,11 @@ import { MatDialog, MatDialogModule, MatDialogRef } from '@angular/material/dial
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
-import { catchError, map, Observable, startWith } from 'rxjs';
+import { map, Observable, startWith } from 'rxjs';
 import { Product } from '../../../model/products.type';
 import { WarningDialog } from '../../../components/warning-dialog/warning-dialog';
 import { ProductService } from '../../../services/product-service';
 import { SnackbarService } from '../../../services/components/snackbar-service';
-import { DialogRef } from '@angular/cdk/dialog';
 
 @Component({
   selector: '[appEditProduct]',

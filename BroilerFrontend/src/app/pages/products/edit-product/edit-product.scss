@@ -39,3 +39,7 @@
 .disabled-input-container {
   --mat-form-field-filled-disabled-container-color: var(--disabled-input-color);
 }
+
+.input {
+  --mat-form-field-filled-container-color: var(--input-color);
+}

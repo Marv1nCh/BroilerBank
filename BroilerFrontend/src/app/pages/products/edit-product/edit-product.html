@@ -3,7 +3,7 @@
   <div class="input-container">
     <mat-dialog-content>
       <div class="date-picker-container">
-        <mat-form-field>
+        <mat-form-field class="input">
           <mat-label>New Price set at:</mat-label>
           <input
             matInput
@@ -28,7 +28,7 @@
 <td class="cell">
   <mat-dialog-content>
     <div class="disabled-input-container" [class.disabled]="true">
-      <mat-form-field appearance="fill">
+      <mat-form-field appearance="fill" class="input">
         <input
           placeholder="{{ createdAtControl.value?.toDateString() }}"
           matInput
@@ -43,7 +43,7 @@
 <td class="cell">
   <div class="input-container">
     <mat-dialog-content>
-      <mat-form-field>
+      <mat-form-field class="input">
         <mat-label>Product Type:</mat-label>
         <input
           matInput
@@ -71,7 +71,7 @@
 <td class="cell">
   <div class="input-container">
     <mat-dialog-content>
-      <mat-form-field>
+      <mat-form-field class="input">
         <mat-label>New Price:</mat-label>
         <input matInput [(ngModel)]="price" (change)="disableErrors()" />
       </mat-form-field>

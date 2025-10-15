@@ -1,0 +1,36 @@
+.card {
+  padding: 1em;
+  background-color: var(--bg-color);
+  box-shadow: 1px 0 50px #b1abab;
+  margin-left: 2em;
+}
+
+.button-container {
+  width: 100%;
+  text-align: center;
+}
+
+.clear-button {
+  background-color: var(--component-color);
+  color: var(--component-text-color) !important;
+  margin-top: 1em;
+}
+
+.month-filter {
+  margin-bottom: 1em;
+}
+
+.week-filter {
+  margin-bottom: 1em;
+}
+
+.icon {
+  font-size: xx-large;
+  height: 1em;
+  width: 1em;
+  margin: 0.2em;
+}
+
+.input {
+  --mat-form-field-filled-container-color: var(--input-color);
+}

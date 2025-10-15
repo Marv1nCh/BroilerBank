@@ -1,6 +1,6 @@
 <td class="cell">
   <mat-dialog-content>
-    <mat-form-field class="user-mat-field">
+    <mat-form-field class="user-mat-field input">
       <mat-label>User:</mat-label>
       <mat-select [formControl]="userControl" class="user-mat-select">
         @for (user of users(); track $index) {
@@ -18,7 +18,7 @@
 <td class="cell">
   <mat-dialog-content>
     <div class="disabled-input-container">
-      <mat-form-field>
+      <mat-form-field class="input">
         <input matInput [disabled]="true" />
       </mat-form-field>
     </div>
@@ -28,7 +28,7 @@
   <div class="input-container">
     <mat-dialog-content>
       <div class="date-picker-container">
-        <mat-form-field>
+        <mat-form-field class="input">
           <mat-label>Purchased at:</mat-label>
           <input
             matInput
@@ -52,7 +52,7 @@
 <td class="cell">
   <div class="input-container">
     <mat-dialog-content>
-      <mat-form-field>
+      <mat-form-field class="input">
         <mat-label>Food Options:</mat-label>
         <mat-select [formControl]="foodOptionControl" multiple>
           @for (foodOption of foodOptions(); track $index) {
@@ -76,7 +76,7 @@
 <td class="cell">
   <mat-dialog-content>
     <div class="disabled-input-container disabled-input-container-price">
-      <mat-form-field>
+      <mat-form-field class="input">
         <input matInput [disabled]="true" />
       </mat-form-field>
     </div>

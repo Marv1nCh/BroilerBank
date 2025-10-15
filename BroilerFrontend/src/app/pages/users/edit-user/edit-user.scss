@@ -30,3 +30,7 @@
   padding: 1em;
   align-items: center;
 }
+
+.input {
+  --mat-form-field-filled-container-color: var(--input-color);
+}

@@ -48,7 +48,7 @@ export class DateRangeFilter {
         newPurchases.push(purchase);
       }
     });
-    console.log(newPurchases)
+    
     return newPurchases;
   }
 

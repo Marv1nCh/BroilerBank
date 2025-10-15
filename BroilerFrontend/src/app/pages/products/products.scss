@@ -1,4 +1,4 @@
-.user-table {
+.product-table {
   background-color: var(--bg-color);
   border-collapse: collapse;
   font-size: medium;
@@ -13,13 +13,13 @@
   width: 100px;
 }
 
-.user-table td {
+.product-table td {
   border-bottom: 1px solid #ccc;
   padding: 1em;
   align-items: center;
 }
 
-.user-table td:last-child {
+.product-table td:last-child {
   border-right: none;
   width: 1em;
 }

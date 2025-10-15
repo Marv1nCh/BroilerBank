@@ -1,6 +1,6 @@
 <td class="cell">
   <mat-dialog-content>
-    <mat-form-field>
+    <mat-form-field class="input">
       <mat-label>First Name:</mat-label>
       <input matInput [(ngModel)]="givenName" (change)="disableErrors()" />
     </mat-form-field>
@@ -13,7 +13,7 @@
 </td>
 <td class="cell">
   <mat-dialog-content>
-    <mat-form-field>
+    <mat-form-field class="input">
       <mat-label>Last Name:</mat-label>
       <input matInput [(ngModel)]="surname" (change)="disableErrors()" />
     </mat-form-field>
