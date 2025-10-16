@@ -8,4 +8,6 @@ public interface ProductRepository extends JpaRepository<Product, UUID> {
     Product findByType(String type);
 
     boolean existsByType(String type);
+
+    Product getByType(String type);
 }
