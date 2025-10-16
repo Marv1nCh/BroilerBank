@@ -1,0 +1,49 @@
+<div>
+  <mat-card class="card">
+    <div class="search-filter-container">
+      <div class="search-icon-container">
+        <header>
+          <mat-icon class="icon">search</mat-icon>
+        </header>
+
+        <mat-dialog-content>
+          <mat-form-field class="input">
+            <mat-label>Type to Search ...</mat-label>
+            <input matInput [(ngModel)]="searchContent" (input)="onSearch()" />
+          </mat-form-field>
+        </mat-dialog-content>
+      </div>
+
+      <div class="input-button-container">
+        <header>
+          <mat-icon class="icon">filter_alt</mat-icon>
+        </header>
+
+        <app-date-picker-week-purchases
+          #weekPicker
+          [purchases]="originalPurchases()"
+          (filteredPurchases)="onFilter($event)"
+          (filterIndicator)="clearOtherFilters($event)"
+        ></app-date-picker-week-purchases>
+        <app-date-picker-month-purchases
+          #monthPicker
+          [purchases]="originalPurchases()"
+          (filteredPurchases)="onFilter($event)"
+          (filterIndicator)="clearOtherFilters($event)"
+        ></app-date-picker-month-purchases>
+        <app-date-picker-year-purchases
+          #yearPicker
+          [purchases]="originalPurchases()"
+          (filteredPurchases)="onFilter($event)"
+          (filterIndicator)="clearOtherFilters($event)"
+        ></app-date-picker-year-purchases>
+
+        <div class="button-container">
+          <button matButton class="clear-button" (click)="clearFilters()">
+            Clear Search and Filters
+          </button>
+        </div>
+      </div>
+    </div>
+  </mat-card>
+</div>

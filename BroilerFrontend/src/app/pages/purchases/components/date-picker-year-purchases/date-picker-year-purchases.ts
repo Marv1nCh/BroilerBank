@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, output } from '@angular/core';
+import { Component, effect, input, output, signal } from '@angular/core';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import {
   MAT_DATE_RANGE_SELECTION_STRATEGY,
@@ -12,8 +12,8 @@ import { default as _rollupMoment, Moment } from 'moment';
 import * as _moment from 'moment';
 import { DateRangeService } from '../../../../services/date-range-service';
 import { provideMomentDateAdapter } from '@angular/material-moment-adapter';
-import { LeaderboardFilterService } from '../../../../services/leaderborad-filter-service';
-import { Leaderboard } from '../../../../model/leaderboard.type';
+import { Purchase } from '../../../../model/purchase.type';
+import { isAfter, isBefore } from '../../../../shared/utils';
 import { DatePickerEnum } from '../../../../shared/enums';
 
 const moment = _rollupMoment || _moment;
@@ -31,7 +31,7 @@ export const MY_FORMATS_YEAR = {
 };
 
 @Component({
-  selector: 'app-date-picker-year',
+  selector: 'app-date-picker-year-purchases',
   imports: [
     MatFormFieldModule,
     MatInputModule,
@@ -39,20 +39,30 @@ export const MY_FORMATS_YEAR = {
     ReactiveFormsModule,
     MatDialogModule,
   ],
-  templateUrl: './date-picker-year.html',
-  styleUrl: './date-picker-year.scss',
+  templateUrl: './date-picker-year-purchases.html',
+  styleUrl: './date-picker-year-purchases.scss',
   providers: [
     { provide: MAT_DATE_RANGE_SELECTION_STRATEGY, useClass: DateRangeService },
     provideMomentDateAdapter(MY_FORMATS_YEAR),
   ],
 })
-export class DatePickerYear {
+export class DatePickerYearPurchases {
+  purchases = input.required<Array<Purchase>>();
+  readonly originalPurchases = signal<Array<Purchase>>([]);
+
+  filteredPurchases = output<Array<Purchase>>();
+  filterIndicator = output<DatePickerEnum>();
+
   readonly date = new FormControl<Moment | null>(null);
 
-  leaderboardFilterService = inject(LeaderboardFilterService);
-
-  filteredListOutput = output<Array<Leaderboard>>();
-  filterIndicator = output<DatePickerEnum>();
+  constructor() {
+    effect(() => {
+      const incoming = this.purchases();
+      if (incoming?.length) {
+        this.originalPurchases.set([...incoming]);
+      }
+    });
+  }
 
   setYear(normalizedYear: Moment, datepicker: MatDatepicker<Moment>) {
     const ctrlValue = this.date.value ?? moment();
@@ -60,12 +70,18 @@ export class DatePickerYear {
     this.date.setValue(ctrlValue);
     datepicker.close();
 
-    this.leaderboardFilterService
-      .filterLeaderboardByYear(this.date.value!.toDate())
-      .subscribe((result) => {
-        this.filteredListOutput.emit(result);
-        this.filterIndicator.emit(DatePickerEnum.YEAR_DATEPICKER);
-      });
+    const year = this.date.value?.toDate()!.getFullYear()!;
+
+    const start = new Date(year, 0, 1);
+    const end = new Date(year + 1, 0, 0);
+
+    this.filteredPurchases.emit(
+      this.originalPurchases().filter((x) => {
+        const purchaseDate = new Date(x.date);
+        return isBefore(purchaseDate, end) && isAfter(purchaseDate, start);
+      })
+    );
+    this.filterIndicator.emit(DatePickerEnum.YEAR_DATEPICKER);
   }
 
   clear() {

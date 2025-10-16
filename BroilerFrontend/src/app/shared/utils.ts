@@ -19,3 +19,29 @@ export function mapDateToString(date: Date) {
     String(date.getDate()).padStart(2, '0')
   );
 }
+
+export function isAfter(date: Date, dateToCompare: Date): boolean {
+  console.log(date)
+  console.log(dateToCompare)
+  if (date.getFullYear() < dateToCompare.getFullYear()) {
+    return false;
+  } else if (date.getMonth() < dateToCompare.getMonth()) {
+    return false;
+  } else if (date.getDate() < dateToCompare.getDate()) {
+    return false;
+  }
+  return true;
+}
+
+export function isBefore(date: Date, dateToCompare: Date): boolean {
+  console.log(date)
+  console.log(dateToCompare)
+  if (date.getFullYear() > dateToCompare.getFullYear()) {
+    return false;
+  } else if (date.getMonth() > dateToCompare.getMonth()) {
+    return false;
+  } else if (date.getDate() > dateToCompare.getDate()) {
+    return false;
+  }
+  return true;
+}

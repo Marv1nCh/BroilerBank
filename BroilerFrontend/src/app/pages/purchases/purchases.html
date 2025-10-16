@@ -1,17 +1,14 @@
 <div>
   <h1 class="page-title">Broiler Purchases</h1>
+  <app-filter-card-purchases
+    [purchases]="purchases"
+    (alteredPurchaseList)="onSearch($event)"
+  ></app-filter-card-purchases>
   <table class="user-table" matSort (matSortChange)="sortData($event)">
     <tr>
       <th mat-sort-header="givenName"><div class="header-cell">First Name</div></th>
       <th mat-sort-header="surname"><div class="header-cell">Last Name</div></th>
-      <th mat-sort-header="date">
-        <div class="header-cell">
-          <app-date-range-filter
-            [purchases]="purchases"
-            (filteredPurchases)="applyDateRangeFilter($event)"
-          ></app-date-range-filter>
-        </div>
-      </th>
+      <th mat-sort-header="date"><div class="header-cell">Created At</div></th>
       <th mat-sort-header="products"><div class="header-cell">Products</div></th>
       <th mat-sort-header="paid"><div class="header-cell header-cell-small">Paid</div></th>
       <th mat-sort-header="price"><div class="header-cell header-cell-small">Price</div></th>

@@ -1,0 +1,26 @@
+<div>
+  <mat-dialog-content>
+    <div class="date-picker-container">
+      <mat-form-field appearance="fill" class="input">
+        <mat-label>Filter by week:</mat-label>
+        <mat-date-range-input [rangePicker]="pickerWeek">
+          <input
+            matStartDate
+            placeholder="Start Date"
+            [formControl]="filterByWeekStartControl"
+            (dateChange)="onWeekChange()"
+          />
+          <input
+            matEndDate
+            placeholder="End date"
+            [formControl]="filterByWeekEndControl"
+            (dateChange)="onWeekChange()"
+          />
+        </mat-date-range-input>
+        <mat-hint>DD/MM/YYYY - DD/MM/YYYY</mat-hint>
+        <mat-datepicker-toggle matSuffix [for]="pickerWeek"></mat-datepicker-toggle>
+        <mat-date-range-picker #pickerWeek></mat-date-range-picker>
+      </mat-form-field>
+    </div>
+  </mat-dialog-content>
+</div>

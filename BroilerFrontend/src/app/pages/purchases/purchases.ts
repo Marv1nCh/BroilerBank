@@ -11,8 +11,8 @@ import { ProductService } from '../../services/product-service';
 import { UserService } from '../../services/user-service';
 import { SnackbarService } from '../../services/components/snackbar-service';
 import { EditPurchase } from './edit-purchase/edit-purchase';
-import { DateRangeFilter } from './date-filter/date-filter';
 import { sortPurchaseData } from '../../shared/sort-utils';
+import { FilterCardPurchases } from './components/filter-card-purchases/filter-card-purchases';
 
 @Component({
   selector: 'app-purchases',
@@ -22,7 +22,7 @@ import { sortPurchaseData } from '../../shared/sort-utils';
     MatDialogContent,
     MatCheckbox,
     EditPurchase,
-    DateRangeFilter,
+    FilterCardPurchases,
   ],
   templateUrl: './purchases.html',
   styleUrl: './purchases.scss',
@@ -92,4 +92,6 @@ export class Purchases implements OnInit {
     (this.filteredPurchases = newlyFilteredPurchases);
 
   sortData = (sort: Sort) => sortPurchaseData(sort, this.purchases);
+
+  onSearch = (searchedPurchases: Array<Purchase>) => (this.filteredPurchases = searchedPurchases);
 }

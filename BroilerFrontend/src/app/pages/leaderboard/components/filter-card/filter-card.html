@@ -18,18 +18,21 @@
     <app-date-picker-week
       #weekPicker
       (filteredListOutput)="onFilteredChange($event)"
+      (filterIndicator)="clearOtherFilters($event)"
       class="week-filter"
     ></app-date-picker-week>
 
     <app-date-picker-month
       #monthPicker
       (filteredListOutput)="onFilteredChange($event)"
+      (filterIndicator)="clearOtherFilters($event)"
       class="month-filter"
     ></app-date-picker-month>
 
     <app-date-picker-year
       #yearPicker
       (filteredListOutput)="onFilteredChange($event)"
+      (filterIndicator)="clearOtherFilters($event)"
       class="year-filter"
     ></app-date-picker-year>
 

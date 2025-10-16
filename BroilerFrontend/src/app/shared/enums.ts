@@ -1,0 +1,5 @@
+export enum DatePickerEnum {
+  WEEK_DATEPICKER,
+  MONTH_DATEPICKER,
+  YEAR_DATEPICKER,
+}

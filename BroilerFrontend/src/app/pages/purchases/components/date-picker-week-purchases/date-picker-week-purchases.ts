@@ -1,4 +1,4 @@
-import { Component, inject, output } from '@angular/core';
+import { Component, effect, input, output, signal } from '@angular/core';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import {
   MAT_DATE_RANGE_SELECTION_STRATEGY,
@@ -9,13 +9,13 @@ import {
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { LeaderboardFilterService } from '../../../../services/leaderborad-filter-service';
-import { Leaderboard } from '../../../../model/leaderboard.type';
 import { DateRangeService } from '../../../../services/date-range-service';
+import { Purchase } from '../../../../model/purchase.type';
+import { isAfter, isBefore } from '../../../../shared/utils';
 import { DatePickerEnum } from '../../../../shared/enums';
 
 @Component({
-  selector: 'app-date-picker-week',
+  selector: 'app-date-picker-week-purchases',
   imports: [
     MatDialogModule,
     MatFormFieldModule,
@@ -25,8 +25,8 @@ import { DatePickerEnum } from '../../../../shared/enums';
     MatInputModule,
     MatDatepickerModule,
   ],
-  templateUrl: './date-picker-week.html',
-  styleUrl: './date-picker-week.scss',
+  templateUrl: './date-picker-week-purchases.html',
+  styleUrl: './date-picker-week-purchases.scss',
   providers: [
     {
       provide: MAT_DATE_RANGE_SELECTION_STRATEGY,
@@ -34,24 +34,37 @@ import { DatePickerEnum } from '../../../../shared/enums';
     },
   ],
 })
-export class DatePickerWeek {
+export class DatePickerWeekPurchases {
+  purchases = input.required<Array<Purchase>>();
+  readonly originalPurchases = signal<Array<Purchase>>([]);
+
+  filteredPurchases = output<Array<Purchase>>();
+  filterIndicator = output<DatePickerEnum>();
+
   filterByWeekStartControl = new FormControl<Date | null>(null);
   filterByWeekEndControl = new FormControl<Date | null>(null);
 
-  filteredListOutput = output<Array<Leaderboard>>();
-  filterIndicator = output<DatePickerEnum>();
-
-  leaderboardFilterService = inject(LeaderboardFilterService);
+  constructor() {
+    effect(() => {
+      const incoming = this.purchases();
+      if (incoming?.length) {
+        this.originalPurchases.set([...incoming]);
+      }
+    });
+  }
 
   onWeekChange() {
     const start = this.filterByWeekStartControl.value;
     const end = this.filterByWeekEndControl.value;
 
     if (start && end) {
-      this.leaderboardFilterService.filterLeaderboardByWeek(start, end).subscribe((result) => {
-        this.filteredListOutput.emit(result);
-        this.filterIndicator.emit(DatePickerEnum.WEEK_DATEPICKER);
-      });
+      this.filteredPurchases.emit(
+        this.originalPurchases().filter((x) => {
+          const purchaseDate = new Date(x.date);
+          return isBefore(purchaseDate, end) && isAfter(purchaseDate, start);
+        })
+      );
+      this.filterIndicator.emit(DatePickerEnum.WEEK_DATEPICKER);
     }
   }
 

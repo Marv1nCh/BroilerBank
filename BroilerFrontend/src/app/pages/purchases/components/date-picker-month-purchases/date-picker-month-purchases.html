@@ -1,0 +1,19 @@
+<div>
+  <mat-dialog-content>
+    <div class="date-picker-container">
+      <mat-form-field class="input">
+        <mat-label>Filter by Month:</mat-label>
+        <input matInput [matDatepicker]="dp" [formControl]="date" />
+        <mat-hint>MM/YYYY</mat-hint>
+        <mat-datepicker-toggle matIconSuffix [for]="dp"></mat-datepicker-toggle>
+        <mat-datepicker
+          #dp
+          startView="multi-year"
+          (monthSelected)="setMonthAndYear($event, dp)"
+          panelClass="example-month-picker"
+        >
+        </mat-datepicker>
+      </mat-form-field>
+    </div>
+  </mat-dialog-content>
+</div>

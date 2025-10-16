@@ -10,6 +10,7 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatFormField, MatLabel } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { FormsModule } from '@angular/forms';
+import { DatePickerEnum } from '../../../../shared/enums';
 
 @Component({
   selector: 'app-filter-card',
@@ -60,9 +61,9 @@ export class FilterCard {
     this.weekPicker?.clear();
     this.monthPicker?.clear();
     this.yearPicker?.clear();
-    
-    this.searchContent = ''
-    this.onSearch()
+
+    this.searchContent = '';
+    this.onSearch();
 
     this.isClearFilters.emit(true);
   }
@@ -79,5 +80,15 @@ export class FilterCard {
         return isInGivenName || isInSurname || isInNumberOfPurchases || isInCompletePrice;
       })
     );
+  }
+
+  clearOtherFilters(datePicker: DatePickerEnum) {
+    const pickers = {
+      [DatePickerEnum.WEEK_DATEPICKER]: [this.monthPicker, this.yearPicker],
+      [DatePickerEnum.MONTH_DATEPICKER]: [this.weekPicker, this.yearPicker],
+      [DatePickerEnum.YEAR_DATEPICKER]: [this.weekPicker, this.monthPicker],
+    };
+
+    pickers[datePicker]?.forEach((picker) => picker?.clear());
   }
 }

@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { DateFilter } from './date-filter';
+import { DatePickerYearPurchases } from './date-picker-year-purchases';
 
-describe('DateFilter', () => {
-  let component: DateFilter;
-  let fixture: ComponentFixture<DateFilter>;
+describe('DatePickerYearPurchases', () => {
+  let component: DatePickerYearPurchases;
+  let fixture: ComponentFixture<DatePickerYearPurchases>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [DateFilter]
+      imports: [DatePickerYearPurchases]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(DateFilter);
+    fixture = TestBed.createComponent(DatePickerYearPurchases);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
