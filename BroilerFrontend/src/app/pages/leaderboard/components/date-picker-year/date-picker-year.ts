@@ -68,7 +68,5 @@ export class DatePickerYear {
       });
   }
 
-  clear() {
-    this.date.setValue(null);
-  }
+  clear = () => this.date.setValue(null);
 }

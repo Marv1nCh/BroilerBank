@@ -69,7 +69,5 @@ export class DatePickerMonth {
       });
   }
 
-  clear() {
-    this.date.setValue(null);
-  }
+  clear = () => this.date.setValue(null);
 }

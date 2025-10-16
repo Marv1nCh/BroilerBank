@@ -18,14 +18,14 @@
   color: var(--component-text-color);
   font-size: xx-large;
   font-weight: bold;
-  padding: 0.5em 1em;
-  width: 6.5em;
+  padding: 0.4em 0.8em;
   text-align: center;
   align-items: center;
   background-color: var(--component-color);
   margin: 0.4em;
   border-radius: 10px;
   line-height: 1.2;
+  min-width: 4em;
 }
 
 .header-cell-small {
@@ -36,14 +36,6 @@
   border-bottom: 1px solid #ccc;
   padding: 1em;
   align-items: center;
-}
-
-.user-table td:last-child {
-  border-right: none;
-}
-
-.user-table td:first-child {
-  width: 1em;
 }
 
 .edit-button {

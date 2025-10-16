@@ -71,11 +71,12 @@ export class FilterCard {
   onSearch() {
     this.searchedByContent.emit(
       this.fullLeaderboard().filter((x) => {
-        const isInGivenName = x.givenName.toLowerCase().indexOf(this.searchContent) != -1;
-        const isInSurname = x.surname.toLocaleLowerCase().indexOf(this.searchContent) != -1;
-        const isInNumberOfPurchases =
-          x.numberOfPurchases.toString().indexOf(this.searchContent) != -1;
-        const isInCompletePrice = x.completePrice.toString().indexOf(this.searchContent) != -1;
+        const searchedContent = this.searchContent.toLocaleLowerCase();
+
+        const isInGivenName = x.givenName.toLowerCase().indexOf(searchedContent) != -1;
+        const isInSurname = x.surname.toLocaleLowerCase().indexOf(searchedContent) != -1;
+        const isInNumberOfPurchases = x.numberOfPurchases.toString().indexOf(searchedContent) != -1;
+        const isInCompletePrice = x.completePrice.toString().indexOf(searchedContent) != -1;
 
         return isInGivenName || isInSurname || isInNumberOfPurchases || isInCompletePrice;
       })

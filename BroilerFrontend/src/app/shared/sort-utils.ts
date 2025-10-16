@@ -11,10 +11,8 @@ export function sortPurchaseData(sort: Sort, purchases: Array<Purchase>) {
   purchases.sort((a, b) => {
     const isAsc = sort.direction == 'asc';
     switch (sort.active) {
-      case 'givenName':
-        return compare(a.givenName, b.givenName, isAsc);
-      case 'surname':
-        return compare(a.surname, b.surname, isAsc);
+      case 'name':
+        return compare(a.givenName + " " + a.surname, b.givenName + " " + b.surname, isAsc);
       case 'date':
         return compare(a.date, b.date, isAsc);
       case 'products':

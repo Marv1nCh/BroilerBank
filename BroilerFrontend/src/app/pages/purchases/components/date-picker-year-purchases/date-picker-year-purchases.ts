@@ -84,7 +84,5 @@ export class DatePickerYearPurchases {
     this.filterIndicator.emit(DatePickerEnum.YEAR_DATEPICKER);
   }
 
-  clear() {
-    this.date.setValue(null);
-  }
+  clear = () => this.date.setValue(null);
 }

@@ -88,7 +88,5 @@ export class DatePickerMonthPurchases {
     this.filterIndicator.emit(DatePickerEnum.MONTH_DATEPICKER);
   }
 
-  clear() {
-    this.date.setValue(null);
-  }
+  clear = () => this.date.setValue(null);
 }

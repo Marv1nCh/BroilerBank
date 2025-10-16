@@ -15,15 +15,7 @@
   </div>
   }
 </td>
-<td class="cell">
-  <mat-dialog-content>
-    <div class="disabled-input-container">
-      <mat-form-field class="input">
-        <input matInput [disabled]="true" />
-      </mat-form-field>
-    </div>
-  </mat-dialog-content>
-</td>
+
 <td class="cell">
   <div class="input-container">
     <mat-dialog-content>
@@ -49,6 +41,7 @@
     }
   </div>
 </td>
+
 <td class="cell">
   <div class="input-container">
     <mat-dialog-content>
@@ -68,13 +61,15 @@
     }
   </div>
 </td>
+
 <td class="cell">
   <mat-dialog-content class="checkbox">
     <mat-checkbox [(ngModel)]="paidControl" />
   </mat-dialog-content>
 </td>
-<td class="cell">
-  <mat-dialog-content>
+
+<td class="cell cell-price">
+  <mat-dialog-content class="price-container">
     <div class="disabled-input-container disabled-input-container-price">
       <mat-form-field class="input">
         <input matInput [disabled]="true" />
@@ -82,6 +77,7 @@
     </div>
   </mat-dialog-content>
 </td>
+
 <td class="cell">
   <button matFab class="button button-save" (click)="onSave()">
     <mat-icon>save</mat-icon>

@@ -52,11 +52,7 @@ export class LeaderboardPage implements OnInit {
     this.leaderboard = filteredLeaderboard;
   }
 
-  onClearFilters() {
-    this.leaderboard = this.originalLeaderboard;
-  }
+  onClearFilters = () => (this.leaderboard = this.originalLeaderboard);
 
-  onSearch(newLeaderboard: Array<Leaderboard>) {
-    this.leaderboard = newLeaderboard;
-  }
+  onSearch = (newLeaderboard: Array<Leaderboard>) => (this.leaderboard = newLeaderboard);
 }

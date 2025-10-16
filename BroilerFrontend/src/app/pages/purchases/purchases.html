@@ -6,8 +6,7 @@
   ></app-filter-card-purchases>
   <table class="user-table" matSort (matSortChange)="sortData($event)">
     <tr>
-      <th mat-sort-header="givenName"><div class="header-cell">First Name</div></th>
-      <th mat-sort-header="surname"><div class="header-cell">Last Name</div></th>
+      <th mat-sort-header="name"><div class="header-cell">Name</div></th>
       <th mat-sort-header="date"><div class="header-cell">Created At</div></th>
       <th mat-sort-header="products"><div class="header-cell">Products</div></th>
       <th mat-sort-header="paid"><div class="header-cell header-cell-small">Paid</div></th>
@@ -43,10 +42,9 @@
           <div
             class="{{ purchase.paid ? 'paid-indicator-paid' : 'paid-indicator-not-paid' }}"
           ></div>
-          {{ purchase.givenName }}
+          {{ purchase.givenName + " " + purchase.surname}}
         </div>
       </td>
-      <td>{{ purchase.surname }}</td>
       <td>{{ purchase.date }}</td>
       <td>
         @for (type of purchase.products; track $index) {

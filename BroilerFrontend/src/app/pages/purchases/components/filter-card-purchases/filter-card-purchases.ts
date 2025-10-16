@@ -56,15 +56,17 @@ export class FilterCardPurchases {
   onSearch() {
     this.alteredPurchaseList.emit(
       this.originalPurchases().filter((x) => {
-        const isInGivenName = x.givenName.toLocaleLowerCase().indexOf(this.searchContent) != -1;
-        const isInSurname = x.surname.toLocaleLowerCase().indexOf(this.searchContent) != -1;
-        const isInDate = x.date.toLocaleLowerCase().indexOf(this.searchContent) != -1;
-        const isInProducts = x.products.some(
-          (ele) => ele.toLocaleLowerCase().indexOf(this.searchContent) != -1
-        );
-        const isInPrice = x.price.toString().toLocaleLowerCase().indexOf(this.searchContent) != -1;
+        const searchedContent = this.searchContent.toLocaleLowerCase();
 
-        return isInGivenName || isInSurname || isInDate || isInProducts || isInPrice;
+        const name = x.givenName.toLocaleLowerCase() + ' ' + x.surname.toLocaleLowerCase();
+        const isInName = name.indexOf(searchedContent) != -1;
+        const isInDate = x.date.toLocaleLowerCase().indexOf(searchedContent) != -1;
+        const isInProducts = x.products.some(
+          (ele) => ele.toLocaleLowerCase().indexOf(searchedContent) != -1
+        );
+        const isInPrice = x.price.toString().toLocaleLowerCase().indexOf(searchedContent) != -1;
+
+        return isInName || isInDate || isInProducts || isInPrice;
       })
     );
   }
@@ -78,9 +80,7 @@ export class FilterCardPurchases {
     this.onSearch();
   }
 
-  onFilter(newPurchases: Array<Purchase>) {
-    this.alteredPurchaseList.emit(newPurchases);
-  }
+  onFilter = (newPurchases: Array<Purchase>) => this.alteredPurchaseList.emit(newPurchases);
 
   clearOtherFilters(datePicker: DatePickerEnum) {
     const pickers = {

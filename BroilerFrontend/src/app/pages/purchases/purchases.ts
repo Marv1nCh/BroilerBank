@@ -91,7 +91,7 @@ export class Purchases implements OnInit {
   applyDateRangeFilter = (newlyFilteredPurchases: Array<Purchase>) =>
     (this.filteredPurchases = newlyFilteredPurchases);
 
-  sortData = (sort: Sort) => sortPurchaseData(sort, this.purchases);
+  sortData = (sort: Sort) => sortPurchaseData(sort, this.filteredPurchases);
 
   onSearch = (searchedPurchases: Array<Purchase>) => (this.filteredPurchases = searchedPurchases);
 }
