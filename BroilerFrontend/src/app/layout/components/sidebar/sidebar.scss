@@ -155,7 +155,21 @@
 }
 
 .chicken-icon {
+  height: 8em;
+  width: 8em;
+  margin-left: 4em;
+}
+
+.chicken-icon-small {
+  height: 3em;
+  width: 3em;
+  margin-left: 0.5em;
+}
+
+.chicken-container {
   text-align: center;
+  align-content: center;
+  border-bottom: 1px solid #575050;
 }
 
 .title-first-part-collapsed {

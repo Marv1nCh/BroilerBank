@@ -1,9 +1,10 @@
-import { Component } from '@angular/core';
+import { Component, input } from '@angular/core';
 
 @Component({
   selector: 'app-chicken-icon',
   imports: [],
-  templateUrl: './chicken-icon.svg',
+  templateUrl: './chicken-icon.html',
   styleUrl: './chicken-icon.scss',
 })
-export class ChickenIcon {}
+export class ChickenIcon {
+}

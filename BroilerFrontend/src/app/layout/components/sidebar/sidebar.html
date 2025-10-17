@@ -15,9 +15,18 @@
       @if (!isSidebarCollapsed) {
       <h1 class="title-first-part">Broiler</h1>
       <h1 class="title-second-part">Thursday!</h1>
-      <div class="chicken-icon">
-        <app-chicken-icon />
+      <div class="chicken-container">
+        <div class="chicken-icon">
+          <app-chicken-icon></app-chicken-icon>
+        </div>
       </div>
+      } @else {
+      <div class="chicken-container">
+        <div class="chicken-icon-small">
+          <app-chicken-icon></app-chicken-icon>
+        </div>
+      </div>
+
       } @for (item of menuItems; track $index) {
       <ng-container>
         <li class="sidebar-menu-item">
