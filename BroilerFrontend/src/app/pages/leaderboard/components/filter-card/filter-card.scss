@@ -3,6 +3,7 @@
   background-color: var(--bg-color);
   box-shadow: 1px 0 50px #b1abab;
   margin-left: 2em;
+  width: 20em;
 }
 
 .button-container {
@@ -33,4 +34,5 @@
 
 .input {
   --mat-form-field-filled-container-color: var(--input-color);
+  width: 99.5%;
 }
