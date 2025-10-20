@@ -39,7 +39,7 @@
   align-content: center;
 }
 
-.edit-button {
+.icon {
   width: 40px;
   height: 40px;
   color: var(--text-color);
@@ -66,5 +66,9 @@
   background-color: var(--component-color);
   box-shadow: 1px 0 5px #b1abab;
   color: var(--component-text-color) !important;
+}
+
+.edit-icon {
+  margin-right: 0.3em;
 }
 

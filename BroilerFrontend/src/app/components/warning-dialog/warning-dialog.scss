@@ -5,16 +5,17 @@
 .warning-dialog-container {
   padding: 1.5em;
   width: 35em;
+  background-color: var(--bg-color) !important;
 }
 
 .button-cancel {
   color: white !important;
-  background-color: #cf8b7e !important;
+  background-color: #88a65e !important;
 }
 
 .button-proceed {
   color: white !important;
-  background-color: #88a65e !important;
+  background-color: #ca7261 !important;
 }
 
 h1 {

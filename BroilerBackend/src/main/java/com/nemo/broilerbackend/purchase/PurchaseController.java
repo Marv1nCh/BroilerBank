@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @CrossOrigin(origins = "*") //TODO delete
 @RestController
@@ -43,5 +44,15 @@ public class PurchaseController {
         return purchaseService.updatePurchase(purchaseDTO)
                 .flatMap(purchaseViewService::findById)
                 .map(PurchaseDTO::new);
+    }
+
+    @DeleteMapping(path = "/{purchaseId}")
+    public ResponseEntity<Void> deletePurchase(@PathVariable UUID purchaseId) {
+        try {
+            purchaseService.deletePurchase(purchaseId);
+            return ResponseEntity.ok().build();
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
     }
 }

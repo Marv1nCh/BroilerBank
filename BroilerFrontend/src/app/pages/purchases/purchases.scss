@@ -70,9 +70,18 @@
   display: flex;
 }
 
-.edit-icon {
+.icon {
+  width: 40px;
+  height: 40px;
+  color: var(--text-color);
+  box-shadow: none;
   cursor: pointer;
-  margin-left: 0.5em;
+  text-align: center;
+  align-content: center;
+}
+
+.edit-icon {
+  margin-right: 0.3em;
 }
 
 .mat-menu-container {

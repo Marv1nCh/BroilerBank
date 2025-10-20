@@ -51,7 +51,8 @@
       </td>
       <td>{{ purchase.price }} €</td>
       <td>
-        <mat-icon (click)="onEdit(purchase.purchaseId!)" class="edit-icon">edit</mat-icon>
+        <mat-icon (click)="onEdit(purchase.purchaseId!)" class="edit-icon icon">edit</mat-icon>
+        <mat-icon (click)="onDelete(purchase.purchaseId!)" class="delete-icon icon">delete</mat-icon>
       </td>
     </tr>
     } }

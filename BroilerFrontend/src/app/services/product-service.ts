@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { Product } from '../model/products.type';
 import { environment } from '../../environments/environment';
-import { catchError } from 'rxjs';
+import { catchError, throwError } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -33,6 +33,14 @@ export class ProductService {
       catchError((err) => {
         console.log(err);
         throw err;
+      })
+    );
+  }
+
+  deleteProduct(productId: string, price: number) {
+    return this.http.delete(environment.apiPath + '/products/' + productId + '/' + price).pipe(
+      catchError((err) => {
+        return throwError(() => err.error || 'Unknown Error');
       })
     );
   }

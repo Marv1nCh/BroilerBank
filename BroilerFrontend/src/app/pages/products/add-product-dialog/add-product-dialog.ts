@@ -63,7 +63,6 @@ export class AddProductDialog implements OnInit {
   readonly dialog = inject(MatDialog);
 
   ngOnInit(): void {
-    console.log(this.allProductOptions())
     this.productsOptions = this.type.valueChanges.pipe(
       startWith(''),
       map((value) => this.filter(value || ''))

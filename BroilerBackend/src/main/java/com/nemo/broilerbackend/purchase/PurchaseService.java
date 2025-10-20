@@ -21,8 +21,7 @@ public class PurchaseService {
     private final ProductRepository productRepository;
 
     @Autowired
-    public PurchaseService(PurchaseRepository purchaseRepository, UserRepository userRepository,
-                           PurchasedProductsRepository purchasedProductsRepository, ProductRepository productRepository) {
+    public PurchaseService(PurchaseRepository purchaseRepository, UserRepository userRepository, PurchasedProductsRepository purchasedProductsRepository, ProductRepository productRepository) {
         this.purchaseRepository = purchaseRepository;
         this.userRepository = userRepository;
         this.purchasedProductsRepository = purchasedProductsRepository;
@@ -55,26 +54,22 @@ public class PurchaseService {
         }));
     }
 
+    public void deletePurchase(UUID purchaseId) {
+        List<PurchasedProduct> purchasedProducts = purchasedProductsRepository.findByPurchaseId(purchaseId);
 
+            purchasedProductsRepository.deleteAll(purchasedProducts);
+            purchaseRepository.deleteById(purchaseId);
+    }
 
 
     private Purchase savePurchase(PurchaseDTO purchaseDTO, User user) {
-        Purchase newPurchase = Purchase.builder()
-                .date(purchaseDTO.getDate())
-                .paid(purchaseDTO.isPaid())
-                .userId(user.getId())
-                .build();
+        Purchase newPurchase = Purchase.builder().date(purchaseDTO.getDate()).paid(purchaseDTO.isPaid()).userId(user.getId()).build();
 
         return purchaseRepository.save(newPurchase);
     }
 
     private void savePurchase(PurchaseDTO purchaseDTO, UUID purchaseId, User user) {
-        Purchase newPurchase = Purchase.builder()
-                .id(purchaseId)
-                .date(purchaseDTO.getDate())
-                .paid(purchaseDTO.isPaid())
-                .userId(user.getId())
-                .build();
+        Purchase newPurchase = Purchase.builder().id(purchaseId).date(purchaseDTO.getDate()).paid(purchaseDTO.isPaid()).userId(user.getId()).build();
 
         purchaseRepository.save(newPurchase);
     }

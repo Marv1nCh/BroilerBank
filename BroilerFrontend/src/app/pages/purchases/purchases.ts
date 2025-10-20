@@ -2,7 +2,7 @@ import { Component, inject, OnInit } from '@angular/core';
 import { PurchaseService } from '../../services/purchase-service';
 import { emptyPurchase, Purchase } from '../../model/purchase.type';
 import { catchError } from 'rxjs';
-import { MatDialogContent } from '@angular/material/dialog';
+import { MatDialog, MatDialogContent, MatDialogRef } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSortModule, Sort } from '@angular/material/sort';
 import { MatCheckbox } from '@angular/material/checkbox';
@@ -13,6 +13,7 @@ import { SnackbarService } from '../../services/components/snackbar-service';
 import { EditPurchase } from './edit-purchase/edit-purchase';
 import { sortPurchaseData } from '../../shared/sort-utils';
 import { FilterCardPurchases } from './components/filter-card-purchases/filter-card-purchases';
+import { WarningDialog } from '../../components/warning-dialog/warning-dialog';
 
 @Component({
   selector: 'app-purchases',
@@ -41,6 +42,8 @@ export class Purchases implements OnInit {
   snackbarService = inject(SnackbarService);
 
   currentlyEditingId: string | null = null;
+
+  readonly dialog = inject(MatDialog);
 
   ngOnInit(): void {
     this.initializePurchases();
@@ -76,7 +79,6 @@ export class Purchases implements OnInit {
       this.filteredPurchases = this.purchases;
 
       this.sortData({ active: 'date', direction: 'asc' });
-      console.log(this.filteredPurchases);
     });
   }
 
@@ -91,6 +93,29 @@ export class Purchases implements OnInit {
     this.purchaseService
       .updatePurchase(updatedPurchase)
       .subscribe(() => (purchase.paid = updatedPurchase.paid));
+  }
+
+  onDelete(purchaseId: string) {
+    const dialogRef = this.openWarningDialog();
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        this.purchaseService.deletePurchase(purchaseId).subscribe(() => {
+          this.snackbarService.open('Purchase deleted successfully!');
+          this.initializePurchases();
+        });
+      }
+    });
+  }
+
+  openWarningDialog(): MatDialogRef<WarningDialog, any> {
+    return this.dialog.open(WarningDialog, {
+      autoFocus: false,
+      data: {
+        warning: 'Are you sure you want to delete this purchase?',
+        message: 'Choosing proceed will delete this purchase forever!',
+      },
+    });
   }
 
   onCancelEdit = () => (this.currentlyEditingId = null);

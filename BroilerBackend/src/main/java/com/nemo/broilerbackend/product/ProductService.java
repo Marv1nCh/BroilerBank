@@ -6,6 +6,7 @@ import com.nemo.broilerbackend.productPrices.ProductPrice;
 import com.nemo.broilerbackend.readmodel.productsPricesView.ProductPriceView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -66,5 +67,14 @@ public class ProductService {
 
         productPriceRepository.save(productPrice);
         return productDTO;
+    }
+
+    @Transactional
+    public void deleteProduct(UUID productId, double price) {
+        List<ProductPrice> productPrices = productPriceRepository.findByProductId(productId);
+        if (productPrices.isEmpty() || productPrices.size() == 1) {
+            throw new LastProductPriceException("Cannot delete the last price for this product.");
+        }
+        productPriceRepository.deleteByProductIdAndPrice(productId, price);
     }
 }

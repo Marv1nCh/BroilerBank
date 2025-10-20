@@ -36,7 +36,8 @@
       <td>{{ product.type }}</td>
       <td>{{ product.price }} €</td>
       <td>
-        <mat-icon class="edit-button" (click)="onEdit(product)">edit</mat-icon>
+        <mat-icon class="icon edit-icon" (click)="onEdit(product)">edit</mat-icon>
+        <mat-icon class="icon" (click)="onDelete(product)">delete</mat-icon>
       </td>
     </tr>
     } }

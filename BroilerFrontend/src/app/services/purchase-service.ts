@@ -36,4 +36,13 @@ export class PurchaseService {
       })
     );
   }
+
+  deletePurchase(purchaseId: string) {
+    return this.http.delete(environment.apiPath + '/purchases/' + purchaseId).pipe(
+      catchError((err) => {
+        console.log(err);
+        throw err;
+      })
+    );
+  }
 }

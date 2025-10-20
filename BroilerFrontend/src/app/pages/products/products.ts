@@ -3,7 +3,7 @@ import { ProductService } from '../../services/product-service';
 import { createEmptyProduct, Product } from '../../model/products.type';
 import { map, Observable, startWith } from 'rxjs';
 import { MatTableModule } from '@angular/material/table';
-import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { MatDialog, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSortModule, Sort } from '@angular/material/sort';
 import { compare } from '../../shared/utils';
@@ -16,6 +16,7 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { SnackbarService } from '../../services/components/snackbar-service';
 import { EditProduct } from './edit-product/edit-product';
 import { AddProductDialog } from './add-product-dialog/add-product-dialog';
+import { WarningDialog } from '../../components/warning-dialog/warning-dialog';
 
 @Component({
   selector: 'app-products',
@@ -66,8 +67,7 @@ export class Products implements OnInit {
   }
 
   initializeProducts() {
-    this.productService.getAllProductsFromBackend()
-    .subscribe((productsFromBackend) => {
+    this.productService.getAllProductsFromBackend().subscribe((productsFromBackend) => {
       this.products = productsFromBackend;
       this.sortData({ active: 'startDate', direction: 'asc' });
     });
@@ -102,6 +102,34 @@ export class Products implements OnInit {
         default:
           return 0;
       }
+    });
+  }
+
+  onDelete(product: Product) {
+    const dialogRef = this.openWarningDialog();
+
+    dialogRef.afterClosed().subscribe((proceed) => {
+      if (proceed) {
+        this.productService.deleteProduct(product.productId!, product.price).subscribe({
+          next: () => {
+            this.snackbarService.open('Product deleted successfully!');
+            this.initializeProducts();
+          },
+          error: (errorMessage: string) => {
+            this.snackbarService.open(errorMessage);
+          },
+        });
+      }
+    });
+  }
+
+  openWarningDialog(): MatDialogRef<WarningDialog, any> {
+    return this.dialog.open(WarningDialog, {
+      autoFocus: false,
+      data: {
+        warning: 'Are you sure you want to delete this product?',
+        message: 'Choosing proceed will delete this product forever!',
+      },
     });
   }
 
