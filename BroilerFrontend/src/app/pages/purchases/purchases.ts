@@ -2,7 +2,7 @@ import { Component, inject, OnInit } from '@angular/core';
 import { PurchaseService } from '../../services/purchase-service';
 import { emptyPurchase, Purchase } from '../../model/purchase.type';
 import { catchError } from 'rxjs';
-import { MatDialogContent } from '@angular/material/dialog';
+import { MatDialog, MatDialogContent } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSortModule, Sort } from '@angular/material/sort';
 import { MatCheckbox } from '@angular/material/checkbox';
@@ -71,7 +71,8 @@ export class Purchases implements OnInit {
   }
 
   initializePurchases() {
-    this.purchaseService.getAllPurchasesFromBackend().subscribe((purchasesFromBackend) => {
+    this.purchaseService.getAllPurchasesFromBackend()
+    .subscribe((purchasesFromBackend) => {
       this.purchases = purchasesFromBackend;
       this.filteredPurchases = this.purchases;
 

@@ -1,29 +1,29 @@
-import { Component, inject, input, OnInit, output, signal } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
-import { MatDialogModule } from '@angular/material/dialog';
-import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatDialogContent, MatDialogRef } from '@angular/material/dialog';
+import { MatFormFieldModule, MatLabel } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
+import { catchError } from 'rxjs';
 import { UserService } from '../../../services/user-service';
 import { SnackbarService } from '../../../services/components/snackbar-service';
-import { User } from '../../../model/user.type';
-import { catchError } from 'rxjs';
 
 @Component({
-  selector: '[appEditUser]',
+  selector: 'app-add-user-dialog',
   imports: [
-    MatDialogModule,
+    MatDialogContent,
     MatFormFieldModule,
-    MatIconModule,
+    MatLabel,
     FormsModule,
-    MatButtonModule,
+    MatIconModule,
     MatInputModule,
+    MatButtonModule,
   ],
-  templateUrl: './edit-user.html',
-  styleUrl: './edit-user.scss',
+  templateUrl: './add-user-dialog.html',
+  styleUrl: './add-user-dialog.scss',
 })
-export class EditUser implements OnInit {
+export class AddUserDialog {
   userService = inject(UserService);
   snackbarService = inject(SnackbarService);
 
@@ -35,52 +35,38 @@ export class EditUser implements OnInit {
   surnameError = false;
   surnameErrorMessage = 'Surname has to be filled in!';
 
-  user = input.required<User>();
-  isCanceled = output<boolean>();
-  isSaved = output<boolean>();
+  readonly dialogRef = inject(MatDialogRef<AddUserDialog>);
 
-  ngOnInit(): void {
-    this.givenName.set(this.user().givenName);
-    this.surname.set(this.user().surname);
+  disableErrors() {
+    this.givenNameError = false;
+    this.surnameError = false;
   }
 
   onSave() {
-    const givenName = this.givenName()
-    const surname = this.surname()
+    const givenName = this.givenName();
+    const surname = this.surname();
 
     const isGivenNameInvalid = !givenName?.trim();
     const isSurnameInvalid = !surname?.trim();
 
-    this.givenNameError = isGivenNameInvalid
-    this.surnameError = isSurnameInvalid
+    this.givenNameError = isGivenNameInvalid;
+    this.surnameError = isSurnameInvalid;
 
-    if(isGivenNameInvalid || isSurnameInvalid){
-      return
+    if (isGivenNameInvalid || isSurnameInvalid) {
+      return;
     }
 
-    const isUnchanged =
-      givenName === this.user().givenName &&
-      surname === this.user().surname;
-    
-    if(isUnchanged){
-      this.snackbarService.open('Nothing saved, due to no changes!');
-      return
-    }
-    
     this.addUser();
 
-    this.resetEditingValues();
+    this.exit();
   }
 
   exit() {
-    this.resetEditingValues();
-
-    this.isCanceled.emit(true);
+    this.dialogRef.close();
   }
 
   addUser() {
     const newUser = {
-      userId: this.user().userId,
       userPrincipleName: this.givenName()!,
       displayName: this.givenName()!,
       email: this.givenName()! + '@yatta.de',
@@ -100,20 +86,8 @@ export class EditUser implements OnInit {
         this.givenName.set(null);
         this.surname.set(null);
         this.snackbarService.open('User has been saved!');
-        
-        this.isSaved.emit(true)
 
         this.exit();
       });
-  }
-
-  resetEditingValues() {
-    this.givenName.set(null);
-    this.surname.set(null);
-  }
-
-  disableErrors() {
-    this.givenNameError = false;
-    this.surnameError = false;
   }
 }

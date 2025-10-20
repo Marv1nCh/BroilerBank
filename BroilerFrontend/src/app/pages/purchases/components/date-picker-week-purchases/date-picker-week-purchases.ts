@@ -13,6 +13,7 @@ import { DateRangeService } from '../../../../services/date-range-service';
 import { Purchase } from '../../../../model/purchase.type';
 import { isAfter, isBefore } from '../../../../shared/utils';
 import { DatePickerEnum } from '../../../../shared/enums';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'app-date-picker-week-purchases',
@@ -24,6 +25,7 @@ import { DatePickerEnum } from '../../../../shared/enums';
     ReactiveFormsModule,
     MatInputModule,
     MatDatepickerModule,
+    MatIconModule
   ],
   templateUrl: './date-picker-week-purchases.html',
   styleUrl: './date-picker-week-purchases.scss',

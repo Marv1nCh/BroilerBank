@@ -1,42 +1,47 @@
-import { AsyncPipe } from '@angular/common';
-import { Component, inject, input, OnInit, output, signal } from '@angular/core';
+import { Component, inject, model, OnInit, signal } from '@angular/core';
 import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
-import { MatButtonModule } from '@angular/material/button';
 import { MatDatepickerModule } from '@angular/material/datepicker';
-import { MatDialog, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
+import {
+  MAT_DIALOG_DATA,
+  MatDialog,
+  MatDialogModule,
+  MatDialogRef,
+} from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
-import { map, Observable, startWith } from 'rxjs';
-import { Product } from '../../../model/products.type';
-import { WarningDialog } from '../../../components/warning-dialog/warning-dialog';
 import { ProductService } from '../../../services/product-service';
 import { SnackbarService } from '../../../services/components/snackbar-service';
+import { AsyncPipe } from '@angular/common';
+import { map, Observable, startWith } from 'rxjs';
+import { MatButtonModule } from '@angular/material/button';
+import { WarningDialog } from '../../../components/warning-dialog/warning-dialog';
+
+export interface DialogProductData {
+  allFoodOptions: Array<string>;
+}
 
 @Component({
-  selector: '[appEditProduct]',
+  selector: 'app-add-product-dialog',
   imports: [
     MatDialogModule,
     MatFormFieldModule,
+    MatInputModule,
+    ReactiveFormsModule,
     MatDatepickerModule,
     MatAutocompleteModule,
     MatIconModule,
-    ReactiveFormsModule,
-    MatButtonModule,
     FormsModule,
     AsyncPipe,
-    MatInputModule,
     MatButtonModule,
   ],
-  templateUrl: './edit-product.html',
-  styleUrl: './edit-product.scss',
+  templateUrl: './add-product-dialog.html',
+  styleUrl: './add-product-dialog.scss',
 })
-export class EditProduct implements OnInit {
-  allProductOptions = input.required<Array<string>>();
-  product = input.required<Product>();
-  isSaved = output<boolean>();
-  isExited = output<boolean>();
+export class AddProductDialog implements OnInit {
+  readonly data = inject<DialogProductData>(MAT_DIALOG_DATA);
+  allProductOptions = model<Array<string>>(this.data.allFoodOptions);
 
   productsOptions!: Observable<string[]>;
 
@@ -54,17 +59,19 @@ export class EditProduct implements OnInit {
   priceError = false;
   priceErrorMessage = 'Price has to be filled in!';
 
+  readonly dialogRef = inject(MatDialogRef<AddProductDialog>);
   readonly dialog = inject(MatDialog);
 
   ngOnInit(): void {
-    this.createdAtControl.setValue(new Date(this.product().startDate));
-    this.type.setValue(this.product().type);
-    this.price.set(this.product().price > 0 ? this.product().price : null);
-
+    console.log(this.allProductOptions())
     this.productsOptions = this.type.valueChanges.pipe(
       startWith(''),
       map((value) => this.filter(value || ''))
     );
+  }
+
+  exit() {
+    this.dialogRef.close();
   }
 
   onSave() {
@@ -82,33 +89,32 @@ export class EditProduct implements OnInit {
 
     if (isCreatedAtInvalid || isTypeInvalid || isPriceInvalid) return;
 
-    const isUnchanged =
-      createdAt.toDateString() == this.product().startDate &&
-      type == this.product().type &&
-      price == this.product().price;
-
-    if (isUnchanged) {
-      this.snackbarService.open('Nothing saved, due to no changes!');
-      return;
-    }
-
-    this.addProduct();
-  }
-
-  addProduct() {
     const product = this.createProduct();
     const dialogRef = this.openWarningDialog();
 
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
         this.productService.addNewProductPrice(product).subscribe(() => {
-          this.resetValues();
           this.snackbarService.open('Product has been saved!');
-          this.isSaved.emit(true);
+
           this.exit();
         });
       }
     });
+  }
+
+  disableErrors() {
+    this.dateError = false;
+    this.typeError = false;
+    this.priceError = false;
+  }
+
+  createProduct() {
+    return {
+      startDate: this.createdAtControl.value!.toDateString(),
+      type: this.type.value!,
+      price: this.price()!,
+    };
   }
 
   openWarningDialog(): MatDialogRef<WarningDialog, any> {
@@ -122,35 +128,9 @@ export class EditProduct implements OnInit {
     });
   }
 
-  createProduct() {
-    return {
-      productId: this.product().productId,
-      startDate: this.createdAtControl.value!.toDateString(),
-      type: this.type.value!,
-      price: this.price()!,
-    };
-  }
-
   filter(value: string): string[] {
     const filterValue = value.toLowerCase();
 
     return this.allProductOptions().filter((option) => option.toLowerCase().includes(filterValue));
-  }
-
-  exit() {
-    this.resetValues();
-    this.isExited.emit(true);
-  }
-
-  resetValues() {
-    this.createdAtControl.setValue(null);
-    this.type.setValue(null);
-    this.price.set(null);
-  }
-
-  disableErrors() {
-    this.dateError = false;
-    this.typeError = false;
-    this.priceError = false;
   }
 }

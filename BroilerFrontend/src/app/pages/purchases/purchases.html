@@ -1,8 +1,11 @@
 <div>
   <h1 class="page-title">Broiler Purchases</h1>
   <app-filter-card-purchases
+    [users]="users"
+    [foodOptions]="foodOptions"
     [purchases]="purchases"
     (alteredPurchaseList)="onSearch($event)"
+    (initializePurchases)="initializePurchases()"
   ></app-filter-card-purchases>
   <table class="user-table" matSort (matSortChange)="sortData($event)">
     <tr>
@@ -13,16 +16,6 @@
       <th mat-sort-header="price"><div class="header-cell header-cell-small">Price</div></th>
       <th mat-sort-header="actions"><div class="header-cell header-cell-small">Actions</div></th>
     </tr>
-
-    <tr
-      appEditPurchase
-      [isNewPurchase]="true"
-      [purchase]="emptyPurchase"
-      [users]="users"
-      [foodOptions]="foodOptions"
-      (isExited)="onCancelEdit()"
-      (isSaved)="initializePurchases()"
-    ></tr>
 
     @for (purchase of filteredPurchases; track $index) { @if (currentlyEditingId ==
     purchase.purchaseId) {
@@ -42,7 +35,7 @@
           <div
             class="{{ purchase.paid ? 'paid-indicator-paid' : 'paid-indicator-not-paid' }}"
           ></div>
-          {{ purchase.givenName + " " + purchase.surname}}
+          {{ purchase.givenName + ' ' + purchase.surname }}
         </div>
       </td>
       <td>{{ purchase.date }}</td>

@@ -1,6 +1,6 @@
-import { Component, effect, input, output, signal, ViewChild } from '@angular/core';
+import { Component, effect, inject, input, output, signal, ViewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { MatDialogModule } from '@angular/material/dialog';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { DatePickerMonthPurchases } from '../date-picker-month-purchases/date-picker-month-purchases';
@@ -14,6 +14,8 @@ import { DatePickerWeek } from '../../../leaderboard/components/date-picker-week
 import { DatePickerMonth } from '../../../leaderboard/components/date-picker-month/date-picker-month';
 import { DatePickerYear } from '../../../leaderboard/components/date-picker-year/date-picker-year';
 import { DatePickerEnum } from '../../../../shared/enums';
+import { AddPurchaseDialog } from '../../add-purchase-dialog/add-purchase-dialog';
+import { User } from '../../../../model/user.type';
 
 @Component({
   selector: 'app-filter-card-purchases',
@@ -34,11 +36,16 @@ import { DatePickerEnum } from '../../../../shared/enums';
 })
 export class FilterCardPurchases {
   purchases = input.required<Array<Purchase>>();
+  users = input.required<Array<User>>();
+  foodOptions = input.required<Array<string>>();
   readonly originalPurchases = signal<Array<Purchase>>([]);
 
   alteredPurchaseList = output<Array<Purchase>>();
+  initializePurchases = output<boolean>();
 
   searchContent = '';
+
+  readonly dialog = inject(MatDialog);
 
   @ViewChild('weekPicker') weekPicker?: DatePickerWeek;
   @ViewChild('monthPicker') monthPicker?: DatePickerMonth;
@@ -90,5 +97,21 @@ export class FilterCardPurchases {
     };
 
     pickers[datePicker]?.forEach((picker) => picker?.clear());
+  }
+
+  onAddNewPurchase() {
+    const dialogRef = this.dialog.open(AddPurchaseDialog, {
+      panelClass: 'user-add-dialog',
+      autoFocus: false,
+      data: {
+        users: this.users(),
+        foodOptions: this.foodOptions(),
+      },
+    });
+
+    dialogRef.afterClosed().subscribe(() => {
+      this.initializePurchases.emit(true);
+      this.clearFilters();
+    });
   }
 }

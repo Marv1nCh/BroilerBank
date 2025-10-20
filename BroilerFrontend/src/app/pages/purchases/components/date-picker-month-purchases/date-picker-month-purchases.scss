@@ -2,3 +2,12 @@
   width: 84%;
   --mat-form-field-filled-container-color: var(--input-color);
 }
+
+.icon {
+  margin-right: 0.2em;
+}
+
+.input-container{
+  display: flex;
+  justify-content: center;
+}

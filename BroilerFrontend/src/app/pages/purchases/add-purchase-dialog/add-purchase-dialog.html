@@ -1,0 +1,71 @@
+<div class="dialog-container">
+  <mat-dialog-content>
+    <mat-form-field class="input">
+      <mat-label>User:</mat-label>
+      <mat-select [formControl]="userControl">
+        @for (user of users(); track $index) {
+        <mat-option [value]="user"> {{ user.givenName }} {{ user.surname }}</mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+  </mat-dialog-content>
+  @if (userError) {
+  <div class="dialog-error">
+    {{ userErrorMessage }}
+  </div>
+  }
+
+  <div class="input-container">
+    <mat-dialog-content>
+      <div class="date-picker-container">
+        <mat-form-field class="input">
+          <mat-label>Purchased at:</mat-label>
+          <input
+            matInput
+            [matDatepicker]="picker"
+            [formControl]="purchasedAtControl"
+            (change)="disableErrors()"
+          />
+          <mat-hint>DD/MM/YYYY</mat-hint>
+          <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
+      </div>
+    </mat-dialog-content>
+    @if (dateError) {
+    <div class="dialog-error">
+      {{ dateErrorMessage }}
+    </div>
+    }
+  </div>
+
+  <div class="input-container">
+    <mat-dialog-content>
+      <mat-form-field class="input">
+        <mat-label>Food Options:</mat-label>
+        <mat-select [formControl]="foodOptionControl" multiple>
+          @for (foodOption of foodOptions(); track $index) {
+          <mat-option [value]="foodOption"> {{ foodOption }}</mat-option>
+          }
+        </mat-select>
+      </mat-form-field>
+    </mat-dialog-content>
+    @if (typeError) {
+    <div class="dialog-error">
+      {{ typeErrorMessage }}
+    </div>
+    }
+  </div>
+
+  <div class="checkbox-container">
+    <mat-dialog-content class="checkbox">
+      <div class="paid-text">Paid?</div>
+      <mat-checkbox [(ngModel)]="paidControl" />
+    </mat-dialog-content>
+  </div>
+
+  <div class="button-container">
+    <button matButton="elevated" class="button" (click)="exit()">Cancel</button>
+    <button matButton="elevated" class="button button-save" (click)="onSave()">Save</button>
+  </div>
+</div>

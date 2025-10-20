@@ -15,6 +15,7 @@ import { provideMomentDateAdapter } from '@angular/material-moment-adapter';
 import { Purchase } from '../../../../model/purchase.type';
 import { isAfter, isBefore } from '../../../../shared/utils';
 import { DatePickerEnum } from '../../../../shared/enums';
+import { MatIconModule } from '@angular/material/icon';
 
 const moment = _rollupMoment || _moment;
 
@@ -38,6 +39,7 @@ export const MY_FORMATS_YEAR = {
     MatDatepickerModule,
     ReactiveFormsModule,
     MatDialogModule,
+    MatIconModule
   ],
   templateUrl: './date-picker-year-purchases.html',
   styleUrl: './date-picker-year-purchases.scss',

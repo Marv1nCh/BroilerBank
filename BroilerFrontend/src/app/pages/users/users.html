@@ -1,5 +1,8 @@
 <div>
-  <h1 class="page-title">Users</h1>
+  <div class="header-container">
+    <h1 class="page-title">Users</h1>
+    <button matButton class="add-user-button" (click)="onAddUser()"><mat-icon>add</mat-icon> Add User</button>
+  </div>
   <table class="user-table" matSort (matSortChange)="sortData($event)">
     <tr>
       <th mat-sort-header="firstName"><div class="header-cell">First Name</div></th>
@@ -7,19 +10,10 @@
       <th mat-sort-header="actions"><div class="header-cell">Actions</div></th>
     </tr>
 
-    <tr
-      appEditUser
-      [user]="emptyUser"
-      [isNewUser]="true"
-      (isCanceled)="onCancelEdit()"
-      (isSaved)="initializeUsers()"
-    ></tr>
-
     @for (user of users; track $index) { @if(user.userId == this.currentlyEditingId){
     <tr
       appEditUser
       [user]="user"
-      [isNewUser]="false"
       (isCanceled)="onCancelEdit()"
       (isSaved)="initializeUsers()"
     ></tr>

@@ -15,6 +15,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { SnackbarService } from '../../services/components/snackbar-service';
 import { EditProduct } from './edit-product/edit-product';
+import { AddProductDialog } from './add-product-dialog/add-product-dialog';
 
 @Component({
   selector: 'app-products',
@@ -48,7 +49,6 @@ export class Products implements OnInit {
   price = signal<number | null>(null);
 
   productsList: string[] = [];
-  productsOptions!: Observable<string[]>;
 
   currentlyEditingId: string | null = null;
   currentlyEditingDate: string | null = null;
@@ -62,29 +62,16 @@ export class Products implements OnInit {
     this.productService.getUniqueProductsFromBackend().subscribe((productsFromBackend) => {
       this.productsList = productsFromBackend.map((product) => product.type);
       this.sortData({ active: 'startDate', direction: 'asc' });
-
-      this.productsOptions = this.type.valueChanges.pipe(
-        startWith(''),
-        map((value) => this.filter(value || ''))
-      );
     });
   }
 
   initializeProducts() {
-    this.productService
-      .getAllProductsFromBackend()
-      .subscribe((productsFromBackend) => {
-        this.products = productsFromBackend;
-        this.sortData({ active: 'startDate', direction: 'asc' });
-      });
+    this.productService.getAllProductsFromBackend()
+    .subscribe((productsFromBackend) => {
+      this.products = productsFromBackend;
+      this.sortData({ active: 'startDate', direction: 'asc' });
+    });
   }
-
-  filter(value: string): string[] {
-    const filterValue = value.toLowerCase();
-
-    return this.productsList.filter((option) => option.toLowerCase().includes(filterValue));
-  }
-
 
   onEdit(newCurrentlyEditedProduct: Product) {
     this.currentlyEditingId = newCurrentlyEditedProduct.productId!;
@@ -116,5 +103,17 @@ export class Products implements OnInit {
           return 0;
       }
     });
+  }
+
+  onAddProduct() {
+    const dialogRef = this.dialog.open(AddProductDialog, {
+      panelClass: 'user-add-dialog',
+      autoFocus: false,
+      data: {
+        allFoodOptions: this.productsList,
+      },
+    });
+
+    dialogRef.afterClosed().subscribe(() => this.initializeProducts());
   }
 }

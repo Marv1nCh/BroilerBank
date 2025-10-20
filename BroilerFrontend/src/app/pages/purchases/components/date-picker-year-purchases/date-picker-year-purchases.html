@@ -2,7 +2,11 @@
   <mat-dialog-content>
     <div class="date-picker-container">
       <mat-form-field class="input">
-        <mat-label>Filter by Year:</mat-label>
+        <mat-label
+          ><div class="input-container">
+            <mat-icon class="icon">filter_alt</mat-icon>Filter by Year:
+          </div></mat-label
+        >
         <input matInput [matDatepicker]="dp" [formControl]="date" />
         <mat-hint>YYYY</mat-hint>
         <mat-datepicker-toggle matIconSuffix [for]="dp"></mat-datepicker-toggle>

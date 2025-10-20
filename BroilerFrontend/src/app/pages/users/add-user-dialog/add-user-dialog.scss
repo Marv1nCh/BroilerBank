@@ -1,0 +1,49 @@
+.button {
+  width: 6em;
+  height: 3.2em;
+  margin-bottom: 1em;
+  background-color: var(--component-color);
+  box-shadow: 1px 0 5px #b1abab;
+  color: var(--component-text-color);
+  font: bold;
+}
+
+.input-row-container {
+  display: flex;
+}
+
+.dialog-error {
+  color: red;
+  margin-left: 3em;
+}
+
+.cell {
+  align-items: center;
+  mat-dialog-content {
+    padding-left: 2.4em;
+  }
+}
+
+.button-cell {
+  display: flex;
+  justify-content: center;
+  gap: 6em;
+}
+
+.dialog-container {
+  display: flex;
+  flex-direction: column;
+  padding-top: 2em;
+  padding-bottom: 2em;
+  background-color: var(--bg-color);
+}
+
+.input {
+  --mat-form-field-filled-container-color: var(--input-color);
+}
+
+.button-container {
+  display: flex;
+  justify-content: center;
+  gap: 2em;
+}

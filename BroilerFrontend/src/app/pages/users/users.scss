@@ -2,9 +2,9 @@
   background-color: var(--bg-color);
   border-collapse: collapse;
   font-size: medium;
-  box-shadow: 1px 0 50px #b1abab;
+  box-shadow: 1px 0 20px #797575;
   border-radius: 10px;
-  margin-top: 5em;
+  margin-top: 3em;
   margin-left: 15%;
 }
 
@@ -35,9 +35,8 @@
   align-items: center;
 }
 
-.user-table td:last-child {
-  border-right: none;
-  width: 1em;
+.user-table th {
+  border-bottom: 1px solid #ccc;
 }
 
 .edit-icon {
@@ -51,3 +50,19 @@
 .page-title {
   margin-left: 15%;
 }
+
+.header-container {
+  display: flex;
+  width: 100%;
+}
+
+.add-user-button {
+  margin-left: 37.5em;
+  width: 10em;
+  height: 4em;
+  margin-bottom: 1em;
+  background-color: var(--component-color);
+  box-shadow: 1px 0 5px #b1abab;
+  color: var(--component-text-color) !important;
+}
+

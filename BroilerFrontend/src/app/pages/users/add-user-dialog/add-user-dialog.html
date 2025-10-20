@@ -1,0 +1,34 @@
+<div class="dialog-container">
+  <div class="cell cell-first">
+    <mat-dialog-content>
+      <mat-form-field class="input">
+        <mat-label>First Name:</mat-label>
+        <input matInput [(ngModel)]="givenName" (change)="disableErrors()" />
+      </mat-form-field>
+    </mat-dialog-content>
+    @if (givenNameError) {
+    <div class="dialog-error">
+      {{ givenNameErrorMessage }}
+    </div>
+    }
+  </div>
+
+  <div class="cell">
+    <mat-dialog-content>
+      <mat-form-field class="input">
+        <mat-label>Last Name:</mat-label>
+        <input matInput [(ngModel)]="surname" (change)="disableErrors()" />
+      </mat-form-field>
+    </mat-dialog-content>
+    @if (surnameError) {
+    <div class="dialog-error">
+      {{ surnameErrorMessage }}
+    </div>
+    }
+  </div>
+
+  <div class="button-container">
+    <button matButton="elevated" class="button" (click)="exit()">Cancel</button>
+    <button matButton="elevated" class="button button-save" (click)="onSave()">Save</button>
+  </div>
+</div>

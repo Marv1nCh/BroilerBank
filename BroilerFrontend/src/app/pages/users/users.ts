@@ -8,15 +8,12 @@ import { MatButtonModule } from '@angular/material/button';
 import { SnackbarService } from '../../services/components/snackbar-service';
 import { EditUser } from './edit-user/edit-user';
 import { sortUserData } from '../../shared/sort-utils';
+import { MatDialog } from '@angular/material/dialog';
+import { AddUserDialog } from './add-user-dialog/add-user-dialog';
 
 @Component({
   selector: 'app-users',
-  imports: [
-    MatIconModule,
-    MatSortModule,
-    MatButtonModule,
-    EditUser,
-  ],
+  imports: [MatIconModule, MatSortModule, MatButtonModule, EditUser],
   templateUrl: './users.html',
   styleUrl: './users.scss',
 })
@@ -29,6 +26,8 @@ export class Users implements OnInit {
   currentlyEditingId: string | null = null;
 
   emptyUser = emptyUser();
+
+  readonly dialog = inject(MatDialog);
 
   ngOnInit(): void {
     this.initializeUsers();
@@ -59,4 +58,13 @@ export class Users implements OnInit {
   formatDateToString = (date: Date) => new Date(date).toDateString();
 
   sortData = (sort: Sort) => sortUserData(sort, this.users);
+
+  onAddUser() {
+    const dialogRef = this.dialog.open(AddUserDialog, {
+      panelClass: 'user-add-dialog',
+      autoFocus: false,
+    });
+
+    dialogRef.afterClosed().subscribe(() => this.initializeUsers());
+  }
 }
