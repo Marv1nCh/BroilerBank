@@ -14,7 +14,7 @@ export function sortPurchaseData(sort: Sort, purchases: Array<Purchase>) {
       case 'name':
         return compare(a.givenName + " " + a.surname, b.givenName + " " + b.surname, isAsc);
       case 'date':
-        return compare(a.date, b.date, isAsc);
+        return compare(new Date(a.date), new Date(b.date), isAsc);
       case 'products':
         return compare(a.products.length, b.products.length, isAsc);
       case 'price':
