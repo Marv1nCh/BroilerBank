@@ -2,7 +2,7 @@ import { Component, inject, OnInit } from '@angular/core';
 import { PurchaseService } from '../../services/purchase-service';
 import { emptyPurchase, Purchase } from '../../model/purchase.type';
 import { catchError } from 'rxjs';
-import { MatDialog, MatDialogContent } from '@angular/material/dialog';
+import { MatDialogContent } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSortModule, Sort } from '@angular/material/sort';
 import { MatCheckbox } from '@angular/material/checkbox';
@@ -71,19 +71,27 @@ export class Purchases implements OnInit {
   }
 
   initializePurchases() {
-    this.purchaseService.getAllPurchasesFromBackend()
-    .subscribe((purchasesFromBackend) => {
+    this.purchaseService.getAllPurchasesFromBackend().subscribe((purchasesFromBackend) => {
       this.purchases = purchasesFromBackend;
       this.filteredPurchases = this.purchases;
 
       this.sortData({ active: 'date', direction: 'asc' });
+      console.log(this.filteredPurchases);
     });
   }
 
   formatDateToString = (date: Date) => new Date(date).toDateString();
 
-  onPaidChange = (purchase: Purchase) =>
-    this.purchaseService.updatePurchase(purchase).subscribe(() => (purchase.paid = !purchase.paid));
+  onPaidChange(purchase: Purchase) {
+    const updatedPurchase: Purchase = {
+      ...purchase,
+      paid: !purchase.paid,
+    };
+
+    this.purchaseService
+      .updatePurchase(updatedPurchase)
+      .subscribe(() => (purchase.paid = updatedPurchase.paid));
+  }
 
   onCancelEdit = () => (this.currentlyEditingId = null);
 
