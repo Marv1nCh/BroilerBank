@@ -34,7 +34,7 @@ public class ProductService {
         UUID productId = productDTO.getProductId();
 
         if(productId == null) {
-            productId = getOrCreateProduct(productDTO);
+            productId = getOrCreateProductOfType(productDTO.getType());
         }
 
         addProductPrice(productId, productDTO.getStartDate(), productDTO.getPrice());
@@ -48,16 +48,16 @@ public class ProductService {
         productPriceRepository.deleteByProductIdAndPrice(productId, price);
     }
 
-    private UUID getOrCreateProduct(ProductDTO productDTO) {
-        var product = productRepository.findByType(productDTO.getType());
+    private UUID getOrCreateProductOfType(String productType) {
+        var product = productRepository.findByType(productType);
         return product != null
                 ? product.getId()
-                : createProduct(productDTO);
+                : createProductOfType(productType);
     }
 
-    private UUID createProduct(ProductDTO productDTO) {
+    private UUID createProductOfType(String productType) {
         Product product = Product.builder()
-                .type(productDTO.getType())
+                .type(productType)
                 .build();
         return productRepository.save(product).getId();
     }
