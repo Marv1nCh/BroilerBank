@@ -24,10 +24,12 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
-import java.time.Instant;
 import java.time.LocalDate;
-import java.time.temporal.ChronoUnit;
-import java.util.*;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
 import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -132,25 +134,9 @@ public class PurchaseControllerTests {
     }
 
     @Test
-    public void PurchaseController_CreatePurchase_ReturnsNotNull() throws Exception {
-        ResultActions response = performCreatePurchase();
-
-        response.andExpect(MockMvcResultMatchers.status().isCreated());
-    }
-
-    @Test
-    public void PurchaseController_CreatePurchase_ReturnsNotNUllPurchaseDto() throws Exception {
-        ResultActions response = performCreatePurchase();
-
-        String json = response.andReturn().getResponse().getContentAsString();
-        PurchaseDTO responsePurchaseDto = objectMapper.readValue(json, PurchaseDTO.class);
-
-        Assertions.assertNotNull(responsePurchaseDto);
-    }
-
-    @Test
     public void PurchaseController_CreatePurchase_ReturnsCorrectPurchaseDto() throws Exception {
         ResultActions response = performCreatePurchase();
+        response.andExpect(MockMvcResultMatchers.status().isCreated());
 
         String json = response.andReturn().getResponse().getContentAsString();
         PurchaseDTO responsePurchaseDto = objectMapper.readValue(json, PurchaseDTO.class);
@@ -161,31 +147,6 @@ public class PurchaseControllerTests {
         LocalDate purchaseDTODate = purchaseDTO.getDate();
         LocalDate responsePurchaseDTODate = purchaseDTO.getDate();
         Assertions.assertEquals(purchaseDTODate, responsePurchaseDTODate);
-    }
-
-    @Test
-    public void PurchaseController_GetAllPurchases_ReturnsNotNull() throws Exception {
-        given(purchaseViewService.findAll())
-                .willReturn(Collections.emptyList());
-
-        ResultActions response = mockMvc.perform(get("/purchases")
-                .contentType(MediaType.APPLICATION_JSON));
-
-        Assertions.assertNotNull(response);
-    }
-
-    @Test
-    public void PurchaseController_GetAllPurchases_ReturnsNotNUllPurchaseDto() throws Exception {
-        given(purchaseViewService.findAll())
-            .willReturn(Collections.singletonList(purchaseView1));
-
-        ResultActions response = mockMvc.perform(get("/purchases")
-                .contentType(MediaType.APPLICATION_JSON));
-
-        String json = response.andReturn().getResponse().getContentAsString();
-        List<PurchaseDTO> responsePurchaseDto = objectMapper.readValue(json, new TypeReference<>() {});
-
-        Assertions.assertNotNull(responsePurchaseDto);
     }
 
     @Test

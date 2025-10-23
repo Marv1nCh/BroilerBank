@@ -6,7 +6,6 @@ import com.nemo.broilerbackend.product.ProductRepository;
 import com.nemo.broilerbackend.product.ProductService;
 import com.nemo.broilerbackend.productPrices.ProductPrice;
 import com.nemo.broilerbackend.productPrices.ProductPriceRepository;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -18,7 +17,11 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Stream;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -74,53 +77,51 @@ public class ProductServiceTests {
 
     @Test
     public void productService_getAllUniqueProducts_returnNotNull() {
-        when(productRepository.findAll()).thenReturn(List.of(product1, product2));
+        when(productRepository.streamAllBy()).thenReturn(Stream.of(product1, product2));
 
         List<ProductDTO> productDTOs = productService.getAllUniqueProducts();
 
-        Assertions.assertNotNull(productDTOs);
+        assertNotNull(productDTOs);
     }
 
     @Test
     public void productService_getAllUniqueProducts_returnCorrectNumberOfProducts() {
-        when(productRepository.findAll()).thenReturn(List.of(product1, product2));
+        when(productRepository.streamAllBy()).thenReturn(Stream.of(product1, product2));
 
         List<ProductDTO> productDTOs = productService.getAllUniqueProducts();
 
-        Assertions.assertEquals(2, productDTOs.size());
+        assertEquals(2, productDTOs.size());
     }
 
     @Test
     public void productService_getAllUniqueProducts_returnCorrectProducts() {
-        when(productRepository.findAll()).thenReturn(List.of(product1, product2));
+        when(productRepository.streamAllBy()).thenReturn(Stream.of(product1, product2));
 
         List<ProductDTO> productDTOs = productService.getAllUniqueProducts();
         List<String> productTypes = productDTOs.stream().map(ProductDTO::getType).toList();
 
-        Assertions.assertTrue(productTypes.contains(productDTO1.getType()));
-        Assertions.assertTrue(productTypes.contains(productDTO2.getType()));
+        assertTrue(productTypes.contains(productDTO1.getType()));
+        assertTrue(productTypes.contains(productDTO2.getType()));
     }
 
     @Test
     public void productService_addProduct_returnNotNullWhenNotExisting() {
-        when(productRepository.existsByType(Mockito.any())).thenReturn(false);
         when(productRepository.save(Mockito.any(Product.class))).thenReturn(product1);
         when(productPriceRepository.save(Mockito.any(ProductPrice.class))).thenReturn(productPrice1);
 
-        ProductDTO productDTO = productService.addProduct(productDTO1);
+        ProductDTO productDTO = productService.upsertProduct(productDTO1);
 
-        Assertions.assertNotNull(productDTO);
+        assertNotNull(productDTO);
     }
 
     @Test
     public void productService_addProduct_returnNotNullWhenExistingForNewProduct() {
-        when(productRepository.existsByType(Mockito.any())).thenReturn(true);
         when(productRepository.findByType(Mockito.any())).thenReturn(product1);
         when(productPriceRepository.save(Mockito.any(ProductPrice.class))).thenReturn(productPrice1);
 
-        ProductDTO productDTO = productService.addProduct(productDTO1);
+        ProductDTO productDTO = productService.upsertProduct(productDTO1);
 
-        Assertions.assertNotNull(productDTO);
+        assertNotNull(productDTO);
     }
 
     @Test
@@ -136,60 +137,56 @@ public class ProductServiceTests {
                 .productId(productForThisTest.getId())
                 .build();
 
-        when(productRepository.existsById(Mockito.any())).thenReturn(true);
         when(productPriceRepository.save(Mockito.any(ProductPrice.class))).thenReturn(productPrice1);
 
-        ProductDTO productDTO = productService.addProduct(productDTOForThisTest);
+        ProductDTO productDTO = productService.upsertProduct(productDTOForThisTest);
 
-        Assertions.assertNotNull(productDTO);
+        assertNotNull(productDTO);
     }
 
     @Test
     public void productService_addProduct_returnCorrectProductDTOWhenNotExisting() {
-        when(productRepository.existsByType(Mockito.any())).thenReturn(false);
         when(productRepository.save(Mockito.any(Product.class))).thenReturn(product1);
         when(productPriceRepository.save(Mockito.any(ProductPrice.class))).thenReturn(productPrice1);
 
-        ProductDTO productDTO = productService.addProduct(productDTO1);
+        ProductDTO productDTO = productService.upsertProduct(productDTO1);
 
-        Assertions.assertEquals(productDTO1.getType(), productDTO.getType());
-        Assertions.assertEquals(productDTO1.getPrice(), productDTO.getPrice());
-        Assertions.assertEquals(productDTO1.getStartDate(), productDTO.getStartDate());
+        assertEquals(productDTO1.getType(), productDTO.getType());
+        assertEquals(productDTO1.getPrice(), productDTO.getPrice());
+        assertEquals(productDTO1.getStartDate(), productDTO.getStartDate());
     }
 
     @Test
     public void productService_addProduct_returnCorrectProductDTOWhenExistingForNewProductPrice() {
-        when(productRepository.existsByType(Mockito.any())).thenReturn(true);
         when(productRepository.findByType(Mockito.any())).thenReturn(product1);
         when(productPriceRepository.save(Mockito.any(ProductPrice.class))).thenReturn(productPrice1);
 
-        ProductDTO productDTO = productService.addProduct(productDTO1);
+        ProductDTO productDTO = productService.upsertProduct(productDTO1);
 
-        Assertions.assertEquals(productDTO1.getType(), productDTO.getType());
-        Assertions.assertEquals(productDTO1.getPrice(), productDTO.getPrice());
-        Assertions.assertEquals(productDTO1.getStartDate(), productDTO.getStartDate());
+        assertEquals(productDTO1.getType(), productDTO.getType());
+        assertEquals(productDTO1.getPrice(), productDTO.getPrice());
+        assertEquals(productDTO1.getStartDate(), productDTO.getStartDate());
     }
 
     @Test
     public void productService_addProduct_returnCorrectProductDTOWhenExistingForExistingProduct() {
-        Product productForThisTest = Product.builder()
+        Product testProduct = Product.builder()
                 .id(UUID.randomUUID())
                 .type(product1.getType())
                 .build();
-        ProductDTO productDTOForThisTest = ProductDTO.builder()
+        ProductDTO testDto = ProductDTO.builder()
                 .price(productDTO1.getPrice())
                 .type(productDTO1.getType())
                 .startDate(productDTO1.getStartDate())
-                .productId(productForThisTest.getId())
+                .productId(testProduct.getId())
                 .build();
 
-        when(productRepository.existsById(Mockito.any())).thenReturn(true);
         when(productPriceRepository.save(Mockito.any(ProductPrice.class))).thenReturn(productPrice1);
 
-        ProductDTO productDTO = productService.addProduct(productDTOForThisTest);
+        ProductDTO productDTO = productService.upsertProduct(testDto);
 
-        Assertions.assertEquals(productDTO1.getType(), productDTO.getType());
-        Assertions.assertEquals(productDTO1.getPrice(), productDTO.getPrice());
-        Assertions.assertEquals(productDTO1.getStartDate(), productDTO.getStartDate());
+        assertEquals(productDTO1.getType(), productDTO.getType());
+        assertEquals(productDTO1.getPrice(), productDTO.getPrice());
+        assertEquals(productDTO1.getStartDate(), productDTO.getStartDate());
     }
 }
