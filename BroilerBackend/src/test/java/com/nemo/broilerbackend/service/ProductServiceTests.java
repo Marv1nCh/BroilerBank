@@ -106,7 +106,6 @@ public class ProductServiceTests {
 
     @Test
     public void productService_addProduct_returnNotNullWhenNotExisting() {
-        when(productRepository.existsByType(Mockito.any())).thenReturn(false);
         when(productRepository.save(Mockito.any(Product.class))).thenReturn(product1);
         when(productPriceRepository.save(Mockito.any(ProductPrice.class))).thenReturn(productPrice1);
 
@@ -117,7 +116,6 @@ public class ProductServiceTests {
 
     @Test
     public void productService_addProduct_returnNotNullWhenExistingForNewProduct() {
-        when(productRepository.existsByType(Mockito.any())).thenReturn(true);
         when(productRepository.findByType(Mockito.any())).thenReturn(product1);
         when(productPriceRepository.save(Mockito.any(ProductPrice.class))).thenReturn(productPrice1);
 
@@ -139,7 +137,6 @@ public class ProductServiceTests {
                 .productId(productForThisTest.getId())
                 .build();
 
-        when(productRepository.existsById(Mockito.any())).thenReturn(true);
         when(productPriceRepository.save(Mockito.any(ProductPrice.class))).thenReturn(productPrice1);
 
         ProductDTO productDTO = productService.upsertProduct(productDTOForThisTest);
@@ -149,7 +146,6 @@ public class ProductServiceTests {
 
     @Test
     public void productService_addProduct_returnCorrectProductDTOWhenNotExisting() {
-        when(productRepository.existsByType(Mockito.any())).thenReturn(false);
         when(productRepository.save(Mockito.any(Product.class))).thenReturn(product1);
         when(productPriceRepository.save(Mockito.any(ProductPrice.class))).thenReturn(productPrice1);
 
@@ -162,7 +158,6 @@ public class ProductServiceTests {
 
     @Test
     public void productService_addProduct_returnCorrectProductDTOWhenExistingForNewProductPrice() {
-        when(productRepository.existsByType(Mockito.any())).thenReturn(true);
         when(productRepository.findByType(Mockito.any())).thenReturn(product1);
         when(productPriceRepository.save(Mockito.any(ProductPrice.class))).thenReturn(productPrice1);
 
@@ -186,7 +181,6 @@ public class ProductServiceTests {
                 .productId(testProduct.getId())
                 .build();
 
-        when(productRepository.existsById(Mockito.any())).thenReturn(true);
         when(productPriceRepository.save(Mockito.any(ProductPrice.class))).thenReturn(productPrice1);
 
         ProductDTO productDTO = productService.upsertProduct(testDto);
