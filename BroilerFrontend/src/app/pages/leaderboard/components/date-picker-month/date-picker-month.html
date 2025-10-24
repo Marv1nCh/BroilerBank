@@ -3,7 +3,7 @@
     <div class="date-picker-container">
       <mat-form-field class="input">
         <mat-label>Filter by Month:</mat-label>
-        <input matInput [matDatepicker]="dp" [formControl]="date" />
+        <input matInput [matDatepicker]="dp" [formControl]="date" readonly />
         <mat-hint>MM/YYYY</mat-hint>
         <mat-datepicker-toggle matIconSuffix [for]="dp"></mat-datepicker-toggle>
         <mat-datepicker

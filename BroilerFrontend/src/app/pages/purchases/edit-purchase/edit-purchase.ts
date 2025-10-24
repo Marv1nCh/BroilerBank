@@ -159,6 +159,11 @@ export class EditPurchase implements OnInit {
     this.purchasedAtControl.setValue(null);
   }
 
+  blockTyping(event: KeyboardEvent) {
+    console.log('blocking');
+    event.preventDefault();
+  }
+
   disableErrors() {
     this.dateError = false;
     this.userError = false;

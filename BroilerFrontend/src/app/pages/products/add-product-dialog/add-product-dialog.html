@@ -9,6 +9,7 @@
             [matDatepicker]="picker"
             [formControl]="createdAtControl"
             (change)="disableErrors()"
+            readonly
           />
           <mat-hint>DD/MM/YYYY</mat-hint>
           <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>

@@ -26,6 +26,7 @@
             matInput
             [matDatepicker]="picker"
             [formControl]="purchasedAtControl"
+            readonly
             (change)="disableErrors()"
           />
           <mat-hint>DD/MM/YYYY</mat-hint>
