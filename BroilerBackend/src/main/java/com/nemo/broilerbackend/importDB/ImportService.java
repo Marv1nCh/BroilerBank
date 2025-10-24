@@ -72,6 +72,34 @@ public class ImportService {
                 productPriceRepository.save(productPrice);
 
             }
+
+            if (!productRepository.existsByType("double broiler")) {
+                Product doubleBroiler = Product.builder().type("double broiler").build();
+                Product savedDoubleBroiler = productRepository.save(doubleBroiler);
+
+                ProductPrice productPriceDoubleBroiler = ProductPrice.builder()
+                        .price(12)
+                        .startDate(LocalDate.of(2025, 1, 16))
+                        .productId(savedDoubleBroiler.getId())
+                        .build();
+
+                productPriceRepository.save(productPriceDoubleBroiler);
+            }
+            if (!productRepository.existsByType("double fries")) {
+
+                Product doubleFries = Product.builder().type("double fries").build();
+                Product savedDoubleFries = productRepository.save(doubleFries);
+
+                ProductPrice productPriceDoubleFries = ProductPrice.builder()
+                        .price(6)
+                        .startDate(LocalDate.of(2025, 1, 16))
+                        .productId(savedDoubleFries.getId())
+                        .build();
+
+                productPriceRepository.save(productPriceDoubleFries);
+            }
+
+
         }
     }
 
@@ -90,17 +118,27 @@ public class ImportService {
                     Purchase savedPurchase = purchaseRepository.save(purchase);
 
                     Product productBroiler = productRepository.findByType("broiler");
+                    Product productDoubleBroiler = productRepository.findByType("double broiler");
                     Product productFries = productRepository.findByType("fries");
+                    Product productDoubleFries = productRepository.findByType("double fries");
                     Product productColeslaw = productRepository.findByType("coleslaw");
 
-                    for (int i = 0; i < PurchaseTransformer.parseToBroiler(line); i++) {
+                    if (PurchaseTransformer.parseToBroiler(line) == 1) {
                         PurchasedProduct purchasedProduct = PurchaseTransformer.parseToPurchasedProduct(productBroiler.getId(), savedPurchase.getId());
                         purchasedProductsRepository.save(purchasedProduct);
-                    }
-                    for (int i = 0; i < PurchaseTransformer.parseToFries(line); i++) {
-                        PurchasedProduct purchasedProduct = PurchaseTransformer.parseToPurchasedProduct(productFries.getId(), savedPurchase.getId());
+                    } else if (PurchaseTransformer.parseToBroiler(line) == 2) {
+                        PurchasedProduct purchasedProduct = PurchaseTransformer.parseToPurchasedProduct(productDoubleBroiler.getId(), savedPurchase.getId());
                         purchasedProductsRepository.save(purchasedProduct);
                     }
+
+                    if (PurchaseTransformer.parseToFries(line) == 1) {
+                        PurchasedProduct purchasedProduct = PurchaseTransformer.parseToPurchasedProduct(productFries.getId(), savedPurchase.getId());
+                        purchasedProductsRepository.save(purchasedProduct);
+                    } else if (PurchaseTransformer.parseToBroiler(line) == 2) {
+                        PurchasedProduct purchasedProduct = PurchaseTransformer.parseToPurchasedProduct(productDoubleFries.getId(), savedPurchase.getId());
+                        purchasedProductsRepository.save(purchasedProduct);
+                    }
+
                     for (int i = 0; i < PurchaseTransformer.parseToColeslaw(line); i++) {
                         PurchasedProduct purchasedProduct = PurchaseTransformer.parseToPurchasedProduct(productColeslaw.getId(), savedPurchase.getId());
                         purchasedProductsRepository.save(purchasedProduct);
