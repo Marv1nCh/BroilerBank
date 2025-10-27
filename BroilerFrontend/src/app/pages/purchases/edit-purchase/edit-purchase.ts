@@ -75,7 +75,7 @@ export class EditPurchase implements OnInit {
 
     const isPurchasedAtInvalid = !purchasedAt;
     const isUserInvalid = !user;
-    const isFoodOptionInvalid = !foodOption && foodOption!.length > 0;
+    const isFoodOptionInvalid = !foodOption || foodOption!.length == 0;
 
     this.dateError = isPurchasedAtInvalid;
     this.userError = isUserInvalid;

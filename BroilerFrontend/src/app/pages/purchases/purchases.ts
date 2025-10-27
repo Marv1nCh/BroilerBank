@@ -14,6 +14,7 @@ import { EditPurchase } from './edit-purchase/edit-purchase';
 import { sortPurchaseData } from '../../shared/sort-utils';
 import { FilterCardPurchases } from './components/filter-card-purchases/filter-card-purchases';
 import { WarningDialog } from '../../components/warning-dialog/warning-dialog';
+import { compare } from '../../shared/utils';
 
 @Component({
   selector: 'app-purchases',
@@ -57,7 +58,9 @@ export class Purchases implements OnInit {
         })
       )
       .subscribe((usersFromBackend) => {
-        this.users = usersFromBackend;
+        this.users = usersFromBackend.sort((a, b) =>
+          compare(a.givenName + ' ' + a.surname, b.givenName + ' ' + b.surname, false)
+        );
       });
 
     this.productService

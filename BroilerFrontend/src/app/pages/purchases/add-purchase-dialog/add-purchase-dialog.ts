@@ -88,7 +88,7 @@ export class AddPurchaseDialog implements OnInit {
 
     const isPurchasedAtInvalid = !purchasedAt || !purchasedAt!.getDate();
     const isUserInvalid = !user || this.users().indexOf(user!) == -1;
-    const isFoodOptionInvalid = !foodOption || foodOption!.length > 0;
+    const isFoodOptionInvalid = !foodOption || foodOption!.length == 0;
 
     this.dateError = isPurchasedAtInvalid;
     this.userError = isUserInvalid;

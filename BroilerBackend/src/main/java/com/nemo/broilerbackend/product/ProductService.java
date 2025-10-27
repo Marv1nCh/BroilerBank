@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Stream;
 
 @Component
 public class ProductService {
@@ -24,16 +25,19 @@ public class ProductService {
         this.productPriceRepository = productPriceRepository;
     }
 
+    @Transactional(readOnly = true)
     public List<ProductDTO> getAllUniqueProducts() {
-        return productRepository.streamAllBy()
-                .map(ProductService::toDto)
-                .toList();
+        try (Stream<Product> products = productRepository.streamAllBy()) {
+            return products
+                    .map(ProductService::toDto)
+                    .toList();
+        }
     }
 
     public ProductDTO upsertProduct(ProductDTO productDTO) {
         UUID productId = productDTO.getProductId();
 
-        if(productId == null) {
+        if (productId == null) {
             productId = getOrCreateProductOfType(productDTO.getType());
         }
 
