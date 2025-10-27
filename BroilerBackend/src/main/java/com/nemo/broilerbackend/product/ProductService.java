@@ -25,56 +25,67 @@ public class ProductService {
     }
 
     public List<ProductDTO> getAllUniqueProducts() {
-        List<Product> products = productRepository.findAll();
-        return products.stream().map(product -> {
-            //TODO change hardcoded values
-            ProductPriceView productPriceView = ProductPriceView.builder()
-                    .id(product.getId())
-                    .price(-1)
-                    .startDate(LocalDate.now())
-                    .type(product.getType())
-                    .build();
-            return new ProductDTO(productPriceView);
-        }).toList();
+        return productRepository.streamAllBy()
+                .map(ProductService::toDto)
+                .toList();
     }
 
-    public ProductDTO addProduct(ProductDTO productDTO) {
-        boolean doesProductExist = productDTO.getProductId() != null;
-        boolean productExists = doesProductExist ?
-                productRepository.existsById(productDTO.getProductId()) :
-                productRepository.existsByType(productDTO.getType());
+    public ProductDTO upsertProduct(ProductDTO productDTO) {
+        UUID productId = productDTO.getProductId();
 
-        UUID productId;
-
-        if (productExists) {
-            productId = doesProductExist ?
-                    productDTO.getProductId() :
-                    productRepository.findByType(productDTO.getType()).getId();
-        } else {
-            Product product = Product.builder()
-                    .type(productDTO.getType())
-                    .build();
-
-            Product savedProduct = productRepository.save(product);
-            productId = savedProduct.getId();
+        if(productId == null) {
+            productId = getOrCreateProductOfType(productDTO.getType());
         }
 
-        ProductPrice productPrice = ProductPrice.builder()
-                .productId(productId)
-                .startDate(productDTO.getStartDate())
-                .price(productDTO.getPrice())
-                .build();
-
-        productPriceRepository.save(productPrice);
+        addProductPrice(productId, productDTO.getStartDate(), productDTO.getPrice());
+        productDTO.setProductId(productId);
         return productDTO;
     }
 
     @Transactional
     public void deleteProduct(UUID productId, double price) {
-        List<ProductPrice> productPrices = productPriceRepository.findByProductId(productId);
-        if (productPrices.isEmpty() || productPrices.size() == 1) {
+        assertItsNotTheLastProductPrice(productId);
+        productPriceRepository.deleteByProductIdAndPrice(productId, price);
+    }
+
+    private UUID getOrCreateProductOfType(String productType) {
+        var product = productRepository.findByType(productType);
+        return product != null
+                ? product.getId()
+                : createProductOfType(productType);
+    }
+
+    private UUID createProductOfType(String productType) {
+        Product product = Product.builder()
+                .type(productType)
+                .build();
+        return productRepository.save(product).getId();
+    }
+
+    private void addProductPrice(UUID productId, LocalDate startDate, double price) {
+        ProductPrice productPrice = ProductPrice.builder()
+                .productId(productId)
+                .startDate(startDate)
+                .price(price)
+                .build();
+
+        productPriceRepository.save(productPrice);
+    }
+
+    private void assertItsNotTheLastProductPrice(UUID productId) {
+        if (productPriceRepository.countByProductId(productId) <= 1) {
             throw new LastProductPriceException("Cannot delete the last price for this product.");
         }
-        productPriceRepository.deleteByProductIdAndPrice(productId, price);
+    }
+
+    private static ProductDTO toDto(Product product) {
+        //TODO change hardcoded values
+        ProductPriceView productPriceView = ProductPriceView.builder()
+                .id(product.getId())
+                .price(-1)
+                .startDate(LocalDate.now())
+                .type(product.getType())
+                .build();
+        return new ProductDTO(productPriceView);
     }
 }

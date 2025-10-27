@@ -35,8 +35,8 @@ public class ProductController {
     }
 
     @PostMapping
-    public ProductDTO createNewProduct(@RequestBody ProductDTO productDTO) {
-        return productService.addProduct(productDTO);
+    public ProductDTO upsertProduct(@RequestBody ProductDTO productDTO) {
+        return productService.upsertProduct(productDTO);
     }
 
     @DeleteMapping(path = "/{productId}/{price}")
