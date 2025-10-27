@@ -1,5 +1,5 @@
 .input {
-  width: 84%;
+  width: 100%;
   --mat-form-field-filled-container-color: var(--input-color);
 }
 
@@ -7,7 +7,31 @@
   margin-right: 0.2em;
 }
 
-.input-container{
+.input-container {
   display: flex;
   justify-content: center;
+}
+
+.input-long-text {
+  display: inline;
+}
+
+.input-short-text {
+  display: none;
+}
+
+@media (max-width: 2550px) {
+  .input-long-text {
+    display: none;
+  }
+
+  .input-short-text {
+    display: inline;
+  }
+}
+
+@media (max-width: 1450px) {
+  .input-short-text {
+    display: none;
+  }
 }

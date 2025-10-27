@@ -4,7 +4,9 @@
       <mat-form-field appearance="fill" class="input">
         <mat-label
           ><div class="input-container">
-            <mat-icon class="icon">filter_alt</mat-icon>Filter by week:
+            <mat-icon class="icon">filter_alt</mat-icon>
+            <span class="input-long-text">Filter by Week:</span>
+            <span class="input-short-text">by Week:</span>
           </div></mat-label
         >
         <mat-date-range-input [rangePicker]="pickerWeek">
@@ -23,7 +25,7 @@
             readonly
           />
         </mat-date-range-input>
-        <mat-hint>DD/MM/YYYY - DD/MM/YYYY</mat-hint>
+        <mat-hint class="input-short-text">DD/MM/YYYY - DD/MM/YYYY</mat-hint>
         <mat-datepicker-toggle matSuffix [for]="pickerWeek"></mat-datepicker-toggle>
         <mat-date-range-picker #pickerWeek></mat-date-range-picker>
       </mat-form-field>

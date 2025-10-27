@@ -1,11 +1,13 @@
 .product-table {
   background-color: var(--bg-color);
   border-collapse: collapse;
-  font-size: medium;
+  font-size: clamp(0.85rem, 1vw + 0.5rem, 1.1rem);
   box-shadow: 1px 0 20px #797575;
   border-radius: 10px;
-  margin-top: 5em;
-  margin-left: 15%;
+  width: 90%;
+  margin-left: 5em;
+  margin-top: 2em;
+  min-width: 600px;
 }
 
 ::ng-deep .mat-sort-header-arrow svg path {
@@ -24,19 +26,20 @@
   width: 1em;
 }
 
-.header-cell{
-  margin: 1rem;
-  font-size: xx-large;
-  font-weight: bold;
+.header-cell {
   color: var(--component-text-color);
-  padding: 0.75em 3em;
-  height: 1rem;
-  align-items: center;
+  font-size: clamp(1rem, 1vw + 2rem, 1.5rem);
+  font-weight: 600;
+  padding: 0.4em 0.8em;
+  margin-top: 1em;
   background-color: var(--component-color);
-  margin: 0.4em;
-  border-radius: 10px;
+  border-radius: 8px;
+  min-width: 4em;
   text-align: center;
-  align-content: center;
+}
+
+.header-cell-first {
+  margin-left: 1em;
 }
 
 .icon {
@@ -71,4 +74,3 @@
 .edit-icon {
   margin-right: 0.3em;
 }
-

@@ -7,54 +7,58 @@
     (alteredPurchaseList)="onSearch($event)"
     (initializePurchases)="initializePurchases()"
   ></app-filter-card-purchases>
-  <table class="user-table" matSort (matSortChange)="sortData($event)">
-    <tr>
-      <th mat-sort-header="name"><div class="header-cell">Name</div></th>
-      <th mat-sort-header="date"><div class="header-cell">Created At</div></th>
-      <th mat-sort-header="products"><div class="header-cell">Products</div></th>
-      <th mat-sort-header="paid"><div class="header-cell header-cell-small">Paid</div></th>
-      <th mat-sort-header="price"><div class="header-cell header-cell-small">Price</div></th>
-      <th mat-sort-header="actions"><div class="header-cell header-cell-small">Actions</div></th>
-    </tr>
+  <div class="table-wrapper">
+    <table class="user-table" matSort (matSortChange)="sortData($event)">
+      <tr>
+        <th mat-sort-header="name"><div class="header-cell header-cell-name">Name</div></th>
+        <th mat-sort-header="date"><div class="header-cell">Created At</div></th>
+        <th mat-sort-header="products"><div class="header-cell">Products</div></th>
+        <th mat-sort-header="paid"><div class="header-cell header-cell-small">Paid</div></th>
+        <th mat-sort-header="price"><div class="header-cell header-cell-small">Price</div></th>
+        <th mat-sort-header="actions"><div class="header-cell header-cell-small">Actions</div></th>
+      </tr>
 
-    @for (purchase of filteredPurchases; track $index) { @if (currentlyEditingId ==
-    purchase.purchaseId) {
-    <tr
-      appEditPurchase
-      [isNewPurchase]="false"
-      [purchase]="purchase"
-      [users]="users"
-      [foodOptions]="foodOptions"
-      (isExited)="onCancelEdit()"
-      (isSaved)="initializePurchases()"
-    ></tr>
-    } @else {
-    <tr>
-      <td>
-        <div class="givenName-container">
-          <div
-            class="{{ purchase.paid ? 'paid-indicator-paid' : 'paid-indicator-not-paid' }}"
-          ></div>
-          {{ purchase.givenName + ' ' + purchase.surname }}
-        </div>
-      </td>
-      <td>{{ purchase.date }}</td>
-      <td>
-        @for (type of purchase.products; track $index) {
-        <div>{{ type }}</div>
-        }
-      </td>
-      <td>
-        <mat-dialog-content class="checkbox">
-          <mat-checkbox [checked]="purchase.paid" (change)="onPaidChange(purchase)" />
-        </mat-dialog-content>
-      </td>
-      <td>{{ purchase.price }} €</td>
-      <td>
-        <mat-icon (click)="onEdit(purchase.purchaseId!)" class="edit-icon icon">edit</mat-icon>
-        <mat-icon (click)="onDelete(purchase.purchaseId!)" class="delete-icon icon">delete</mat-icon>
-      </td>
-    </tr>
-    } }
-  </table>
+      @for (purchase of filteredPurchases; track $index) { @if (currentlyEditingId ==
+      purchase.purchaseId) {
+      <tr
+        appEditPurchase
+        [isNewPurchase]="false"
+        [purchase]="purchase"
+        [users]="users"
+        [foodOptions]="foodOptions"
+        (isExited)="onCancelEdit()"
+        (isSaved)="initializePurchases()"
+      ></tr>
+      } @else {
+      <tr>
+        <td>
+          <div class="givenName-container">
+            <div
+              class="{{ purchase.paid ? 'paid-indicator-paid' : 'paid-indicator-not-paid' }}"
+            ></div>
+            {{ purchase.givenName + ' ' + purchase.surname }}
+          </div>
+        </td>
+        <td>{{ purchase.date }}</td>
+        <td>
+          @for (type of purchase.products; track $index) {
+          <div>{{ type }}</div>
+          }
+        </td>
+        <td>
+          <mat-dialog-content class="checkbox">
+            <mat-checkbox [checked]="purchase.paid" (change)="onPaidChange(purchase)" />
+          </mat-dialog-content>
+        </td>
+        <td>{{ purchase.price }} €</td>
+        <td>
+          <mat-icon (click)="onEdit(purchase.purchaseId!)" class="edit-icon icon">edit</mat-icon>
+          <mat-icon (click)="onDelete(purchase.purchaseId!)" class="delete-icon icon"
+            >delete</mat-icon
+          >
+        </td>
+      </tr>
+      } }
+    </table>
+  </div>
 </div>

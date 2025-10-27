@@ -4,11 +4,13 @@
       <mat-form-field class="input">
         <mat-label
           ><div class="input-container">
-            <mat-icon class="icon">filter_alt</mat-icon>Filter by Year:
+            <mat-icon class="icon">filter_alt</mat-icon>
+            <span class="input-long-text">Filter by Year:</span>
+            <span class="input-short-text">by Year:</span>
           </div></mat-label
         >
         <input matInput [matDatepicker]="dp" [formControl]="date" readonly />
-        <mat-hint>YYYY</mat-hint>
+        <mat-hint class="input-short-text">YYYY</mat-hint>
         <mat-datepicker-toggle matIconSuffix [for]="dp"></mat-datepicker-toggle>
         <mat-datepicker
           #dp

@@ -1,12 +1,14 @@
 <div class="card-container">
   <mat-card class="card">
     <div class="search-filter-container">
-      <div class="search-icon-container">
+      <div class="search-container">
         <mat-dialog-content>
           <mat-form-field class="input">
             <mat-label
               ><div class="search-input-container">
-                <mat-icon class="icon">search</mat-icon>Type to Search ...
+                <mat-icon class="icon">search</mat-icon>
+                <span class="input-long-text">Type to Search ...</span>
+                <span class="input-short-text">Search</span>
               </div></mat-label
             >
             <input matInput [(ngModel)]="searchContent" (input)="onSearch()" />
@@ -16,18 +18,21 @@
 
       <div class="input-button-container">
         <app-date-picker-week-purchases
+          class="date-input"
           #weekPicker
           [purchases]="originalPurchases()"
           (filteredPurchases)="onFilter($event)"
           (filterIndicator)="clearOtherFilters($event)"
         ></app-date-picker-week-purchases>
         <app-date-picker-month-purchases
+          class="date-input"
           #monthPicker
           [purchases]="originalPurchases()"
           (filteredPurchases)="onFilter($event)"
           (filterIndicator)="clearOtherFilters($event)"
         ></app-date-picker-month-purchases>
         <app-date-picker-year-purchases
+          class="date-input"
           #yearPicker
           [purchases]="originalPurchases()"
           (filteredPurchases)="onFilter($event)"
@@ -35,14 +40,18 @@
         ></app-date-picker-year-purchases>
 
         <div class="button-container">
-          <button matButton class="clear-button" (click)="clearFilters()">
-            Clear Search and Filters
+          <button mat-button class="clear-button" (click)="clearFilters()">
+            <mat-icon class="clear-icon">filter_alt_off</mat-icon>
+            <span class="button-text">Clear Search and Filters</span>
           </button>
         </div>
       </div>
     </div>
   </mat-card>
   <mat-card class="add-purchase-card">
-    <button matButton class="add-button" (click)="onAddNewPurchase()">Add New Purchase</button>
+    <button matButton class="add-button" (click)="onAddNewPurchase()">
+      <mat-icon class="add-icon"> add</mat-icon>
+      <span class="button-text">Add New Purchase</span>
+    </button>
   </mat-card>
 </div>

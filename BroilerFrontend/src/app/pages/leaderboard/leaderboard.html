@@ -5,7 +5,7 @@
       <table mat-table [dataSource]="leaderboard" class="leaderboard-table">
         <ng-container matColumnDef="givenName">
           <th mat-header-cell *matHeaderCellDef>
-            <div class="header-cell">First Name</div>
+            <div class="header-cell header-cell-first">First Name</div>
           </th>
           <td mat-cell *matCellDef="let element">{{ element.givenName }}</td>
         </ng-container>

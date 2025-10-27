@@ -1,11 +1,19 @@
 .user-table {
   background-color: var(--bg-color);
   border-collapse: collapse;
-  font-size: medium;
+  font-size: clamp(0.85rem, 1vw + 0.5rem, 1.1rem);
   box-shadow: 1px 0 20px #797575;
   border-radius: 10px;
-  margin-top: 3em;
-  margin-left: 5%;
+  width: 90%;
+  margin-left: 1em;
+  min-width: 600px;
+}
+
+.table-wrapper {
+  width: 100%;
+  margin: 2em auto;
+  padding: 2em;
+  overflow-x: auto;
 }
 
 ::ng-deep .mat-sort-header-arrow svg path {
@@ -16,16 +24,18 @@
 
 .header-cell {
   color: var(--component-text-color);
-  font-size: xx-large;
-  font-weight: bold;
+  font-size: clamp(1rem, 1vw + 2rem, 1.5rem);
+  font-weight: 600;
   padding: 0.4em 0.8em;
-  text-align: center;
-  align-items: center;
+  margin-top: 1em;
   background-color: var(--component-color);
-  margin: 0.4em;
-  border-radius: 10px;
-  line-height: 1.2;
+  border-radius: 8px;
   min-width: 4em;
+  text-align: center;
+}
+
+.header-cell-name {
+  margin-left: 1em;
 }
 
 .header-cell-small {
